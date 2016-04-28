@@ -1,9 +1,13 @@
 package ict.monitor.web;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,7 +60,8 @@ public class MonitorController {
 
 	@RequestMapping(value = "/monitorMachineList.do")
 	public String monitorMachineList(HttpServletRequest request, Model model, String agentID) {
-		ArrayList<Agent> list = agentDao.findAgentByUserIDAndAgentID(1, agentID);
+		User userInfo = (User) request.getSession().getAttribute("userInfo");
+		ArrayList<Agent> list = agentDao.findAgentByUserIDAndAgentID(userInfo.getId(), agentID);
 		List<DevInfoEntity> devs = devInfoDao.findDevInfo(agentID);
 		model.addAttribute("agents", list);
 		model.addAttribute("devs", devs);
@@ -81,11 +86,89 @@ public class MonitorController {
 	@RequestMapping(value = "/transactionErrorMetadata.do")
 	@ResponseBody
 	public String transactionErrorMetadata(String application, long from, long to, int limit) {
-		String url = WebContext.PINPOINT+"/transactionErrorMetadata.pinpoint?application="+application
-				+"&from="+from+"&to="+to+"&limit="+limit;
+		String url = WebContext.PINPOINT + "/transactionErrorMetadata.pinpoint?application=" + application + "&from=" + from + "&to=" + to + "&limit=" + limit;
 		return getJsonFromPinpoint(url);
 	}
 
+	@RequestMapping(value = "/transactionSlowMetadata.do")
+	@ResponseBody
+	public String transactionSlowMetadata(String application, long from, long to, int limit, int threshold) {
+		String url = WebContext.PINPOINT + "/transactionSlowMetadata.pinpoint?application=" + application + "&from=" + from + "&to=" + to + "&limit=" + limit + "&threshold=" + threshold;
+		return getJsonFromPinpoint(url);
+	}
+	/**
+	 * 得到监控的agentID
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/applications.do")
+	@ResponseBody
+	public Set<String> applications(HttpServletRequest request) {
+		User userInfo = (User) request.getSession().getAttribute("userInfo");
+		ArrayList<Agent> userAgentList = agentDao.findAgentIDsByUserID(userInfo.getId());
+		if (userAgentList == null || userAgentList.size() == 0) {
+			return new HashSet<>();
+		}
+		String json = getJsonFromPinpoint(WebContext.PINPOINT + "/applications.pinpoint");
+		ObjectMapper mapper = new ObjectMapper();
+		List<PinpointTarget> agentList = new ArrayList<>();
+		try {
+			agentList = mapper.readValue(json, new TypeReference<List<PinpointTarget>>() {});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Set<String> allAgents = new HashSet<>();
+		Set<String> allUserAgents = new HashSet<>();
+		for (PinpointTarget pinpointTarget : agentList) {
+			allAgents.add(pinpointTarget.getApplicationName());
+		}
+		for (Agent agent : userAgentList) {
+			allUserAgents.add(agent.getAgentID());
+		}
+		allAgents.retainAll(allUserAgents);
+		return allAgents;
+	}
+	/**
+	 * 获取时间段内所有散点信息
+	 * @param application
+	 * @param from
+	 * @param to
+	 * @param limit
+	 * @return
+	 */
+	@RequestMapping(value = "/getScatterData.do")
+	@ResponseBody
+	public String scatterData(String application, long from, long to, int limit) {
+		String url = WebContext.PINPOINT + "/getScatterData.pinpoint?application=" + application + "&from=" + from + "&to=" + to + "&limit=" + limit+"&v=2";
+		return getJsonFromPinpoint(url);
+	}
+//	/**
+//	 * 获取所有散点具体信息（普通，错误，慢）
+//	 * @param application
+//	 * @param from
+//	 * @param to
+//	 * @param limit
+//	 * @return
+//	 */
+//	@RequestMapping(value = "/transactionmetadata.do")
+//	@ResponseBody
+//	public String transactionmetadata(String application, long from, long to, int limit) {
+//		String url = WebContext.PINPOINT + "/transactionmetadata.pinpoint?application=" + application + "&from=" + from + "&to=" + to + "&limit=" + limit+"&v=2";
+//		return getJsonFromPinpoint(url);
+//	}
+	/**
+	 * 获取调用堆栈信息
+	 * @param traceId
+	 * @param focusTimestamp
+	 * @return
+	 */
+	@RequestMapping(value = "/transactionInfo.do")
+	@ResponseBody
+	public String transactionInfo(String traceId, long focusTimestamp) {
+		String url = WebContext.PINPOINT + "/transactionInfo.pinpoint?traceId=" + traceId + "&focusTimestamp=" + focusTimestamp;
+		return getJsonFromPinpoint(url);
+	}
+	
 	private String getJsonFromPinpoint(String url) {
 		try {
 			HttpClient httpclient = new DefaultHttpClient();
@@ -96,7 +179,7 @@ public class MonitorController {
 				return EntityUtils.toString(entity);
 			}
 		} catch (Exception e) {
-			logger.warn("读取pinpoint数据异常："+url);
+			logger.warn("读取pinpoint数据异常：" + url);
 		}
 		return "";
 	}
