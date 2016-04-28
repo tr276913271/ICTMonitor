@@ -49,6 +49,10 @@ public class Agent {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Agent [userID=" + userID + ", agentID=" + agentID + ", entity=" + entity + ", type=" + type + "]";
+	}
 	
 }

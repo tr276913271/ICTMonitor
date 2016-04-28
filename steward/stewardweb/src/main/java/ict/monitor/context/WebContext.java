@@ -9,11 +9,21 @@ public class WebContext {
 	public static String PINPOINT;
 	public static int PORT;
 	public static boolean DEBUG = true;
+	public static String DEBUG_USERNAME;
+	public static int DEBUG_USERID;
 	
 	public static void init() throws Exception {
 		PropertiesUtil propertiesUtil = new PropertiesUtil();
 		PINPOINT = propertiesUtil.readStrValue("pinpoint");
 		PORT = propertiesUtil.readIntValue("port");
+		
+		try {
+			DEBUG_USERID = propertiesUtil.readIntValue("debugUserID");
+			DEBUG_USERNAME = propertiesUtil.readStrValue("debugUserName");
+			DEBUG = propertiesUtil.readBooleanValue("debug");
+		} catch (Exception e) {
+			DEBUG = false;
+		}
 		logger.info("WebContext [PINPOINT=" + PINPOINT + ", PORT=" + PORT + ", DEBUG=" + DEBUG + "]");
 	}
 	

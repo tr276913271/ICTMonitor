@@ -18,12 +18,9 @@ import ict.monitor.bean.Agent;
 import ict.monitor.bean.User;
 import ict.monitor.dao.AgentDao;
 import ict.monitor.dao.UserDao;
-import ict.monitor.service.UserService;
 
 @Controller
 public class UserController {
-	@Autowired
-	private UserService userServiceImp;
 	@Autowired
 	private UserDao userDao;
 	@Autowired
@@ -32,7 +29,6 @@ public class UserController {
 	@RequestMapping(value = "/user.do")
 	@ResponseBody
 	public User getUser(HttpServletRequest request, User user) {
-		user.setUsername("tian");
 		return user;
 	}
 

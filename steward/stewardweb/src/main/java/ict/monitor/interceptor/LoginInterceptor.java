@@ -6,10 +6,20 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import ict.monitor.bean.User;
+import ict.monitor.context.WebContext;
+
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		if(WebContext.DEBUG) {
+			User admin = new User();
+			admin.setId(WebContext.DEBUG_USERID);
+			admin.setUsername(WebContext.DEBUG_USERNAME);
+			request.getSession().setAttribute("loged", true);
+			request.getSession().setAttribute("userInfo", admin);
+		}
 		if(request.getServletPath().equals("/signUp.do")){
 			return true;
 		}
