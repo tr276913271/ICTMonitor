@@ -51,3 +51,8 @@ steward/agent/target
 steward/common/target
 steward/communication/target
 steward/stewardweb/target
+
+steward/agent/.classpath
+steward/common/.classpath
+steward/communication/.classpath
+steward/stewardweb/.classpath
