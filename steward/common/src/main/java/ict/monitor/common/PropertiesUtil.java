@@ -23,6 +23,19 @@ public class PropertiesUtil {
 		}
 		return value;
 	}
+	
+	public boolean readBooleanValue(String key) throws IllegalArgumentException {
+		String value = props.getProperty(key);
+		if(StringUtils.isEmpty(value)) {
+			throw new IllegalArgumentException();
+		}
+		try {
+			boolean b = Boolean.parseBoolean(value);
+			return b;
+		} catch (Exception e) {
+			throw new IllegalArgumentException();
+		}
+	}
 
 	public int readIntValue(String key) throws IllegalArgumentException {
 		String value = props.getProperty(key);

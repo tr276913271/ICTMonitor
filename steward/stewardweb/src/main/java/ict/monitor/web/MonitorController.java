@@ -14,6 +14,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,23 +36,20 @@ import ict.monitor.dao.AgentDao;
 import ict.monitor.dao.DevInfoDao;
 import ict.monitor.dao.MetricDao;
 
-//http://192.168.25.128:28080/applications.pinpoint
-//[{"applicationName":"TESTAPP","serviceType":"TOMCAT","code":1010}]
-//http://192.168.25.128:28080/#/main/TESTAPP@TOMCAT/1h/2016-03-16-20-41-25
 @Controller
 public class MonitorController {
+	private static Logger logger = LogManager.getLogger(MonitorController.class.getName());
 	@Autowired
 	private AgentDao agentDao;
 	@Autowired
 	private DevInfoDao devInfoDao;
 	@Autowired
 	private MetricDao metricDao;
-	
+
 	@RequestMapping(value = "/monitorList.do")
 	public String monitorList(HttpServletRequest request, Model model) {
 		User userInfo = (User) request.getSession().getAttribute("userInfo");
-
-		ArrayList<Agent> list = agentDao.findAgentIDsByUserID(1);
+		ArrayList<Agent> list = agentDao.findAgentIDsByUserID(userInfo.getId());
 		model.addAttribute("agents", list);
 		return "monitorList";
 	}
@@ -64,13 +63,6 @@ public class MonitorController {
 		return "monitorMachineList";
 	}
 
-	@RequestMapping(value = "/monitorServerList.do")
-	public ModelAndView  monitorServerList(HttpServletResponse response, String agentID, Model model) {
-		ModelAndView view = new ModelAndView();
-        view.setViewName("redirect:"+pinpointMonitor(agentID));
-        return view;
-	}
-
 	@RequestMapping(value = "/monitor10S.do")
 	@ResponseBody
 	public List<MetricEntity> monitor10S(String agentID, String devID, int tag) {
@@ -79,34 +71,34 @@ public class MonitorController {
 		return metrics;
 	}
 
-	@RequestMapping(value = "/pinpointMonitor.do")
-	@ResponseBody
-	public String pinpointMonitor(String agentID) {
-		try {
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpGet httpget = new HttpGet(WebContext.PINPOINT);
-			HttpResponse response = httpclient.execute(httpget);
-			HttpEntity entity = response.getEntity();
-			if (entity != null) {
-				ObjectMapper mapper = new ObjectMapper();
-				List<PinpointTarget> userList = mapper.readValue(EntityUtils.toString(entity), new TypeReference<List<PinpointTarget>>() {
-				});
-				for (PinpointTarget pinpointTarget : userList) {
-					agentID = "TESTAPP";
-					if (pinpointTarget.getApplicationName().equals(agentID)) {
-						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-						return "http://192.168.25.128:28080/#/main/" + agentID + "@" + pinpointTarget.getServiceType() + "/20m/" + format.format(new Date());
-					}
-				}
-			}
-		} catch (Exception e) {
-		}
-		return "error";
-	}
-	//跳转到websocket界面
-	@RequestMapping(value = "/pushDate.do")
-	public String pushDate(HttpServletRequest request,String agentID,Model model) {
+	// 跳转到websocket界面
+	@RequestMapping(value = "/pushData.do")
+	public String pushDate(HttpServletRequest request, String agentID, Model model) {
 		model.addAttribute("agentID", agentID);
 		return "websocket";
 	}
+
+	@RequestMapping(value = "/transactionErrorMetadata.do")
+	@ResponseBody
+	public String transactionErrorMetadata(String application, long from, long to, int limit) {
+		String url = WebContext.PINPOINT+"/transactionErrorMetadata.pinpoint?application="+application
+				+"&from="+from+"&to="+to+"&limit="+limit;
+		return getJsonFromPinpoint(url);
+	}
+
+	private String getJsonFromPinpoint(String url) {
+		try {
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpGet httpget = new HttpGet(url);
+			HttpResponse response = httpclient.execute(httpget);
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				return EntityUtils.toString(entity);
+			}
+		} catch (Exception e) {
+			logger.warn("读取pinpoint数据异常："+url);
+		}
+		return "";
+	}
+
 }
