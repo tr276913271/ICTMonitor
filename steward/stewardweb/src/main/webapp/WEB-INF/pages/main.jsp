@@ -217,6 +217,7 @@ $(function () {
         }]
     });
     /*----------- End Of Load Chart Section -----------*/
+
 });
    </script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->

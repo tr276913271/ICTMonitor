@@ -20,6 +20,8 @@
 <script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
 <script type="text/javascript" src="js/custom/general.js"></script>
 <script type="text/javascript" src="js/custom/index.js"></script>
+   <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
+   <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
 <!--[if IE 9]>
     <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
 <![endif]-->
@@ -30,7 +32,24 @@
 	<script src="js/plugins/css3-mediaqueries.js"></script>
 <![endif]-->
 </head>
-
+<script type="text/javascript">
+$(document).ready(function(){
+    var json_url = "/stewardweb/getScatterData.do?application=appName&from=1459158066000&to=1459339969000&limit=5000&v=2";
+    $.getJSON(json_url,function(data){  
+        $.each(data,function(i,item){  
+            alert(item);
+            // $.each(item,function(k,v){  
+            //     xset.push(k);  
+            //     yset.push(v);  
+            // });  
+        })  
+        // console.log(xset);   
+        // console.log(yset);   
+        //根据时间序列生成折线图  
+        //showChart(xset,yset);  
+    });  
+});
+</script>
 <body class="loginpage">
     <div class="loginbox">
         <div class="loginboxinner">
@@ -48,13 +67,13 @@
             
             <div class="nopassword">
                 <div class="loginmsg">密码不正确.</div>
-                <div class="loginf">
+                <!-- <div class="loginf">
                     <div class="thumb"><img alt="" src="images/thumbs/avatar1.png" /></div>
                     <div class="userlogged">
                         <h4></h4>
                         <a href="index.html">Not <span></span>?</a> 
                     </div>
-                </div><!--loginf-->
+                </div> -->
             </div><!--nopassword-->
             
             <form id="login" action="login.do" method="post">
@@ -74,7 +93,7 @@
                 <button>登录</button>
                 
                 <div class="keep"><input type="checkbox" /> 记住密码</div>
-                <div class="register"><a href="signUp.do">注册账号</a></div>
+                <div class="register"><a href="register.do">注册账号</a></div>
             </form>
             
         </div><!--loginboxinner-->
