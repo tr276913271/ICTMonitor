@@ -32,22 +32,22 @@
 </head>
 
 <body class="loginpage">
-	<div class="loginbox">
-    	<div class="loginboxinner">
-        	
+    <div class="loginbox">
+        <div class="loginboxinner">
+            
             <div class="logo">
-            	<h1 class="logo">APM <span>Admin</span></h1>
-				<span class="slogan">后台管理系统</span>
+                <h1 class="logo">APM <span>Admin</span></h1>
+                <span class="slogan">后台管理系统</span>
             </div><!--logo-->
             
             <br clear="all" /><br />
             
             <div class="nousername">
-				<div class="loginmsg">密码不正确.</div>
+                <div class="loginmsg">密码不正确.</div>
             </div><!--nousername-->
             
             <div class="nopassword">
-				<div class="loginmsg">密码不正确.</div>
+                <div class="loginmsg">密码不正确.</div>
                 <div class="loginf">
                     <div class="thumb"><img alt="" src="images/thumbs/avatar1.png" /></div>
                     <div class="userlogged">
@@ -58,30 +58,27 @@
             </div><!--nopassword-->
             
             <form id="login" action="login.do" method="post">
-            	
+                
                 <div class="username">
-                	<div class="usernameinner">
-                    	<input type="text" name="username" id="username" />
+                    <div class="usernameinner">
+                        <input type="text" name="username" id="username" />
                     </div>
                 </div>
                 
                 <div class="password">
-                	<div class="passwordinner">
-                    	<input type="password" name="password" id="password" />
+                    <div class="passwordinner">
+                        <input type="password" name="password" id="password" />
                     </div>
                 </div>
                 
                 <button>登录</button>
                 
                 <div class="keep"><input type="checkbox" /> 记住密码</div>
-                <!-- <div class="register"><a href="signUp.do">注册账号</a></div> -->
                 <div class="register"><a href="signUp.do">注册账号</a></div>
             </form>
             
             
         </div><!--loginboxinner-->
     </div><!--loginbox-->
-
-
 </body>
 </html>
