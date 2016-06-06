@@ -74,8 +74,10 @@
                 <button>登录</button>
                 
                 <div class="keep"><input type="checkbox" /> 记住密码</div>
-            
+                <!-- <div class="register"><a href="signUp.do">注册账号</a></div> -->
+                <div class="register"><a href="signUp.do">注册账号</a></div>
             </form>
+            
             
         </div><!--loginboxinner-->
     </div><!--loginbox-->
@@ -83,24 +85,3 @@
 
 </body>
 </html>
-
-
-
-<!--
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Login</title>
-</head>
-<body>
-	<form action="login.do" method="post">
-		账户：<input type="text" name="username"/>
-		密码：<input type="password" name="password"/>
-		<input type="submit" value="提交"> 
-	</form>
-	
-	<a href="signUp.do">注册</a>
-</body>
-</html>
--->

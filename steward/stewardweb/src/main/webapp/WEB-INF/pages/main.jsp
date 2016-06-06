@@ -8,7 +8,7 @@
 <title>Login</title>
 </head>
 <body>
-	<p>Welcome ${sessionScope.userInfo.username}</p>
+	<p>Welcome ${sessionScope.userInfo.username}</p><a href="logout.do">退出</a>
 	<a href="monitorList.do">监控</a>
 	<a href="signUpAgentID.do">注册AgentID</a>
 </body>
