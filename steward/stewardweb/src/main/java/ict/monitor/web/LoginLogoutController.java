@@ -10,7 +10,7 @@ import ict.monitor.bean.User;
 import ict.monitor.dao.UserDao;
 
 @Controller
-public class LoginController {
+public class LoginLogoutController {
 	
 	@Autowired
 	private UserDao userDao;
@@ -26,7 +26,17 @@ public class LoginController {
 			}
 			request.getSession().setAttribute("loged", true);
 			request.getSession().setAttribute("userInfo", findUser);
-			return "main";
+			return "redirect:index.do";
 		}
+	}
+	
+	@RequestMapping(value = "/logout.do")
+	public String logout (HttpServletRequest request) {
+		User findUser = (User) request.getSession().getAttribute("userInfo");
+		if(findUser!=null){
+			request.getSession().removeAttribute("loged");
+			request.getSession().removeAttribute("userInfo");
+		}
+		return "redirect:login.do";
 	}
 }

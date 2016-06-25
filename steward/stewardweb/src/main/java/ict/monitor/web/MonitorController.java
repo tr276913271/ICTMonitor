@@ -49,7 +49,7 @@ public class MonitorController {
 	private DevInfoDao devInfoDao;
 	@Autowired
 	private MetricDao metricDao;
-
+	//返回监控列表 ，暂时没用到这个URL
 	@RequestMapping(value = "/monitorList.do")
 	public String monitorList(HttpServletRequest request, Model model) {
 		User userInfo = (User) request.getSession().getAttribute("userInfo");
@@ -75,7 +75,24 @@ public class MonitorController {
 		List<MetricEntity> metrics = metricDao.findMetricCycle(agentID, devID, tag, cycle);
 		return metrics;
 	}
+	//点击index中的服务器后会进入服务器性能监控界面
+	@RequestMapping(value = "/monitorServerPerformance.do")
+	public String monitorServerPerformance(HttpServletRequest request, Model model, String agentID) {
+		
+		return "performance";
+	}
+	@RequestMapping(value = "/monitorServerError.do")
+	public String monitorServerError(HttpServletRequest request, Model model, String agentID) {
+		
+		return "wrong_call";
+	}
 
+	@RequestMapping(value = "/monitorServerSlow.do")
+	public String monitorServerSlow(HttpServletRequest request, Model model, String agentID) {
+		
+		return "slow_call";
+	}
+	
 	// 跳转到websocket界面
 	@RequestMapping(value = "/pushData.do")
 	public String pushDate(HttpServletRequest request, String agentID, Model model) {
@@ -142,20 +159,6 @@ public class MonitorController {
 		String url = WebContext.PINPOINT + "/getScatterData.pinpoint?application=" + application + "&from=" + from + "&to=" + to + "&limit=" + limit+"&v=2";
 		return getJsonFromPinpoint(url);
 	}
-//	/**
-//	 * 获取所有散点具体信息（普通，错误，慢）
-//	 * @param application
-//	 * @param from
-//	 * @param to
-//	 * @param limit
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/transactionmetadata.do")
-//	@ResponseBody
-//	public String transactionmetadata(String application, long from, long to, int limit) {
-//		String url = WebContext.PINPOINT + "/transactionmetadata.pinpoint?application=" + application + "&from=" + from + "&to=" + to + "&limit=" + limit+"&v=2";
-//		return getJsonFromPinpoint(url);
-//	}
 	/**
 	 * 获取调用堆栈信息
 	 * @param traceId

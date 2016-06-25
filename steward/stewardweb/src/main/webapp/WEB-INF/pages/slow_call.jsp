@@ -9,10 +9,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<<<<<<< HEAD
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APM 慢调用</title>
+=======
+<base href="<%=basePath%>"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APM 业务流性能表现</title>
+>>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
 <script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
@@ -332,7 +339,11 @@ var data_slow_call_detail = {
 function getSlowCallDetailData(traceID, timeStamp, data){
     var callstack = data["callStack"];
     //var callstack_length = callstack.length;
+<<<<<<< HEAD
     var code_item_detail = "<tr class='item_detail' style='display:none;'><td colspan='8'><div class='poplayer'><table cellpadding='0' cellspacing='0' border='0' class='stdtable'><colgroup><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /></colgroup><thead><tr><th class='head0'>Method</th><th class='head1'>Arguments</th><th class='head0'>Exec Time</th><th class='head1'>Gap(ms)</th><th class='head0'>Time(ms)</th><th class='head1'>Time(%)</th><th class='head0'>Class</th><th class='head1'>Api Type</th><th class='head0'>Agent</th><th class='head1'>App Name</th></tr></thead><tbody>";
+=======
+    var code_item_detail = "<tr class='item_detail'><td colspan='8'><div class='poplayer'><table cellpadding='0' cellspacing='0' border='0' class='stdtable'><colgroup><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /></colgroup><thead><tr><th class='head0'>Method</th><th class='head1'>Arguments</th><th class='head0'>Exec Time</th><th class='head1'>Gap(ms)</th><th class='head0'>Time(ms)</th><th class='head1'>Time(%)</th><th class='head0'>Class</th><th class='head1'>Api Type</th><th class='head0'>Agent</th><th class='head1'>App Name</th></tr></thead><tbody>";
+>>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
     $.each(callstack, function(index, item){
         var row = {"time_begin":item[1], "time_end":item[2], "appName":item[4], "tag":item[5], "id":item[6], "parentId":item[7], "title":item[10], "args":item[11], "formatTime":item[12], "gap":item[13], "execTime":item[14], "simpleClassName":item[16], "serviceType":item[17], "agent":item[18], "hasChild":item[19], "hasException":item[20]};
         //code_row = "<tr class='item_detail'><td colspan='8'><div class='poplayer'>"+row['time_begin']+"</div></td></tr>";
@@ -359,6 +370,7 @@ function getSlowCallData(data){
     });
 };
 
+<<<<<<< HEAD
 function getDataByTime(time_start, time_end){
     var json_url = "/stewardweb/getScatterData.do?application=appName&from="+time_start+"&to="+time_end+"&limit=5000&v=2";
     $.getJSON(json_url,function(data){  
@@ -372,6 +384,12 @@ $(document).ready(function(){
     getSlowCallData(data_slow_call);
     
 
+=======
+
+
+$(document).ready(function(){
+    getSlowCallData(data_slow_call);
+>>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
     $('#table_slow_call>.item').mouseover(function(){
         $(this).css({
             'background':'#ccc',
@@ -388,11 +406,14 @@ $(document).ready(function(){
             'background':'transparent'
         });
     });
+<<<<<<< HEAD
     $('#form_searchByTime>button').click(function(){
         var time_start = $('input[name="time_start"]').val();
         var time_end = $('input[name="time_end"]').val();
         getDataByTime(time_start, time_end);
     });
+=======
+>>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
 
     //getSlowCallDetailData(data_slow_call_detail);
     //var code_slow_call = getSlowCallData(data_slow_call);
@@ -427,8 +448,13 @@ $(document).ready(function(){
             
             <div class="search">
                 <form action="" method="post">
+<<<<<<< HEAD
                     <input type="datetime-local" name="time_start" />
                     <input type="datetime-local" name="time_end" />
+=======
+                    <label for="time_start"><input id="time_start" type="datetime-local" name="time_start" /></label>
+                    <label for="time_end"><input id="time_end" type="datetime-local" name="time_end" /></label>
+>>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
                     <!-- <input type="text" name="keyword" id="keyword" value="请输入" /> -->
                     <button class="submitbutton"></button>
                 </form>
@@ -444,11 +470,16 @@ $(document).ready(function(){
         	</div>
 			-->
         	<div class="userinfo">
+<<<<<<< HEAD
             	<img src="images/thumbs/avatar.png" alt="" />
+=======
+                <img src="images/thumbs/avatar.png" alt="" />
+>>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
                 <span>管理员</span>
             </div><!--userinfo-->
             
             <div class="userinfodrop">
+<<<<<<< HEAD
             	<div class="avatar">
                 	<a href=""><img src="images/thumbs/avatarbig.png" alt="" /></a>
                     <div class="changetheme">
@@ -467,6 +498,12 @@ $(document).ready(function(){
                         <li><a href="editprofile.html">编辑资料</a></li>
                         <li><a href="accountsettings.html">账号设置</a></li>
                         <li><a href="help.html">帮助</a></li>
+=======
+                <div class="userdata">
+                    <h4>管理员</h4>
+                    <span class="email">youremail@yourdomain.com</span>
+                    <ul>
+>>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
                         <li><a href="index.html">退出</a></li>
                     </ul>
                 </div><!--userdata-->

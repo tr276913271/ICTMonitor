@@ -21,4 +21,5 @@ jQuery(document).ready(function(){
 	///// ADD PLACEHOLDER /////
 	jQuery('#username').attr('placeholder','Username');
 	jQuery('#password').attr('placeholder','Password');
+	jQuery('#email').attr('placeholder','Email');
 });

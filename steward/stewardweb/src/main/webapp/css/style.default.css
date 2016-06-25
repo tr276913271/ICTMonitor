@@ -121,6 +121,20 @@ body.withmenucoll2 { background-position: 35px 0; } /* with menu style 2 in coll
 	font-family: 'RobotoCondensed', Arial, Helvetica, sans-serif; -moz-border-radius: 0 2px 2px 0; -webkit-border-radius: 0 2px 2px 0;
 	border-radius: 0 2px 2px 0;
 }
+.loginbox .email { 
+	background: #eee url(../images/icons/mail.png) no-repeat 13px center; -moz-border-radius: 2px; -webkit-border-radius: 2px; 
+	border-radius: 2px; -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.4); -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.4); 
+	box-shadow: 0 1px 2px rgba(0,0,0,0.4); margin: 20px 0;
+}
+.loginbox .emailinner { 
+	margin-left: 45px; border-left: 1px solid #ddd; background: #fff; padding-right: 20px; 
+	-moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; 
+}
+.loginbox .email input { 
+	padding: 15px 10px; border: 0; font-size: 14px; width: 100%; box-shadow: none; color: #666; 
+	font-family: 'RobotoCondensed', Arial, Helvetica, sans-serif; -moz-border-radius: 0 2px 2px 0; -webkit-border-radius: 0 2px 2px 0;
+	border-radius: 0 2px 2px 0;
+}
 .loginbox .password { 
 	background: #eee url(../images/icons/password.png) no-repeat 13px center; -moz-border-radius: 2px; -webkit-border-radius: 2px; 
 	border-radius: 2px; -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.4); -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.4); 
@@ -187,7 +201,14 @@ body.withmenucoll2 { background-position: 35px 0; } /* with menu style 2 in coll
 	-webkit-border-radius: 2px 0 0 2px; border-radius: 2px 0 0 2px; border-bottom: 1px solid #445775; width: 200px; font-style: italic;
 	-moz-box-shadow: inset 1px 1px 2px #2b384e; -webkit-box-shadow: inset 1px 1px 2px #2b384e; box-shadow: inset 1px 1px 2px #2b384e;
 }
+.search input[type=datetime-local] { 
+	border: 0; padding: 10px 8px 11px 8px; background: #32415a; float: left; color: #4a5b78; -moz-border-radius: 2px 0 0 2px; margin: 0;
+	-webkit-border-radius: 2px 0 0 2px; border-radius: 2px 0 0 2px; border-bottom: 1px solid #445775; width: 200px;
+	-moz-box-shadow: inset 1px 1px 2px #2b384e; -webkit-box-shadow: inset 1px 1px 2px #2b384e; box-shadow: inset 1px 1px 2px #2b384e;
+	height:15px;
+}
 .search input[type=text]:focus { font-style: normal; color: #6a778d; }
+.search input[type=datetime-local]:focus { font-style: normal; color:white; }
 .search .submitbutton { 
 	float: left; border: 0; border-bottom: 1px solid #445775; -moz-border-radius: 0 0 2px 0; -webkit-border-radius: 0 0 2px 0; cursor: pointer;
 	border-radius: 0 0 2px 0; background: url(../images/default/searchbutton.png) no-repeat 0 0; width: 38px; height: 37px; vertical-align: middle;
@@ -269,14 +290,14 @@ body.withmenucoll2 { background-position: 35px 0; } /* with menu style 2 in coll
 .userinfo span { color: #b9c2cf; display: inline-block; padding: 0 5px; font-family: 'RobotoCondensed', Arial, Helvetica, sans-serif; }
 
 .userinfodrop { 
-	padding: 10px; min-width: 300px; position: absolute; top: 48px; right: 0; -moz-border-radius: 2px; display: none;
+	padding: 10px; min-width: 100px; position: absolute; top: 48px; right: 0; -moz-border-radius: 2px; display: none;
 	-webkit-border-radius: 2px; border-radius: 2px; background: #fff; -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 	-webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); z-index: 200;
 }
 
 .userinfodrop .avatar { float: left; }
 
-.userdata { margin-left: 105px; }
+.userdata { margin-left: 0px; }
 .userdata h4 { color: #2d3c54; display: inline-block; }
 .userdata .email { color: #999; font-size: 11px; display: inline-block; }
 .userdata ul { list-style: none; margin-top: 10px; }
@@ -2495,3 +2516,10 @@ blockquote.bq2 {
 	.photopreview a img { width: 300px; }
 		
 }
+
+
+
+
+
+.item_detail{display: none;}
+.poplayer{float:left; width:100%; height:auto; padding:3px; background:red;}

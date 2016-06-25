@@ -14,6 +14,7 @@
 <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
 
 <script type="text/javascript">
+
 	var socket;
 	function setConnected(connected) {
 		document.getElementById('connect').disabled = connected;
@@ -71,6 +72,9 @@
 	 3. 当接收来自服务器的消息，socket.onmessage被调用  
 	 4. socket.send()用来发送消息至服务端  
 	 */
+$(document).ready(function(){
+	connect();
+});
 </script>
 </head>
 <body>

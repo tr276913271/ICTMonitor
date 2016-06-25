@@ -1,5 +1,6 @@
 package ict.monitor.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,19 +33,30 @@ public class UserController {
 	public User getUser(HttpServletRequest request, User user) {
 		return user;
 	}
-
+	
+	@RequestMapping(value = "/index.do")
+	public String indexPage(HttpServletRequest request, Model model) {
+		User userInfo = (User) request.getSession().getAttribute("userInfo");
+		if(userInfo==null){
+			return "redirect:login.do";
+		}
+		ArrayList<Agent> list = agentDao.findAgentIDsByUserID(userInfo.getId());
+		model.addAttribute("agents", list);
+		return "index";
+	}
+	
 	@RequestMapping(value = "/signUp.do")
 	public String signUp(String username, String password) {
 		if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-			return "signUp";
+			return "register";
 		} else {
 			User user = new User(username, password);
 			userDao.insert(user);
 
-			return "login";
+			return "redirect:login.do";
 		}
 	}
-
+	
 	@RequestMapping(value = "/signUpAgentID.do")
 	public ModelAndView signUpAgentID(HttpServletRequest request) {
 		UUID uuid = UUID.randomUUID();
