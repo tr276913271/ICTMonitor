@@ -404,6 +404,49 @@ function submitSearchForm(){
     $.getJSON(json_url,function(data,status){
         data_performance = data;
     });
+
+    var chartSandian = $('#chart_sandian').highcharts();
+    var chartSummary = $('#chart_response_summary').highcharts();
+    var chartLoad = $('#chart_load').highcharts;
+
+    var data = [{
+                y: getPerformanceData(data_performance)[2][0],
+                color: colors[0]
+            }, {
+                y: getPerformanceData(data_performance)[2][1],
+                color: colors[1]
+            }, {
+                y: getPerformanceData(data_performance)[2][2],
+                color: colors[2]
+            }, {
+                y: getPerformanceData(data_performance)[2][3],
+                color: colors[3]
+            }, {
+                y: getPerformanceData(data_performance)[2][4],
+                color: colors[4]
+            }];
+
+    chartSandian.series[0].setData(getPerformanceData(data_performance)[0]);
+    chartSandian.series[1].setData(getPerformanceData(data_performance)[1]);
+
+    chartSummary.series[0].setData(data);
+
+    chartLoad.series[0].setData([{
+            name: '1s',
+            data: getPerformanceData_LOAD(data_performance)[0]
+        }, {
+            name: '2s',
+            data: getPerformanceData_LOAD(data_performance)[1]
+        }, {
+            name: '3s',
+            data: getPerformanceData_LOAD(data_performance)[2]
+        }, {
+            name: 'Slow',
+            data: getPerformanceData_LOAD(data_performance)[3]
+        }, {
+            name: 'Error',
+            data: getPerformanceData_LOAD(data_performance)[4]
+        }]);
     
 };
 </script>
@@ -427,7 +470,7 @@ function submitSearchForm(){
             <span class="slogan">后台管理系统</span>
             
             <div class="search">
-                <form id="searchForm" action="getScatterData.do" method="get">
+                <!-- <form id="searchForm" action="getScatterData.do" method="get"> -->
                     <input type="text" id="form_from" name="from" value="" />
                     <input type="text" id="form_to" name="to" value="" />
                     <input type="hidden" id="form_limit" name="limit" value="5000" />
@@ -435,7 +478,7 @@ function submitSearchForm(){
                     
                     <!-- <input type="text" name="keyword" id="keyword" value="请输入" /> -->
                     <button class="submitbutton" onClick="submitSearchForm();"></button>
-                </form>
+                <!-- </form> -->
             </div><!--search-->
             
             <br clear="all" />
