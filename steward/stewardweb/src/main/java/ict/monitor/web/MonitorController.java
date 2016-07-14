@@ -68,13 +68,6 @@ public class MonitorController {
 		return "monitorMachineList";
 	}
 
-	@RequestMapping(value = "/monitor10S.do")
-	@ResponseBody
-	public List<MetricEntity> monitor10S(String agentID, String devID, int tag) {
-		long cycle = 1456128556580L - 10000;
-		List<MetricEntity> metrics = metricDao.findMetricCycle(agentID, devID, tag, cycle);
-		return metrics;
-	}
 	//点击index中的服务器后会进入服务器性能监控界面
 	@RequestMapping(value = "/monitorServerPerformance.do")
 	public String monitorServerPerformance(HttpServletRequest request, Model model, String agentID) {
@@ -91,6 +84,14 @@ public class MonitorController {
 	public String monitorServerSlow(HttpServletRequest request, Model model, String agentID) {
 		
 		return "slow_call";
+	}
+	
+	
+	@RequestMapping(value = "/findDevInfo.do")
+	@ResponseBody
+	public DevInfoEntity findDevInfo(String agentID, String devID) {
+		DevInfoEntity findDevInfoByAgentIDAndDevID = devInfoDao.findDevInfoByAgentIDAndDevID(agentID,devID);
+		return findDevInfoByAgentIDAndDevID;
 	}
 	
 	// 跳转到websocket界面
@@ -112,6 +113,38 @@ public class MonitorController {
 	public String transactionSlowMetadata(String application, long from, long to, int limit, int threshold) {
 		String url = WebContext.PINPOINT + "/transactionSlowMetadata.pinpoint?application=" + application + "&from=" + from + "&to=" + to + "&limit=" + limit + "&threshold=" + threshold;
 		return getJsonFromPinpoint(url);
+	}
+	
+	@RequestMapping(value = "/getServerMapData.do")
+	@ResponseBody
+	public String serverMapData(String application, long from, long to, String serviceTypeName) {
+		String url = WebContext.PINPOINT + "/transactionSlowMetadata.pinpoint?application=" + application + "&from=" + from + "&to=" + to +  "&serviceTypeName=" + serviceTypeName;
+		return getJsonFromPinpoint(url);
+	}
+	
+	
+	@RequestMapping(value = "/serviceTypeName.do")
+	@ResponseBody
+	public String serviceTypeName(HttpServletRequest request,String agentID) {
+		User userInfo = (User) request.getSession().getAttribute("userInfo");
+		ArrayList<Agent> userAgentList = agentDao.findAgentIDsByUserID(userInfo.getId());
+		if (userAgentList == null || userAgentList.size() == 0) {
+			return "";
+		}
+		String json = getJsonFromPinpoint(WebContext.PINPOINT + "/applications.pinpoint");
+		ObjectMapper mapper = new ObjectMapper();
+		List<PinpointTarget> agentList = new ArrayList<>();
+		try {
+			agentList = mapper.readValue(json, new TypeReference<List<PinpointTarget>>() {});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (PinpointTarget pinpointTarget : agentList) {
+			if(pinpointTarget.getApplicationName().equals(agentID)){
+				return pinpointTarget.getServiceType();
+			}
+		}
+		return "";
 	}
 	/**
 	 * 得到监控的agentID

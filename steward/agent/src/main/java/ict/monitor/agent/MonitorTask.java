@@ -50,6 +50,7 @@ public class MonitorTask extends TimerTask {
 			datas.add(metricBuild("FS" + i, Constant.FS_TOTAL, gather.getTotal(i)));
 			datas.add(metricBuild("FS" + i, Constant.FS_AVAIL, gather.getAvail(i)));
 			datas.add(metricBuild("FS" + i, Constant.FS_USED, gather.getUsed(i)));
+			datas.add(metricBuild("FS" + i, Constant.FS_FREE, gather.getFree(i)));
 			datas.add(metricBuild("FS" + i, Constant.FS_USE_PERCENT, gather.getUsePercent(i)));
 			datas.add(metricBuild("FS" + i, Constant.FS_DISK_READS, gather.getDiskReads(i)));
 			datas.add(metricBuild("FS" + i, Constant.FS_DISK_WRITES, gather.getDiskWrites(i)));

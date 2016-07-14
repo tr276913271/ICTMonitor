@@ -4,4 +4,8 @@
 	<select id="findDevInfo" parameterType="string" resultType="ict.monitor.collection.entity.DevInfoEntity">
 			SELECT * FROM devinfo where agentID=#{arg}
 	</select>
+	<select id="findDevInfoByAgentIDAndDevID" resultType="ict.monitor.collection.entity.DevInfoEntity">
+			SELECT * FROM devinfo where agentID=#{0} and devID=#{1}
+	</select>
+	
 </mapper>

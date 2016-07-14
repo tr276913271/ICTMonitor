@@ -12,4 +12,5 @@ import ict.monitor.collection.entity.MetricEntity;
 public interface MetricDao {
 	List<MetricEntity> findMetricCycle(String agentID, String devID, int tag, long cycle);
 	List<MetricEntity> findFlushMetric(String agentID);
+	void cleanMetric(long timestamp);
 }

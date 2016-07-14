@@ -10,4 +10,6 @@ import ict.monitor.collection.entity.DevInfoEntity;
 @Transactional
 public interface DevInfoDao {
 	List<DevInfoEntity> findDevInfo(String agentID);
+
+	DevInfoEntity findDevInfoByAgentIDAndDevID(String agentID, String devID);
 }

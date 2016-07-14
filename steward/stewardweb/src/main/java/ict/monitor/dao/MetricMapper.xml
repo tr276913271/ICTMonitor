@@ -9,4 +9,8 @@
 	<select id="findFlushMetric" resultType="ict.monitor.collection.entity.MetricEntity">
 			SELECT * FROM flushmetric where agentID=#{0}
 	</select>
+	
+	<delete id="cleanMetric" parameterType="long">
+		delete from metric where timestamp &lt;= #{devID}
+	</delete>
 </mapper>

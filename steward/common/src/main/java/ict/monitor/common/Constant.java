@@ -35,5 +35,6 @@ public class Constant {
 	public static final int FS_USE_PERCENT = 24;
 	public static final int FS_DISK_READS = 25;
 	public static final int FS_DISK_WRITES = 26;
+	public static final int FS_FREE = 27;
 	
 }

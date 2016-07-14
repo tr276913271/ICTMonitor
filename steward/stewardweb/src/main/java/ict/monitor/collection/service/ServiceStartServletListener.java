@@ -28,6 +28,7 @@ public class ServiceStartServletListener implements ServletContextListener {
 			WebContext.init();
 			collectionThread.start();
 			timer.schedule(new DataPushThread(),5000,10 * 1000);
+			timer.schedule(new CleanDatabaseThread(),5000,24*60*60 * 1000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
