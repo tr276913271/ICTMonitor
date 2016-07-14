@@ -35,19 +35,19 @@
 <script type="text/javascript">
 $(document).ready(function(){
     var json_url = "/stewardweb/getScatterData.do?application=appName&from=1459158066000&to=1459339969000&limit=5000&v=2";
-    $.getJSON(json_url,function(data){  
-        $.each(data,function(i,item){  
-            alert(item);
-            // $.each(item,function(k,v){  
-            //     xset.push(k);  
-            //     yset.push(v);  
-            // });  
-        })  
-        // console.log(xset);   
-        // console.log(yset);   
-        //根据时间序列生成折线图  
-        //showChart(xset,yset);  
-    });  
+    // $.getJSON(json_url,function(data){  
+    //     $.each(data,function(i,item){  
+    //         alert(item);
+    //         // $.each(item,function(k,v){  
+    //         //     xset.push(k);  
+    //         //     yset.push(v);  
+    //         // });  
+    //     })  
+    //     // console.log(xset);   
+    //     // console.log(yset);   
+    //     //根据时间序列生成折线图  
+    //     //showChart(xset,yset);  
+    // });  
 });
 </script>
 <body class="loginpage">

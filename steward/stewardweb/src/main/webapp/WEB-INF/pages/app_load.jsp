@@ -14,38 +14,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APM 应用负载监控</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
-   <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
-   <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<link type="text/css" href="css/jquery.simple-dtpicker.css" rel="stylesheet" />
+<script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/datetimepicker/jquery.simple-dtpicker.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
+function initFormPlugin(){
+    var d = new Date();
+    //alert(d.getTime());
+    $('input[name=to]').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds());
+    $('input[name=to]').appendDtpicker();
+    d.setDate(d.getDate() - 1);
+    $('input[name=from]').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + d.getHours() + ':' + d.getMinutes());
+    $('input[name=from]').appendDtpicker();
+}
+
+
 var data_performance = {"resultTo":1462699595000,"scatter":[[1462699593649,127499,"test1001^1462699069318^5",0],[1462699380083,256162,"test1001^1462699069318^4",1],[1462699115218,3010,"test1001^1462699069318^3",1],[1462699108229,10053,"test1001^1462699069318^2",1],[1462699087343,9,"test1001^1462699069318^1",1],[1462699086690,748,"test1001^1462699069318^0",1]],"resultFrom":1462699086690,"scatterIndex":{"x":0,"y":1,"transactionId":2,"type":3}}
 
 function getAppLoadData(data){
     var scatters = data['scatter'];
     var tag = 1000;
-    var tag_end = parseInt(scatters.length-1);
-    var time_end = parseInt(scatters[0][0]);
-    var time_start = parseInt(scatters[tag_end][0]);
-    var n = parseInt(Math.abs(time_end-time_start)/tag);
-    var data_list = [];
-    for(i=0;i<=n;i++){
-        data_list.push(0);
-    }
-    $.each(scatters, function(index,item){
-        tmp = parseInt(Math.abs(item[0]-time_start)/tag);
-        data_list[tmp]++;
-    });
+    if(scatters.length>0){
+        var tag_end = parseInt(scatters.length-1);
+        var time_end = parseInt(scatters[0][0]);
+        var time_start = parseInt(scatters[tag_end][0]);
+        var n = parseInt(Math.abs(time_end-time_start)/tag);
+        var data_list = [];
+        for(i=0;i<=n;i++){
+            data_list.push(0);
+        }
+        $.each(scatters, function(index,item){
+            tmp = parseInt(Math.abs(item[0]-time_start)/tag);
+            data_list[tmp]++;
+        });
 
-    return data_list;
+        return data_list;
+    }else{
+        var data_list = [];
+        return data_list;
+    }
 }
 
 function getPointStart(data){
     var scatters = data['scatter'];
-    var tag_end = parseInt(scatters.length-1);
-    var time_start = parseInt(scatters[tag_end][0]);
-    return time_start;
+    if(scatters.length>0){
+        var tag_end = parseInt(scatters.length-1);
+        var time_start = parseInt(scatters[tag_end][0]);
+        return time_start;
+    }else{
+        return 0;
+    }
 }
 
 $(document).ready(function() {
+    initFormPlugin();
+
     var json_url = "/stewardweb/getScatterData.do?application=appName&from=1459158066000&to=1459339969000&limit=5000&v=2";
     $.getJSON(json_url,function(data,status){
         data_performance = data;
@@ -56,6 +81,8 @@ $(document).ready(function() {
             useUTC: false
         }
     }); 
+
+
 
     $('#chart_app_load').highcharts({
         chart: {
@@ -149,6 +176,42 @@ $(document).ready(function() {
 
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function submitSearchForm(){
+    var time_from = $('input[name=from]').val();
+    var time_to = $('input[name=to]').val();
+    stamp_from = new Date(time_from);
+    stamp_to = new Date(time_to);
+    //$('input[name=from]').val(stamp_from.getTime());
+    //$('input[name=to]').val(stamp_to.getTime());
+    //$('#searchForm').submit();
+    console.log(typeof(stamp_from.getTime()));
+    var json_url = '/stewardweb/getScatterData.do?application=appName&from=' + (stamp_from.getTime()-2*60*60*1000).toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&v=2';
+    $.getJSON(json_url,function(data,status){
+        data_performance = data;
+        console.log(data);
+    });
+    var data_performance = {"resultTo":1462699595000,"scatter":[[1462699593649,127499,"test1001^1462699069318^5",0],[1462699380083,256162,"test1001^1462699069318^4",1],[1462699115218,3010,"test1001^1462699069318^3",1],[1462699108229,10053,"test1001^1462699069318^2",1],[1462699087343,9,"test1001^1462699069318^1",1],[1462699086690,748,"test1001^1462699069318^0",1]],"resultFrom":1462699086690,"scatterIndex":{"x":0,"y":1,"transactionId":2,"type":3}}
+
+    var chartAppLoad = $('#chart_app_load').highcharts();
+    console.log(chartAppLoad.series[0]);
+    chartAppLoad.series[0].setData(getAppLoadData(data_performance));
+    chartAppLoad.series[0].addPoint([1462699993649,20]);
+    console.log(chartAppLoad.series[0]);
+}
 </script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
 <!--[if IE 9]>
@@ -170,12 +233,14 @@ $(document).ready(function() {
             <span class="slogan">后台管理系统</span>
             
             <div class="search">
-                <form action="" method="post">
-                    <input type="datetime-local" name="time_start" />
-                    <input type="datetime-local" name="time_end" />
+                <!-- <form id="searchForm" action="getScatterData.do" method="get"> -->
+                    <input type="text" id="form_from" name="from" value="" />
+                    <input type="text" id="form_to" name="to" value="" />
+                    <input type="hidden" id="form_limit" name="limit" value="5000" />
+                    <input type="hidden" id="form_v" name="v" value="2" />                   
                     <!-- <input type="text" name="keyword" id="keyword" value="请输入" /> -->
-                    <button class="submitbutton"></button>
-                </form>
+                    <button class="submitbutton" onClick="submitSearchForm();"></button>
+                <!-- </form> -->
             </div><!--search-->
             
             <br clear="all" />
@@ -207,12 +272,11 @@ $(document).ready(function() {
     
     <div class="header">
     	<ul class="headermenu">
-            <li><a href="topo.html"><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
-            <li><a href="performance.html"><span class="icon icon-pencil"></span>业务流性能表现</a></li>
-            <li class="current"><a href="app_load.html"><span class="icon icon-chart"></span>应用级负载均衡</a></li>
-            <li><a href="host_load.html"><span class="icon icon-chart"></span>主机负载监控</a></li>
-            <li><a href="slow_call.html"><span class="icon icon-speech"></span>慢调用</a></li>
-            <li><a href="wrong_call.html"><span class="icon icon-message"></span>出错调用</a></li>
+            <li><a onclick='navjump(0)'><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
+            <li><a onclick='navjump(1)'><span class="icon icon-pencil"></span>业务流性能表现</a></li>
+            <li class="current"><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载均衡</a></li>
+            <li><a onclick='navjump(3)'><span class="icon icon-speech"></span>慢调用</a></li>
+            <li><a onclick='navjump(4)'><span class="icon icon-message"></span>出错调用</a></li>
         </ul>
     </div><!--header-->
     

@@ -14,16 +14,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APM 出错调用</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
-<script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.flot.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.flot.pie.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.flot.resize.min.js"></script>
-<script type="text/javascript" src="js/custom/general.js"></script>
-<script type="text/javascript" src="js/custom/charts.js"></script>
+<link type="text/css" href="css/jquery.simple-dtpicker.css" rel="stylesheet" />
 <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/datetimepicker/jquery.simple-dtpicker.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 var data_slow_call = [{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":5,"spanId":-8244457100962795228,"parentSpanId":-1,"startTime":1462699466130,"elapsed":127499,"rpc":"/httpclient4/getTwitterUrlCount.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":1,"spanEventBoList":null,"collectorAcceptTime":1462699593649,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^5"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":4,"spanId":-167382249182572870,"parentSpanId":-1,"startTime":1462699123898,"elapsed":256162,"rpc":"/httpclient4/getGeoCode.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699380083,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^4"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":3,"spanId":1022438039493983549,"parentSpanId":-1,"startTime":1462699112204,"elapsed":3010,"rpc":"/sleep3.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699115218,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^3"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":2,"spanId":-5728347098437728309,"parentSpanId":-1,"startTime":1462699098174,"elapsed":10053,"rpc":"/consumeCpu.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699108229,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^2"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":0,"spanId":1394612279845866822,"parentSpanId":-1,"startTime":1462699085667,"elapsed":748,"rpc":"/","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699086690,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^0"}];
 
@@ -352,7 +347,12 @@ function getSlowCallData(data){
         // list_items.push(item);
         code_item = "<tr class='item'><td>"+(index+1)+"</td><td>"+Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', item.agentStartTime)+"</td><td>"+item.rpc+"</td><td>"+100+"</td><td> </td><td>"+item.agentId+"</td><td>"+item.remoteAddr+"</td><td>"+item.transactionId+"</td></tr>";
         //code_item_detail = "<tr class='item_detail'><td colspan='8'><div class='poplayer'>阿斯蒂芬</div></td></tr>";
-        code_item_detail = getSlowCallDetailData(1,2,data_slow_call_detail);
+        var json_url = "/stewardweb/transactionInfo.do?traceId=" +item.transactionId + "&focusTimestamp=" + item.agentStartTime;
+        $.getJSON(json_url,function(data){  
+            data_slow_call_detail = data;
+            console.log(data);
+        });
+        code_item_detail = getSlowCallDetailData(item.transactionId,item.agentStartTime,data_slow_call_detail);
         code_item += code_item_detail;
         $('#table_slow_call').append(code_item);
         //alert(index);
@@ -391,6 +391,42 @@ $(document).ready(function(){
     //     alert('Hello');
     // });
 });
+
+
+
+function submitSearchForm(){
+    var time_from = $('input[name=from]').val();
+    var time_to = $('input[name=to]').val();
+    stamp_from = new Date(time_from);
+    stamp_to = new Date(time_to);
+    //$('input[name=from]').val(stamp_from.getTime());
+    //$('input[name=to]').val(stamp_to.getTime());
+    //$('#searchForm').submit();
+
+    var json_url = '/stewardweb/transactionSlowMetadata.do?application=appName&from=' + sttime.toString() + '&to=' +endtime.toString() + '&limit=5000';
+    $.getJSON(json_url,function(data,status){
+        data_slow_call = data;
+        console.log(data);
+    });
+	console.log(data_slow_call);
+    getSlowCallData(data_slow_call);
+    $('#table_slow_call>.item').mouseover(function(){
+        $(this).css({
+            'background':'#ccc',
+            'cursor':'pointer'
+        });
+    }).click(function(){
+        $('.item_detail').css({
+            'display':'none'
+        });
+        $(this).next().fadeIn();
+    });
+    $('#table_slow_call>.item').mouseout(function(){
+        $(this).css({
+            'background':'transparent'
+        });
+    });
+}
 </script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
 <!--[if IE 9]>
@@ -412,12 +448,14 @@ $(document).ready(function(){
             <span class="slogan">后台管理系统</span>
             
             <div class="search">
-                <form action="" method="post">
-                    <input type="datetime-local" name="time_start" />
-                    <input type="datetime-local" name="time_end" />
+                <!-- <form id="searchForm" action="getScatterData.do" method="get"> -->
+                    <input type="text" id="form_from" name="from" value="" />
+                    <input type="text" id="form_to" name="to" value="" />
+                    <input type="hidden" id="form_limit" name="limit" value="5000" />
+                    <input type="hidden" id="form_v" name="v" value="2" />                   
                     <!-- <input type="text" name="keyword" id="keyword" value="请输入" /> -->
-                    <button class="submitbutton"></button>
-                </form>
+                    <button class="submitbutton" onClick="submitSearchForm();"></button>
+                <!-- </form> -->
             </div><!--search-->
             
             <br clear="all" />
@@ -449,12 +487,11 @@ $(document).ready(function(){
     
     <div class="header">
     	<ul class="headermenu">
-            <li><a href="topo.html"><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
-            <li><a href="performance.html"><span class="icon icon-pencil"></span>业务流性能表现</a></li>
-            <li><a href="app_load.html"><span class="icon icon-chart"></span>应用级负载均衡</a></li>
-            <li><a href="host_load.html"><span class="icon icon-chart"></span>主机负载监控</a></li>
-            <li><a href="slow_call.html"><span class="icon icon-speech"></span>慢调用</a></li>
-            <li class="current"><a href="wrong_call.html"><span class="icon icon-message"></span>出错调用</a></li>
+            <li><a onclick='navjump(0)'><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
+            <li><a onclick='navjump(1)'><span class="icon icon-pencil"></span>业务流性能表现</a></li>
+            <li><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载均衡</a></li>
+            <li><a onclick='navjump(3)'><span class="icon icon-speech"></span>慢调用</a></li>
+            <li class="current"><a onclick='navjump(4)'><span class="icon icon-message"></span>出错调用</a></li>
         </ul>
     </div><!--header-->
     

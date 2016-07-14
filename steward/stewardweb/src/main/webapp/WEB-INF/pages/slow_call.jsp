@@ -9,28 +9,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<<<<<<< HEAD
-<base href="<%=basePath%>">
+<base href="<%=basePath%>" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APM 慢调用</title>
-=======
-<base href="<%=basePath%>"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>APM 业务流性能表现</title>
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
-<script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.flot.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.flot.pie.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.flot.resize.min.js"></script>
-<script type="text/javascript" src="js/custom/general.js"></script>
-<script type="text/javascript" src="js/custom/charts.js"></script>
+<link type="text/css" href="css/jquery.simple-dtpicker.css" rel="stylesheet" />
 <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
+<!-- <script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script> -->
 <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/datetimepicker/jquery.simple-dtpicker.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 var data_slow_call = [{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":5,"spanId":-8244457100962795228,"parentSpanId":-1,"startTime":1462699466130,"elapsed":127499,"rpc":"/httpclient4/getTwitterUrlCount.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":1,"spanEventBoList":null,"collectorAcceptTime":1462699593649,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^5"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":4,"spanId":-167382249182572870,"parentSpanId":-1,"startTime":1462699123898,"elapsed":256162,"rpc":"/httpclient4/getGeoCode.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699380083,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^4"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":3,"spanId":1022438039493983549,"parentSpanId":-1,"startTime":1462699112204,"elapsed":3010,"rpc":"/sleep3.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699115218,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^3"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":2,"spanId":-5728347098437728309,"parentSpanId":-1,"startTime":1462699098174,"elapsed":10053,"rpc":"/consumeCpu.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699108229,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^2"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":0,"spanId":1394612279845866822,"parentSpanId":-1,"startTime":1462699085667,"elapsed":748,"rpc":"/","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699086690,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^0"}];
 
@@ -339,11 +328,8 @@ var data_slow_call_detail = {
 function getSlowCallDetailData(traceID, timeStamp, data){
     var callstack = data["callStack"];
     //var callstack_length = callstack.length;
-<<<<<<< HEAD
     var code_item_detail = "<tr class='item_detail' style='display:none;'><td colspan='8'><div class='poplayer'><table cellpadding='0' cellspacing='0' border='0' class='stdtable'><colgroup><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /></colgroup><thead><tr><th class='head0'>Method</th><th class='head1'>Arguments</th><th class='head0'>Exec Time</th><th class='head1'>Gap(ms)</th><th class='head0'>Time(ms)</th><th class='head1'>Time(%)</th><th class='head0'>Class</th><th class='head1'>Api Type</th><th class='head0'>Agent</th><th class='head1'>App Name</th></tr></thead><tbody>";
-=======
     var code_item_detail = "<tr class='item_detail'><td colspan='8'><div class='poplayer'><table cellpadding='0' cellspacing='0' border='0' class='stdtable'><colgroup><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /></colgroup><thead><tr><th class='head0'>Method</th><th class='head1'>Arguments</th><th class='head0'>Exec Time</th><th class='head1'>Gap(ms)</th><th class='head0'>Time(ms)</th><th class='head1'>Time(%)</th><th class='head0'>Class</th><th class='head1'>Api Type</th><th class='head0'>Agent</th><th class='head1'>App Name</th></tr></thead><tbody>";
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
     $.each(callstack, function(index, item){
         var row = {"time_begin":item[1], "time_end":item[2], "appName":item[4], "tag":item[5], "id":item[6], "parentId":item[7], "title":item[10], "args":item[11], "formatTime":item[12], "gap":item[13], "execTime":item[14], "simpleClassName":item[16], "serviceType":item[17], "agent":item[18], "hasChild":item[19], "hasException":item[20]};
         //code_row = "<tr class='item_detail'><td colspan='8'><div class='poplayer'>"+row['time_begin']+"</div></td></tr>";
@@ -363,14 +349,18 @@ function getSlowCallData(data){
         // list_items.push(item);
         code_item = "<tr class='item'><td>"+(index+1)+"</td><td>"+Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', item.agentStartTime)+"</td><td>"+item.rpc+"</td><td>"+100+"</td><td> </td><td>"+item.agentId+"</td><td>"+item.remoteAddr+"</td><td>"+item.transactionId+"</td></tr>";
         //code_item_detail = "<tr class='item_detail'><td colspan='8'><div class='poplayer'>阿斯蒂芬</div></td></tr>";
-        code_item_detail = getSlowCallDetailData(1,2,data_slow_call_detail);
+        var json_url = "/stewardweb/transactionInfo.do?traceId=" +item.transactionId + "&focusTimestamp=" + item.agentStartTime;
+        $.getJSON(json_url,function(data){  
+            data_slow_call_detail = data;
+            console.log(data);
+        });
+        code_item_detail = getSlowCallDetailData(item.transactionId,item.agentStartTime,data_slow_call_detail);
         code_item += code_item_detail;
         $('#table_slow_call').append(code_item);
         //alert(index);
     });
 };
 
-<<<<<<< HEAD
 function getDataByTime(time_start, time_end){
     var json_url = "/stewardweb/getScatterData.do?application=appName&from="+time_start+"&to="+time_end+"&limit=5000&v=2";
     $.getJSON(json_url,function(data){  
@@ -380,16 +370,21 @@ function getDataByTime(time_start, time_end){
     }); 
 };
 
-$(document).ready(function(){
-    getSlowCallData(data_slow_call);
+// $(document).ready(function(){
+//     getSlowCallData(data_slow_call);
     
 
-=======
-
 
 $(document).ready(function(){
+	
+	
+	var json_url = '/stewardweb/transactionSlowMetadata.do?application=appName&from=' + sttime.toString() + '&to=' +endtime.toString() + '&limit=5000&v=2';
+    $.getJSON(json_url,function(data,status){
+    	data_slow_call = data;
+        console.log(data);
+    });
+    
     getSlowCallData(data_slow_call);
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
     $('#table_slow_call>.item').mouseover(function(){
         $(this).css({
             'background':'#ccc',
@@ -406,14 +401,11 @@ $(document).ready(function(){
             'background':'transparent'
         });
     });
-<<<<<<< HEAD
     $('#form_searchByTime>button').click(function(){
         var time_start = $('input[name="time_start"]').val();
         var time_end = $('input[name="time_end"]').val();
         getDataByTime(time_start, time_end);
     });
-=======
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
 
     //getSlowCallDetailData(data_slow_call_detail);
     //var code_slow_call = getSlowCallData(data_slow_call);
@@ -426,6 +418,41 @@ $(document).ready(function(){
     //     alert('Hello');
     // });
 });
+
+
+function submitSearchForm(){
+    var time_from = $('input[name=from]').val();
+    var time_to = $('input[name=to]').val();
+    stamp_from = new Date(time_from);
+    stamp_to = new Date(time_to);
+    //$('input[name=from]').val(stamp_from.getTime());
+    //$('input[name=to]').val(stamp_to.getTime());
+    //$('#searchForm').submit();
+
+    var json_url = '/stewardweb/transactionSlowMetadata.do?application=appName&from=' + sttime.toString() + '&to=' +endtime.toString() + '&limit=5000';
+    $.getJSON(json_url,function(data,status){
+        data_slow_call = data;
+        console.log(data);
+    });
+	console.log(data_slow_call);
+    getSlowCallData(data_slow_call);
+    $('#table_slow_call>.item').mouseover(function(){
+        $(this).css({
+            'background':'#ccc',
+            'cursor':'pointer'
+        });
+    }).click(function(){
+        $('.item_detail').css({
+            'display':'none'
+        });
+        $(this).next().fadeIn();
+    });
+    $('#table_slow_call>.item').mouseout(function(){
+        $(this).css({
+            'background':'transparent'
+        });
+    });
+}
 </script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
 <!--[if IE 9]>
@@ -447,17 +474,14 @@ $(document).ready(function(){
             <span class="slogan">后台管理系统</span>
             
             <div class="search">
-                <form action="" method="post">
-<<<<<<< HEAD
-                    <input type="datetime-local" name="time_start" />
-                    <input type="datetime-local" name="time_end" />
-=======
-                    <label for="time_start"><input id="time_start" type="datetime-local" name="time_start" /></label>
-                    <label for="time_end"><input id="time_end" type="datetime-local" name="time_end" /></label>
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
+                <!-- <form id="searchForm" action="getScatterData.do" method="get"> -->
+                    <input type="text" id="form_from" name="from" value="" />
+                    <input type="text" id="form_to" name="to" value="" />
+                    <input type="hidden" id="form_limit" name="limit" value="5000" />
+                    <input type="hidden" id="form_v" name="v" value="2" />                   
                     <!-- <input type="text" name="keyword" id="keyword" value="请输入" /> -->
-                    <button class="submitbutton"></button>
-                </form>
+                    <button class="submitbutton" onClick="submitSearchForm();"></button>
+                <!-- </form> -->
             </div><!--search-->
             
             <br clear="all" />
@@ -470,16 +494,11 @@ $(document).ready(function(){
         	</div>
 			-->
         	<div class="userinfo">
-<<<<<<< HEAD
             	<img src="images/thumbs/avatar.png" alt="" />
-=======
-                <img src="images/thumbs/avatar.png" alt="" />
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
                 <span>管理员</span>
             </div><!--userinfo-->
             
             <div class="userinfodrop">
-<<<<<<< HEAD
             	<div class="avatar">
                 	<a href=""><img src="images/thumbs/avatarbig.png" alt="" /></a>
                     <div class="changetheme">
@@ -492,18 +511,9 @@ $(document).ready(function(){
                     </div>
                 </div><!--avatar-->
                 <div class="userdata">
-                    <h4>Juan</h4>
-                    <span class="email">youremail@yourdomain.com</span>
-                    <ul>
-                        <li><a href="editprofile.html">编辑资料</a></li>
-                        <li><a href="accountsettings.html">账号设置</a></li>
-                        <li><a href="help.html">帮助</a></li>
-=======
-                <div class="userdata">
                     <h4>管理员</h4>
                     <span class="email">youremail@yourdomain.com</span>
                     <ul>
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
                         <li><a href="index.html">退出</a></li>
                     </ul>
                 </div><!--userdata-->
@@ -514,12 +524,11 @@ $(document).ready(function(){
     
     <div class="header">
     	<ul class="headermenu">
-            <li><a href="topo.html"><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
-            <li><a href="performance.html"><span class="icon icon-pencil"></span>业务流性能表现</a></li>
-            <li><a href="app_load.html"><span class="icon icon-chart"></span>应用级负载均衡</a></li>
-            <li><a href="host_load.html"><span class="icon icon-chart"></span>主机负载监控</a></li>
-            <li class="current"><a href="slow_call.html"><span class="icon icon-speech"></span>慢调用</a></li>
-            <li><a href="wrong_call.html"><span class="icon icon-message"></span>出错调用</a></li>
+            <li><a onclick='navjump(0)'><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
+            <li><a onclick='navjump(1)'><span class="icon icon-pencil"></span>业务流性能表现</a></li>
+            <li><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载均衡</a></li>
+            <li class="current"><a onclick='navjump(3)'><span class="icon icon-speech"></span>慢调用</a></li>
+            <li><a onclick='navjump(4)'><span class="icon icon-message"></span>出错调用</a></li>
         </ul>
     </div><!--header-->
     

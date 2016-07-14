@@ -14,14 +14,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APM 控制台页面</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
-<script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.flot.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.flot.pie.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.flot.resize.min.js"></script>
-<script type="text/javascript" src="js/custom/general.js"></script>
-<script type="text/javascript" src="js/custom/charts.js"></script>
 <script type="text/javascript" src="js/plugins/jtopo-0.4.8-min.js"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
 <!--[if IE 9]>
@@ -90,17 +84,25 @@
     </div><!--header-->
     
     <div class="contentwrapper">
-        <div id="updates" class="subcontent">
-        	<ul class="shortcuts" style="width:560px; margin:0 auto;">
+        <div id="updates" class="subcontent" style="width:720px; margin:0 auto; position:relative;">
+        	<ul class="shortcuts" style="width:300px; float:left;">
                 <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:100px;"><h3>App 应用列表</h3></div>
                 <c:forEach items="${agents}" var="agent">
-				<c:if test="${agent.type==1}">
-					<li><a href="monitorMachineList.do?agentID=<c:out value="${agent.agentID}"/>" class="analytics"><span>主机</span></a>
-				</c:if>
+<!-- 				<c:if test="${agent.type==1}">
+					<li><a href="hostLoad.do?agentID=<c:out value="${agent.agentID}"/>" class="analytics"><span>主机</span></a>
+				</c:if> -->
 				<c:if test="${agent.type==0}">
-					<li><a href="monitorServerPerformance.do?agentID=<c:out value="${agent.agentID}"/>"  class="analytics"><span>服务器</span></a>
+					<li><a href="topo.do?agentID=<c:out value="${agent.agentID}"/>"  class="analytics"><span>服务器</span></a>
 				</c:if>
 				</c:forEach>
+            </ul>
+            <ul class="shortcuts" style="width:300px; float:left; padding-left:60px;">
+                <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:100px;"><h3>主机列表</h3></div>
+                <c:forEach items="${agents}" var="agent">
+                <c:if test="${agent.type==1}">
+                    <li><a href="hostLoad.do?agentID=<c:out value="${agent.agentID}"/>" class="analytics"><span>主机</span></a>
+                </c:if>
+                </c:forEach>
             </ul>
         </div>
         

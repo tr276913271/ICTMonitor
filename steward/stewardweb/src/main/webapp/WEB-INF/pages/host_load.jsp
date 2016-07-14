@@ -14,9 +14,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APM 主机负载监控</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
+<link type="text/css" href="css/jquery.simple-dtpicker.css" rel="stylesheet" />
    <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
    <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
    <script type="text/javascript" src="js/sockjs-1.0.3.min.js"></script>
+   <script type="text/javascript" src="js/datetimepicker/jquery.simple-dtpicker.js"></script>
+   <script type="text/javascript" src="js/common.js"></script>
 
 
 <script type="text/javascript">
@@ -43,10 +46,15 @@
             socket.onmessage = function(evt) {
                 var received_msg = evt.data;
                 //alert(received_msg);
-                console.log(received_msg);
+                //console.log(received_msg);
                 console.log('message received!');
+//                $('#note').html()
                 //showMessage(received_msg);
-                MessageToChart(received_msg);
+                var num_list = analysisMessage($.parseJSON(received_msg));
+                updateChartCPU($.parseJSON(received_msg), num_list[0]);
+                updateChartMEM($.parseJSON(received_msg), num_list[1]);
+                updateChartNET($.parseJSON(received_msg), num_list[2]);
+                updateChartFS($.parseJSON(received_msg, num_list[3]));
             }
         } else {
             console.log('Websocket not supported');
@@ -74,7 +82,32 @@
         response.appendChild(p);
     }
 
-    function MessageToChart(message){
+    function updateChartCPU(messageJSON, num){
+        var chartCPU = $('#chart_cpu').highcharts();
+        var time = (new Date()).getTime();
+        $.each(messageJSON, function(index, item){
+            if(item['devID']=='CPU0'&&item['tag']=='1'){
+                //var time = parseInt(item['timestamp']);
+                console.log(item);
+                chartCPU.series[0].addPoint([time,item['metric']],true,true);
+            }
+            if(item['devID']=='CPU0'&&item['tag']=='2'){
+                //var time = parseInt(item['timestamp']);
+                console.log(item);
+                chartCPU.series[1].addPoint([time,item['metric']],true,true);
+            }
+            if(item['devID']=='CPU0'&&item['tag']=='5'){
+                //var time = parseInt(item['timestamp']);
+                console.log(item);
+                chartCPU.series[2].addPoint([time,item['metric']],true,true);
+            }
+            if(item['devID']=='CPU0'&&item['tag']=='6'){
+                //var time = parseInt(item['timestamp']);
+                console.log(item);
+                chartCPU.series[3].addPoint([time,item['metric']],true,true);
+            }
+        });
+        
         //alert(typeof(message));
         // var messages = $.parseJSON(message);
         // //alert(messages);
@@ -82,9 +115,121 @@
         // $('#statistics').html(message);
         // $.each(messages, function(index, item){
         //     alert(item);
-        // });
-        
+        // });   
     }
+    function updateChartMEM(messageJSON, num){
+        var chartMEM = $('#chart_memory').highcharts();
+        var chartSWAP = $('#chart_swap').highcharts();
+        var result_list = [0,0,0,0];
+        $.each(messageJSON, function(index, item){
+            if(item['devID']=='MEM'&&item['tag']=='8'){
+                console.log(item);
+                result_list[0] = item['metric'];
+                //chartCPU.series[0].addPoint([time,item['metric']],true,true);
+            }
+            if(item['devID']=='MEM'&&item['tag']=='9'){
+                console.log(item);
+                result_list[1] = item['metric'];
+                //chartCPU.series[0].addPoint([time,item['metric']],true,true);
+            }
+            if(item['devID']=='MEM'&&item['tag']=='11'){
+                console.log(item);
+                result_list[2] = item['metric'];
+                //chartCPU.series[0].addPoint([time,item['metric']],true,true);
+            }
+            if(item['devID']=='MEM'&&item['tag']=='12'){
+                console.log(item);
+                result_list[3] = item['metric'];
+                //chartCPU.series[0].addPoint([time,item['metric']],true,true);
+            }
+        });
+        chartMEM.series[0].setData([result_list[0],result_list[1]]);
+        chartSWAP.series[0].setData([result_list[2],result_list[3]]);
+    }
+
+    function updateChartNET(messageJSON, num){
+        var chartNET_1 = $('#chart_net_pkt').highcharts();
+        var chartNET_2 = $('#chart_net_byte').highcharts();
+        var time = (new Date()).getTime();
+        result_list = [0,0,0,0];
+        $.each(messageJSON, function(index, item){
+            if(item['devID']=='NET0' && item['tag']=='13'){
+                result_list[0] = item['metric'];
+                chartNET_1.series[0].addPoint([time,item['metric']],true,true);
+            }
+            if(item['devID']=='NET0' && item['tag']=='14'){
+                chartNET_1.series[1].addPoint([time,item['metric']],true,true);
+            }
+            if(item['devID']=='NET0' && item['tag']=='15'){
+                chartNET_2.series[0].addPoint([time,item['metric']],true,true);
+            }
+            if(item['devID']=='NET0' && item['tag']=='16'){
+                chartNET_2.series[1].addPoint([time,item['metric']],true,true);
+            }
+        });
+    }
+    function updateChartFS(messageJSON, num){
+        var chartFS_1 = $('#chart_fs_space').highcharts();
+        var chartFS_2 = $('#chart_fs_rate').highcharts();
+        var time = (new Date()).getTime();
+        result_list = [0,0];
+        $.each(messageJSON, function(index, item){
+            if(item['devID']=='FS0' && item['tag']=='25'){
+                chartFS_2.series[0].addPoint([time,item['metric']],true,true);
+            }
+            if(item['devID']=='FS0' && item['tag']=='26'){
+                chartFS_2.series[1].addPoint([time,item['metric']],true,true);
+            }
+            if(item['devID']=='FS0' && item['tag']=='23'){
+                result_list[0] = item['metric'];
+            }
+            if(item['devID']=='FS0' && item['tag']=='22'){
+                result_list[1] = item['metric'];
+            }
+        });
+        chartFS_1.series[0].setData([result_list[0],result_list[1]]);
+    }
+    function analysisMessage(messageJSON){
+        console.log(typeof(messageJSON));
+        //console.log(messageJSON[1]);
+        var dev_list = [];
+        var result_list = [0,0,0,0];
+        $.each(messageJSON, function(index, item){
+            //console.log(item['devID'][0]);
+            // var tag = item['devID'][0];
+            // if(tag=='C'){
+            //     if(item['devID'])
+            //     cpu_list.push(item['devID'])
+            // }else{
+
+            // }
+            if($.inArray(item['devID'],dev_list)==-1){
+                //console.log(item);
+                dev_list.push(item['devID']);
+            }else{
+                console.log('Already exist!');
+                //console.log($.inArray('a',['b']));
+            }
+        });
+        console.log(dev_list);
+        $.each(dev_list, function(index, item){
+            if(item[0]=='C'){
+                result_list[0]++;
+            }
+            if(item[0]=='M'){
+                result_list[1]++;
+            }
+            if(item[0]=='N'){
+                result_list[2]++;
+            }
+            if(item[0]=='F'){
+                result_list[3]++;
+            }
+        });
+        console.log(result_list);
+        return result_list;
+    }
+
 </script>
 
 <script type="text/javascript">
@@ -100,20 +245,7 @@ $(document).ready(function() {
     var chart;                                                                  
     $('#chart_cpu').highcharts({                                                
         chart: {                                                                
-            type: 'area',                                                     
-            animation: Highcharts.svg, // don't animate in old IE
-            marginRight: 10,                                                    
-            events: {
-                load: function() {                                              
-                    // set up the updating of the chart each second             
-                    var series = this.series[0];                                
-                    setInterval(function() {                                    
-                        var x = (new Date()).getTime(), // current time         
-                            y = Math.random();                                  
-                        series.addPoint([x, y], true, true);                    
-                    }, 1000);                                                   
-                }                                                               
-            }                                                                   
+            type: 'spline',                                                     
         },                                                                      
         title: {                                                                
             text: null
@@ -140,96 +272,118 @@ $(document).ready(function() {
             }                                                                   
         },                                                                      
         legend: {                                                               
-            enabled: false                                                      
+            enabled: true
         },                                                                      
         exporting: {                                                            
             enabled: false                                                      
         },                                                                      
         series: [{                                                              
-            name: 'Random data',                                                
+            name: '用户使用率',
+            //data: [[(new Date()).getTime(),0]]
             data: (function() {                                                 
                 // generate an array of random data                             
                 var data = [],                                                  
                     time = (new Date()).getTime(),                              
                     i;                                                          
                                                                                 
-                for (i = -19; i <= 0; i++) {                                    
+                for (i = -9; i <= 0; i++) {                                    
                     data.push({                                                 
                         x: time + i * 1000,                                     
-                        y: Math.random()                                        
+                        y: 0                                        
                     });                                                         
                 }                                                               
                 return data;                                                    
-            })()                                                                
-        }]                                                                      
+            })()
+        },{
+            name: '系统使用率',
+            //data: [[(new Date()).getTime(),0]]
+            data: (function() {                                                 
+                // generate an array of random data                             
+                var data = [],                                                  
+                    time = (new Date()).getTime(),                              
+                    i;                                                          
+                                                                                
+                for (i = -9; i <= 0; i++) {                                    
+                    data.push({                                                 
+                        x: time + i * 1000,                                     
+                        y: 0                                        
+                    });                                                         
+                }                                                               
+                return data;                                                    
+            })()
+        },{
+            name: '当前空闲率',
+            //data: [[(new Date()).getTime(),0]]
+            data: (function() {                                                 
+                // generate an array of random data                             
+                var data = [],                                                  
+                    time = (new Date()).getTime(),                              
+                    i;                                                          
+                                                                                
+                for (i = -9; i <= 0; i++) {                                    
+                    data.push({                                                 
+                        x: time + i * 1000,                                     
+                        y: 0                                    
+                    });                                                         
+                }                                                               
+                return data;                                                    
+            })()
+        },{
+            name: '总体使用率',
+            //data: [[(new Date()).getTime(),0]]
+            data: (function() {                                                 
+                // generate an array of random data                             
+                var data = [],                                                  
+                    time = (new Date()).getTime(),                              
+                    i;                                                          
+                                                                                
+                for (i = -9; i <= 0; i++) {                                    
+                    data.push({                                                 
+                        x: time + i * 1000,                                     
+                        y: 0                                    
+                    });                                                         
+                }                                                               
+                return data;                                                    
+            })()
+        }]
     });                          
     /*---------- End Of CPU Chart --------------*/  
 
     /*---------- Start Of Memory Chart --------------*/                                                    
     $('#chart_memory').highcharts({                                                
         chart: {                                                                
-            type: 'spline',                                                     
-            animation: Highcharts.svg, // don't animate in old IE               
-            marginRight: 10,                                                    
-            events: {                                                           
-                load: function() {                                              
-                                                                                
-                    // set up the updating of the chart each second             
-                    var series = this.series[0];                                
-                    setInterval(function() {                                    
-                        var x = (new Date()).getTime(), // current time         
-                            y = Math.random();                                  
-                        series.addPoint([x, y], true, true);                    
-                    }, 1000);                                                   
-                }                                                               
-            }                                                                   
+            plotBackgroundColor: null, 
+            plotBorderWidth: null, 
+            plotShadow: false
         },                                                                      
         title: {                                                                
             text: null
-        },                                                                      
-        xAxis: {                                                                
-            type: 'datetime',                                                   
-            tickPixelInterval: 150                                              
-        },                                                                      
-        yAxis: {                                                                
-            title: {                                                            
-                text: 'Value'                                                   
-            },                                                                  
-            plotLines: [{                                                       
-                value: 0,                                                       
-                width: 1,                                                       
-                color: '#808080'                                                
-            }]                                                                  
-        },                                                                      
+        },
         tooltip: {                                                              
-            formatter: function() {                                             
-                    return '<b>'+ this.series.name +'</b><br/>'+                
-                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
-                    Highcharts.numberFormat(this.y, 2);                         
-            }                                                                   
-        },                                                                      
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: { 
+            pie: { 
+                allowPointSelect: true, 
+                cursor: 'pointer', 
+                dataLabels: { 
+                    enabled: true, 
+                    color: '#000000', 
+                    connectorColor: '#000000', 
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %' 
+                } 
+            } 
+        },
         legend: {                                                               
             enabled: false                                                      
-        },                                                                      
-        exporting: {                                                            
-            enabled: false                                                      
-        },                                                                      
-        series: [{                                                              
-            name: 'Random data',                                                
-            data: (function() {                                                 
-                // generate an array of random data                             
-                var data = [],                                                  
-                    time = (new Date()).getTime(),                              
-                    i;                                                          
-                                                                                
-                for (i = -19; i <= 0; i++) {                                    
-                    data.push({                                                 
-                        x: time + i * 1000,                                     
-                        y: Math.random()                                        
-                    });                                                         
-                }                                                               
-                return data;                                                    
-            })()                                                                
+        },                                                               
+        series: [{
+            type: 'pie',
+            name: 'Random data',
+            data:[
+                ['Unused', 100],
+                ['Used', 0]
+            ]                                                            
         }]                                                                      
     });                          
     /*---------- End Of Memory Chart --------------*/
@@ -237,28 +391,55 @@ $(document).ready(function() {
     /*---------- Start Of Swap Chart --------------*/                                                    
     $('#chart_swap').highcharts({                                                
         chart: {                                                                
+            plotBackgroundColor: null, 
+            plotBorderWidth: null, 
+            plotShadow: false
+        },                                                                      
+        title: {                                                                
+            text: null
+        },
+        tooltip: {                                                              
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: { 
+            pie: { 
+                allowPointSelect: true, 
+                cursor: 'pointer', 
+                dataLabels: { 
+                    enabled: true, 
+                    color: '#000000', 
+                    connectorColor: '#000000', 
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %' 
+                } 
+            } 
+        },
+        legend: {                                                               
+            enabled: false                                                      
+        },                                                               
+        series: [{
+            type: 'pie',
+            name: 'Random data',
+            data:[
+                ['Unused', 100],
+                ['Used', 0]
+            ]                                                            
+        }]                                                                      
+    });                    
+    /*---------- End Of Swap Chart --------------*/
+
+
+
+
+    $('#chart_net_pkt').highcharts({                                                
+        chart: {                                                                
             type: 'spline',                                                     
-            animation: Highcharts.svg, // don't animate in old IE               
-            marginRight: 10,                                                    
-            events: {                                                           
-                load: function() {                                              
-                                                                                
-                    // set up the updating of the chart each second             
-                    var series = this.series[0];                                
-                    setInterval(function() {                                    
-                        var x = (new Date()).getTime(), // current time         
-                            y = Math.random();                                  
-                        series.addPoint([x, y], true, true);                    
-                    }, 1000);                                                   
-                }                                                               
-            }                                                                   
         },                                                                      
         title: {                                                                
             text: null
         },                                                                      
         xAxis: {                                                                
             type: 'datetime',                                                   
-            tickPixelInterval: 150                                              
+            tickPixelInterval: 150
         },                                                                      
         yAxis: {                                                                
             title: {                                                            
@@ -278,32 +459,241 @@ $(document).ready(function() {
             }                                                                   
         },                                                                      
         legend: {                                                               
-            enabled: false                                                      
+            enabled: true
         },                                                                      
         exporting: {                                                            
             enabled: false                                                      
         },                                                                      
         series: [{                                                              
-            name: 'Random data',                                                
+            name: '收包数',
+            //data: [[(new Date()).getTime(),0]]
             data: (function() {                                                 
                 // generate an array of random data                             
                 var data = [],                                                  
                     time = (new Date()).getTime(),                              
                     i;                                                          
                                                                                 
-                for (i = -19; i <= 0; i++) {                                    
+                for (i = -9; i <= 0; i++) {                                    
                     data.push({                                                 
                         x: time + i * 1000,                                     
-                        y: Math.random()                                        
+                        y: 0                                        
                     });                                                         
                 }                                                               
                 return data;                                                    
-            })()                                                                
+            })()
+        },{
+            name: '发包数',
+            //data: [[(new Date()).getTime(),0]]
+            data: (function() {                                                 
+                // generate an array of random data                             
+                var data = [],                                                  
+                    time = (new Date()).getTime(),                              
+                    i;                                                          
+                                                                                
+                for (i = -9; i <= 0; i++) {                                    
+                    data.push({                                                 
+                        x: time + i * 1000,                                     
+                        y: 0                                        
+                    });                                                         
+                }                                                               
+                return data;                                                    
+            })()
+        }]
+    });
+
+    $('#chart_net_byte').highcharts({                                                
+        chart: {                                                                
+            type: 'spline',                                                     
+        },                                                                      
+        title: {                                                                
+            text: null
+        },                                                                      
+        xAxis: {                                                                
+            type: 'datetime',                                                   
+            tickPixelInterval: 150
+        },                                                                      
+        yAxis: {                                                                
+            title: {                                                            
+                text: 'Value'                                                   
+            },                                                                  
+            plotLines: [{                                                       
+                value: 0,                                                       
+                width: 1,                                                       
+                color: '#808080'                                                
+            }]                                                                  
+        },                                                                      
+        tooltip: {                                                              
+            formatter: function() {                                             
+                    return '<b>'+ this.series.name +'</b><br/>'+                
+                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+                    Highcharts.numberFormat(this.y, 2);                         
+            }                                                                   
+        },                                                                      
+        legend: {                                                               
+            enabled: true
+        },                                                                      
+        exporting: {                                                            
+            enabled: false                                                      
+        },                                                                      
+        series: [{                                                              
+            name: '收字节数',
+            //data: [[(new Date()).getTime(),0]]
+            data: (function() {                                                 
+                // generate an array of random data                             
+                var data = [],                                                  
+                    time = (new Date()).getTime(),                              
+                    i;                                                          
+                                                                                
+                for (i = -9; i <= 0; i++) {                                    
+                    data.push({                                                 
+                        x: time + i * 1000,                                     
+                        y: 0                                        
+                    });                                                         
+                }                                                               
+                return data;                                                    
+            })()
+        },{
+            name: '发字节数',
+            //data: [[(new Date()).getTime(),0]]
+            data: (function() {                                                 
+                // generate an array of random data                             
+                var data = [],                                                  
+                    time = (new Date()).getTime(),                              
+                    i;                                                          
+                                                                                
+                for (i = -9; i <= 0; i++) {                                    
+                    data.push({                                                 
+                        x: time + i * 1000,                                     
+                        y: 0                                        
+                    });                                                         
+                }                                                               
+                return data;                                                    
+            })()
+        }]
+    });
+
+
+
+    $('#chart_fs_space').highcharts({                                                
+        chart: {                                                                
+            plotBackgroundColor: null, 
+            plotBorderWidth: null, 
+            plotShadow: false
+        },                                                                      
+        title: {                                                                
+            text: null
+        },
+        tooltip: {                                                              
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: { 
+            pie: { 
+                allowPointSelect: true, 
+                cursor: 'pointer', 
+                dataLabels: { 
+                    enabled: true, 
+                    color: '#000000', 
+                    connectorColor: '#000000', 
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %' 
+                } 
+            } 
+        },
+        legend: {                                                               
+            enabled: false                                                      
+        },                                                               
+        series: [{
+            type: 'pie',
+            name: 'Random data',
+            data:[
+                ['Unused', 100],
+                ['Used', 0]
+            ]                                                            
         }]                                                                      
-    });                          
-    /*---------- End Of Swap Chart --------------*/
+    });  
+
+
+
+    $('#chart_fs_rate').highcharts({                                                
+        chart: {                                                                
+            type: 'spline',                                                     
+        },                                                                      
+        title: {                                                                
+            text: null
+        },                                                                      
+        xAxis: {                                                                
+            type: 'datetime',                                                   
+            tickPixelInterval: 150
+        },                                                                      
+        yAxis: {                                                                
+            title: {                                                            
+                text: 'Value'                                                   
+            },                                                                  
+            plotLines: [{                                                       
+                value: 0,                                                       
+                width: 1,                                                       
+                color: '#808080'                                                
+            }]                                                                  
+        },                                                                      
+        tooltip: {                                                              
+            formatter: function() {                                             
+                    return '<b>'+ this.series.name +'</b><br/>'+                
+                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+                    Highcharts.numberFormat(this.y, 2);                         
+            }                                                                   
+        },                                                                      
+        legend: {                                                               
+            enabled: true
+        },                                                                      
+        exporting: {                                                            
+            enabled: false                                                      
+        },                                                                      
+        series: [{                                                              
+            name: '每秒读请求次数',
+            //data: [[(new Date()).getTime(),0]]
+            data: (function() {                                                 
+                // generate an array of random data                             
+                var data = [],                                                  
+                    time = (new Date()).getTime(),                              
+                    i;                                                          
+                                                                                
+                for (i = -9; i <= 0; i++) {                                    
+                    data.push({                                                 
+                        x: time + i * 1000,                                     
+                        y: 0                                        
+                    });                                                         
+                }                                                               
+                return data;                                                    
+            })()
+        },{
+            name: '每秒写请求次数',
+            //data: [[(new Date()).getTime(),0]]
+            data: (function() {                                                 
+                // generate an array of random data                             
+                var data = [],                                                  
+                    time = (new Date()).getTime(),                              
+                    i;                                                          
+                                                                                
+                for (i = -9; i <= 0; i++) {                                    
+                    data.push({                                                 
+                        x: time + i * 1000,                                     
+                        y: 0                                        
+                    });                                                         
+                }                                                               
+                return data;                                                    
+            })()
+        }]
+    });
+
+
+
+
+
+
 }); 
-    
+
+
+
+
 
 </script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
@@ -326,12 +716,15 @@ $(document).ready(function() {
             <span class="slogan">后台管理系统</span>
             
             <div class="search">
-                <form action="" method="post">
-                    <input type="datetime-local" name="time_start" />
-                    <input type="datetime-local" name="time_end" />
+                <!-- <form id="searchForm" action="getScatterData.do" method="get"> -->
+                    <input type="text" id="form_from" name="from" value="" />
+                    <input type="text" id="form_to" name="to" value="" />
+                    <input type="hidden" id="form_limit" name="limit" value="5000" />
+                    <input type="hidden" id="form_v" name="v" value="2" />
+                    
                     <!-- <input type="text" name="keyword" id="keyword" value="请输入" /> -->
-                    <button class="submitbutton"></button>
-                </form>
+                    <button class="submitbutton" onClick="submitSearchForm();"></button>
+                <!-- </form> -->
             </div><!--search-->
             
             <br clear="all" />
@@ -360,17 +753,16 @@ $(document).ready(function() {
         </div><!--right-->
     </div><!--topheader-->
     
-    
+    <!--
     <div class="header">
     	<ul class="headermenu">
-            <li><a href="topo.html"><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
-            <li><a href="performance.html"><span class="icon icon-pencil"></span>业务流性能表现</a></li>
-            <li><a href="app_load.html"><span class="icon icon-chart"></span>应用级负载均衡</a></li>
-            <li class="current"><a href="host_load.html"><span class="icon icon-chart"></span>主机负载监控</a></li>
-            <li><a href="slow_call.html"><span class="icon icon-speech"></span>慢调用</a></li>
-            <li><a href="wrong_call.html"><span class="icon icon-message"></span>出错调用</a></li>
+            <li><a onclick='navjump(0)'><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
+            <li><a onclick='navjump(1)'><span class="icon icon-pencil"></span>业务流性能表现</a></li>
+            <li><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载均衡</a></li>
+            <li><a onclick='navjump(3)'><span class="icon icon-speech"></span>慢调用</a></li>
+            <li><a onclick='navjump(4)'><span class="icon icon-message"></span>出错调用</a></li>
         </ul>
-    </div><!--header-->
+    </div>--><!--header-->
     
     <div class="pageheader">
     	<h1 class="pagetitle contenttitle2">主机负载监控</h1>
@@ -385,31 +777,47 @@ $(document).ready(function() {
     </div><!--pageheader-->
     
     <div class="contentwrapper">
-    
+    <div id="note"></div>
     	<div id="charts" class="subcontent">
     	
-            <div class="one_fourth">
+            <div class="one_half">
                 <div class="contenttitle2">
-                    <h3>CPU使用率</h3>
+                    <h3>CPU状况</h3>
                 </div><!--contenttitle-->
                 <br />
                 <div id="chart_cpu" style="height:300px;"></div>
             </div><!--one_fourth-->
-            
+
             <div class="one_fourth">
                 <div class="contenttitle2">
-                    <h3>内存使用情况</h3>
+                    <h3>内存状况</h3>
                 </div><!--contenttitle-->
                 <br />
                 <div id="chart_memory" style="height:300px;"></div>
             </div><!--one_fourth-->
-
-            <div class="one_fourth">
+            
+            <div class="one_fourth last">
                 <div class="contenttitle2">
-                    <h3>交换区使用情况</h3>
+                    <h3>交换内存状况</h3>
                 </div><!--contenttitle-->
                 <br />
                 <div id="chart_swap" style="height:300px;"></div>
+            </div><!--one_fourth-->
+
+            <div class="one_fourth">
+                <div class="contenttitle2">
+                    <h3>网络使用情况</h3>
+                </div><!--contenttitle-->
+                <br />
+                <div id="chart_net_byte" style="height:300px;"></div>
+            </div><!--one_fourth-->
+            
+            <div class="one_fourth">
+                <div class="contenttitle2">
+                    <h3>网络使用情况</h3>
+                </div><!--contenttitle-->
+                <br />
+                <div id="chart_net_pkt" style="height:300px;"></div>
             </div><!--one_fourth-->
 
             <div class="one_fourth last">            
@@ -417,30 +825,20 @@ $(document).ready(function() {
                     <h3>磁盘使用情况</h3>
                 </div><!--contenttitle-->
                 <br />
-                <div id="bargraph" style="height:300px;"></div>
+                <div id="chart_fs_space" style="height:300px;"></div>
             </div><!--one_fourth last-->
             
+
+            <div class="one_fourth last">            
+                <div class="contenttitle2">
+                    <h3>磁盘使用情况</h3>
+                </div><!--contenttitle-->
+                <br />
+                <div id="chart_fs_rate" style="height:300px;"></div>
+            </div><!--one_fourth last-->
+
             <br clear="all" /><br />
             
-            <div class="one_half">
-                <div class="contenttitle2">
-                    <h3>实时监控1</h3>
-                </div><!--contenttitle-->
-                <br />
-                <div id="realtime" style="height:300px;"></div>
-                <br />
-                <small>You can update a chart periodically to get a real-time effect by using a timer to insert the new data in the plot and redraw it.</small>
-            </div><!--one_half-->
-            
-            <div class="one_half last">
-                <div class="contenttitle2">
-                    <h3>监控3</h3>
-                </div><!--contenttitle-->
-                <br />
-                <div id="piechart" style="height: 300px;"></div>
-            </div><!--one_half last-->
-        
-        <br clear="all" />
         
         </div><!--#charts-->
         
@@ -450,12 +848,6 @@ $(document).ready(function() {
         
     </div><!--contentwrapper-->
     
-
-
-
-
-
-
 
 
 
