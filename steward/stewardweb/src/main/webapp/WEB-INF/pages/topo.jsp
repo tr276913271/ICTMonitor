@@ -440,7 +440,7 @@ $(document).ready(function() {
     	<div id="charts" class="subcontent">
     	
 <!--             <iframe src="topo_canvas.html" width="100%" height="700px" seamless="seamless" scrolling="no"></iframe> -->
-        	  	<div style="width:800px; height:auto; margin:0 auto; background:#CCC;">
+        	  	<div style="width:800px; height:auto; margin:0 auto;">
 			   		<canvas id="canvas_topo" width="800" height="600"></canvas>
 			  	</div>
         </div><!--#charts-->
