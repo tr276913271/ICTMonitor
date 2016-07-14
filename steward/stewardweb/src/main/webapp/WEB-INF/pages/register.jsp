@@ -9,26 +9,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<<<<<<< HEAD
 <base href="<%=basePath%>">
-=======
-<base href="<%=basePath%>"/>
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APM 注册页面</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
-<script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
-<script type="text/javascript" src="js/custom/general.js"></script>
-<script type="text/javascript" src="js/custom/index.js"></script>
-<<<<<<< HEAD
    <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
    <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
-=======
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
 <!--[if IE 9]>
     <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
 <![endif]-->
@@ -39,7 +26,6 @@
 	<script src="js/plugins/css3-mediaqueries.js"></script>
 <![endif]-->
 </head>
-<<<<<<< HEAD
 <script type="text/javascript">
 $(document).ready(function(){
 });
@@ -51,7 +37,6 @@ $(document).ready(function(){
             <div class="logo">
                 <h1 class="logo">APM <span>Admin</span></h1>
                 <span class="slogan">后台管理系统</span>
-=======
 
 <body class="loginpage">
 	<div class="loginbox">
@@ -60,20 +45,17 @@ $(document).ready(function(){
             <div class="logo">
             	<h1 class="logo">APM <span>Admin</span></h1>
 				<span class="slogan">账号注册</span>
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
             </div><!--logo-->
             
             <br clear="all" /><br />
             
             <div class="nousername">
-<<<<<<< HEAD
                 <div class="loginmsg">密码不正确.</div>
             </div><!--nousername-->
             
             <div class="nopassword">
                 <div class="loginmsg">密码不正确.</div>
                 <div class="loginf">
-=======
 				<div class="loginmsg">账号不能为空.</div>
             </div><!--nousername-->
             
@@ -101,7 +83,6 @@ $(document).ready(function(){
                 <div class="password">
                     <div class="passwordinner">
                         <input type="password" name="password" id="password" />
-=======
                 </div> -->
             </div><!--nopassword-->
             
@@ -122,17 +103,13 @@ $(document).ready(function(){
                 <div class="password">
                 	<div class="passwordinner">
                     	<input type="password" name="password" id="password" />
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
                     </div>
                 </div>
                 
                 <button>注册</button>
                 
-<<<<<<< HEAD
                 <div class="keep"><input type="checkbox" /> 记住密码</div>
                 <div class="register"><a href="signUp.do">注册账号</a></div>
-=======
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
             </form>
             
         </div><!--loginboxinner-->
@@ -141,7 +118,6 @@ $(document).ready(function(){
 
 </body>
 </html>
-<<<<<<< HEAD
 
 
 
@@ -164,5 +140,3 @@ $(document).ready(function(){
 </body>
 </html>
 --> 
-=======
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47

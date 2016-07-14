@@ -15,7 +15,6 @@
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
 <link type="text/css" href="css/jquery.simple-dtpicker.css" rel="stylesheet" />
 <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="js/datetimepicker/jquery.simple-dtpicker.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/jcanvas/jcanvas.min.js"></script>
@@ -316,54 +315,90 @@ function getNodeEdgeInfo(data){
 
 // function drawMap(data){
 // 	var topo = $('#canvas_topo');
+// 	var w_1 = 160;
+// 	var h_1 = 160;
+// 	var canvasWidth = 800;
+// 	var canvasHeight = 600;
+
+
 // 	for(i=0;i<data['edge'].length;i++){
 // 		topo.drawImage({
-// 			layer:true;
-// 			name: 'mytoto'+i;
-// 			x:,
-// 			y:,
-// 			scale: 0.5
-// 		});
+// 			layer:true,
+// 			name: 'mytoto'+i,
+// 			source: 'images/jcanvas/computer.png',
+// 			x: 200,
+// 			y: 250,
+// 			scale: 0.8
+// 		}).addLayerToGroup('mytopo'+i);
 // 	}
 // }
 
 $(document).ready(function() {
   mapInfo = getNodeEdgeInfo(mapData);
   //drawMap(mapInfo);
-  var m = 250
+  var w_1 = 68;
+  var h_1 = 68;
+  var canvasWidth = 800;
+  var canvasHeight = 600;
+  var x_1 = canvasWidth/4*1;
+  var x_2 = canvasWidth/4*3;
+  var y_1 = canvasHeight/2 - h_1/2;
+  var y_2 = canvasHeight/2 - h_1/2;
   $('#canvas_topo').drawImage({
     layer: true,
     name: 'mytopo',
-    source: 'images/jcanvas/computer.png',
-    x: 150, y: m,
+    source: 'images/jcanvas/USER.png',
+    x: x_1, y: y_1,
     scale: 0.8,
-    click:function(layer){
-      alert('Polly');
-    }
+    // click:function(layer){
+    //   alert('Polly');
+    // }
+  }).drawText({
+    layer: true,
+    name: 'text_1',
+    fillStyle: '#9cf',
+    strokeStyle: '#25a',
+    strokeWidth: 2,
+    x: x_1, y: y_1+40,
+    fontSize: 16,
+    fontFamily: 'Verdana, sans-serif',
+    text: 'USER'
   }).drawImage({
     layer: true,
     name: 'mytopo1',
-    source: 'images/jcanvas/computer.png',
-    x: 450, y: 250,
+    source: 'images/jcanvas/TOMCAT.png',
+    x: x_2, y: y_2,
     scale: 0.8
+  }).drawText({
+    layer: true,
+    name: 'text_2',
+    fillStyle: '#9cf',
+    strokeStyle: '#25a',
+    strokeWidth: 2,
+    x: x_2, y: y_2+40,
+    fontSize: 16,
+    fontFamily: 'Verdana, sans-serif',
+    text: 'TOMCAT'
   }).drawLine({
     layer: true,
     name: 'mytopo2',
     strokeStyle: '#000',
+    startArrow: true,
+    arrowRadius: 15,
     strokeWidth: 5,
-    x1: 220, y1: 250,
-    x2: 400, y2: 250,
+    x1: x_2-w_1/2, y1: y_1,
+    x2: x_1+w_1/2, y2: y_2,
   }).drawText({
     layer: true,
     name: 'mytopo3',
     fillStyle: '#9cf',
     strokeStyle: '#25a',
     strokeWidth: 2,
-    x: 300, y: 230,
+    x: (x_1+x_2)/2, y: y_2-20,
     fontSize: 24,
     fontFamily: 'Verdana, sans-serif',
     text: '200'
-  }).addLayerToGroup('mytopo', 'mytopo1','mytopo2');
+  }).addLayerToGroup('mytopo','text_1','text_2', 'mytopo1','mytopo2','mytopo3');
 
 });
 </script>
@@ -441,7 +476,7 @@ $(document).ready(function() {
     	
 <!--             <iframe src="topo_canvas.html" width="100%" height="700px" seamless="seamless" scrolling="no"></iframe> -->
         	  	<div style="width:800px; height:auto; margin:0 auto;">
-			   		<canvas id="canvas_topo" width="800" height="600"></canvas>
+			   		<canvas id="canvas_topo" width="800" height="500"></canvas>
 			  	</div>
         </div><!--#charts-->
 
