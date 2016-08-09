@@ -50,6 +50,7 @@
                 console.log('message received!');
 //                $('#note').html()
                 //showMessage(received_msg);
+                console.log(received_msg);
                 var num_list = analysisMessage($.parseJSON(received_msg));
                 updateChartCPU($.parseJSON(received_msg), num_list[0]);
                 updateChartMEM($.parseJSON(received_msg), num_list[1]);
@@ -83,6 +84,7 @@
     }
 
     function updateChartCPU(messageJSON, num){
+        /*
         var chartCPU = $('#chart_cpu').highcharts();
         var time = (new Date()).getTime();
         $.each(messageJSON, function(index, item){
@@ -107,7 +109,139 @@
                 chartCPU.series[3].addPoint([time,item['metric']],true,true);
             }
         });
-        
+        */
+
+        var chartCPU = [];
+        for(i=1;i<=num;i++){
+            var cpu_name = '#chart_cpu_'+i;
+            if($(cpu_name).length==0){
+                var chartNodeCode = "<div class='one_half'><div class='contenttitle2'><h3>CPU"+i+"状况</h3></div><br /><div id='chart_cpu_"+i+"' style='height:300px;'></div></div>";
+                $('#charts').append(chartNodeCode);
+                $(cpu_name).highcharts({                                                
+                    chart: {                                                                
+                        type: 'spline',                                                     
+                    },
+                    title: {
+                        text: null
+                    },
+                    xAxis: {
+                        type: 'datetime',                                                   
+                        tickPixelInterval: 150                                              
+                    },
+                    yAxis: {
+                        title: {                                                            
+                            text: 'Value'                                                   
+                        },                                                                  
+                        plotLines: [{                                                       
+                            value: 0,                                                       
+                            width: 1,                                                       
+                            color: '#808080'                                                
+                        }]                                                                  
+                    },                                                                      
+                    tooltip: {                                                              
+                        formatter: function() {                                             
+                                return '<b>'+ this.series.name +'</b><br/>'+                
+                                Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+                                Highcharts.numberFormat(this.y, 2);                         
+                        }                                                                   
+                    },                                                                      
+                    legend: {                                                               
+                        enabled: true
+                    },                                                                      
+                    exporting: {                                                            
+                        enabled: false                                                      
+                    },                                                                      
+                    series: [{                                                              
+                        name: '用户使用率',
+                        data: (function() {                                                 
+                            var data = [],                                                  
+                                time = (new Date()).getTime(),                              
+                                i;                                                          
+                            for (i = -9; i <= 0; i++) {                                    
+                                data.push({                                                 
+                                    x: time + i * 1000,                                     
+                                    y: 0                                        
+                                });                                                         
+                            }                                                               
+                            return data;                                                    
+                        })()
+                    },{
+                        name: '系统使用率',
+                        data: (function() {
+                            var data = [],
+                                time = (new Date()).getTime(),                              
+                                i;
+                            for (i = -9; i <= 0; i++) {                                    
+                                data.push({                                                 
+                                    x: time + i * 1000,                                     
+                                    y: 0                                        
+                                });                                                         
+                            }                                                               
+                            return data;                                                    
+                        })()
+                    },{
+                        name: '当前空闲率',
+                        data: (function() {                                                 
+                            var data = [],                                                  
+                                time = (new Date()).getTime(),                              
+                                i;
+                            for (i = -9; i <= 0; i++) {                                    
+                                data.push({                                                 
+                                    x: time + i * 1000,                                     
+                                    y: 0                                    
+                                });                                                         
+                            }                                                               
+                            return data;                                                    
+                        })()
+                    },{
+                        name: '总体使用率',
+                        data: (function() {
+                            var data = [],                                                  
+                                time = (new Date()).getTime(),                              
+                                i;                                                          
+                            for (i = -9; i <= 0; i++) {                                    
+                                data.push({                                                 
+                                    x: time + i * 1000,                                     
+                                    y: 0                                    
+                                });                                                         
+                            }                                                               
+                            return data;                                                    
+                        })()
+                    }]
+                });
+            }
+            chartCPU.push($(cpu_name).highcharts());
+        }
+
+        //var chartCPU = $('#chart_cpu').highcharts();
+        var time = (new Date()).getTime();
+        $.each(messageJSON, function(index, item){
+            for(i=0;i<num;i++){
+                devID = 'CPU'+i;
+                if(item['devID']==devID&&item['tag']=='1'){
+                    //var time = parseInt(item['timestamp']);
+                    console.log(item);
+                    chartCPU[i].series[0].addPoint([time,item['metric']],true,true);
+                }
+                if(item['devID']==devID&&item['tag']=='2'){
+                    //var time = parseInt(item['timestamp']);
+                    console.log(item);
+                    chartCPU[i].series[1].addPoint([time,item['metric']],true,true);
+                }
+                if(item['devID']==devID&&item['tag']=='5'){
+                    //var time = parseInt(item['timestamp']);
+                    console.log(item);
+                    chartCPU[i].series[2].addPoint([time,item['metric']],true,true);
+                }
+                if(item['devID']==devID&&item['tag']=='6'){
+                    //var time = parseInt(item['timestamp']);
+                    console.log(item);
+                    chartCPU[i].series[3].addPoint([time,item['metric']],true,true);
+                }
+            }
+        });
+        $('#charts').append("<br clear='all' /><br />");
+
         //alert(typeof(message));
         // var messages = $.parseJSON(message);
         // //alert(messages);
@@ -190,7 +324,7 @@
         chartFS_1.series[0].setData([result_list[0],result_list[1]]);
     }
     function analysisMessage(messageJSON){
-        console.log(typeof(messageJSON));
+        //console.log(typeof(messageJSON));
         //console.log(messageJSON[1]);
         var dev_list = [];
         var result_list = [0,0,0,0];
@@ -211,7 +345,7 @@
                 //console.log($.inArray('a',['b']));
             }
         });
-        console.log(dev_list);
+        console.log("dev_list:"+dev_list);
         $.each(dev_list, function(index, item){
             if(item[0]=='C'){
                 result_list[0]++;
@@ -226,7 +360,7 @@
                 result_list[3]++;
             }
         });
-        console.log(result_list);
+        console.log("result_list:"+result_list);
         return result_list;
     }
 
@@ -365,8 +499,10 @@ $(document).ready(function() {
         plotOptions: { 
             pie: { 
                 allowPointSelect: true, 
+                size: 200,
                 cursor: 'pointer', 
                 dataLabels: { 
+                    distance:10,
                     enabled: true, 
                     color: '#000000', 
                     connectorColor: '#000000', 
@@ -379,10 +515,10 @@ $(document).ready(function() {
         },                                                               
         series: [{
             type: 'pie',
-            name: 'Random data',
+            name: '百分比',
             data:[
-                ['Unused', 100],
-                ['Used', 0]
+                ['未使用', 100],
+                ['已使用', 0]
             ]                                                            
         }]                                                                      
     });                          
@@ -404,8 +540,10 @@ $(document).ready(function() {
         plotOptions: { 
             pie: { 
                 allowPointSelect: true, 
+                size: 200,
                 cursor: 'pointer', 
                 dataLabels: { 
+                    distance:10,
                     enabled: true, 
                     color: '#000000', 
                     connectorColor: '#000000', 
@@ -418,12 +556,12 @@ $(document).ready(function() {
         },                                                               
         series: [{
             type: 'pie',
-            name: 'Random data',
+            name: '百分比',
             data:[
-                ['Unused', 100],
-                ['Used', 0]
+                ['未使用', 100],
+                ['已使用', 0]
             ]                                                            
-        }]                                                                      
+        }]                                                                     
     });                    
     /*---------- End Of Swap Chart --------------*/
 
@@ -780,65 +918,66 @@ $(document).ready(function() {
     <div id="note"></div>
     	<div id="charts" class="subcontent">
     	
+        
             <div class="one_half">
                 <div class="contenttitle2">
                     <h3>CPU状况</h3>
-                </div><!--contenttitle-->
+                </div>
                 <br />
                 <div id="chart_cpu" style="height:300px;"></div>
-            </div><!--one_fourth-->
+            </div>
 
             <div class="one_fourth">
                 <div class="contenttitle2">
                     <h3>内存状况</h3>
-                </div><!--contenttitle-->
+                </div>
                 <br />
                 <div id="chart_memory" style="height:300px;"></div>
-            </div><!--one_fourth-->
+            </div>
             
             <div class="one_fourth last">
                 <div class="contenttitle2">
                     <h3>交换内存状况</h3>
-                </div><!--contenttitle-->
+                </div>
                 <br />
                 <div id="chart_swap" style="height:300px;"></div>
-            </div><!--one_fourth-->
+            </div>
 
             <div class="one_fourth">
                 <div class="contenttitle2">
                     <h3>网络使用情况</h3>
-                </div><!--contenttitle-->
+                </div>
                 <br />
                 <div id="chart_net_byte" style="height:300px;"></div>
-            </div><!--one_fourth-->
+            </div>
             
             <div class="one_fourth">
                 <div class="contenttitle2">
                     <h3>网络使用情况</h3>
-                </div><!--contenttitle-->
+                </div>
                 <br />
                 <div id="chart_net_pkt" style="height:300px;"></div>
-            </div><!--one_fourth-->
+            </div>
 
             <div class="one_fourth last">            
                 <div class="contenttitle2">
                     <h3>磁盘使用情况</h3>
-                </div><!--contenttitle-->
+                </div>
                 <br />
                 <div id="chart_fs_space" style="height:300px;"></div>
-            </div><!--one_fourth last-->
+            </div>
             
 
             <div class="one_fourth last">            
                 <div class="contenttitle2">
                     <h3>磁盘使用情况</h3>
-                </div><!--contenttitle-->
+                </div>
                 <br />
                 <div id="chart_fs_rate" style="height:300px;"></div>
-            </div><!--one_fourth last-->
+            </div>
 
             <br clear="all" /><br />
-            
+        
         
         </div><!--#charts-->
         
