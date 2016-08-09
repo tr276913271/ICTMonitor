@@ -55,7 +55,7 @@
                 updateChartCPU($.parseJSON(received_msg), num_list[0]);
                 updateChartMEM($.parseJSON(received_msg), num_list[1]);
                 updateChartNET($.parseJSON(received_msg), num_list[2]);
-                updateChartFS($.parseJSON(received_msg, num_list[3]));
+                updateChartFS($.parseJSON(received_msg), num_list[3]);
             }
         } else {
             console.log('Websocket not supported');
@@ -115,7 +115,11 @@
         for(i=1;i<=num;i++){
             var cpu_name = '#chart_cpu_'+i;
             if($(cpu_name).length==0){
-                var chartNodeCode = "<div class='one_half'><div class='contenttitle2'><h3>CPU"+i+"状况</h3></div><br /><div id='chart_cpu_"+i+"' style='height:300px;'></div></div>";
+                var chartNodeCode = "<div class='one_half";
+                if(i%2==0){
+                    chartNodeCode += " last";
+                }
+                chartNodeCode += "'><div class='contenttitle2'><h3>CPU"+i+"状况</h3></div><br /><div id='chart_cpu_"+i+"' style='height:300px;'></div></div>";
                 $('#charts').append(chartNodeCode);
                 $(cpu_name).highcharts({                                                
                     chart: {                                                                
@@ -209,6 +213,9 @@
                         })()
                     }]
                 });
+                if(i==num){
+                    $('#charts').append("<br clear='all' /><br />");
+                }
             }
             chartCPU.push($(cpu_name).highcharts());
         }
@@ -240,7 +247,7 @@
                 }
             }
         });
-        $('#charts').append("<br clear='all' /><br />");
+        
 
         //alert(typeof(message));
         // var messages = $.parseJSON(message);
@@ -303,6 +310,176 @@
         });
     }
     function updateChartFS(messageJSON, num){
+        var chartFS_Space = [];
+        var chartFS_Rate = [];
+        for(i=1;i<=num;i++){
+            var fs_name_space = '#chart_fs_space_'+i;
+            var fs_name_rate = '#chart_fs_rate_'+i;
+            if($(fs_name_space).length==0){
+                var chartNodeCode = "<div class='one_fourth'><div class='contenttitle2'><h3>磁盘"+i+"使用状况</h3></div><br /><div id='chart_fs_space_"+i+"' style='height:300px;'></div></div>";
+                
+                chartNodeCode += "<div class='one_fourth";
+                if(i%2==0){
+                    chartNodeCode += " last";
+                }
+                chartNodeCode += "'><div class='contenttitle2'><h3>磁盘"+i+"读写状况</h3></div><br /><div id='chart_fs_rate_"+i+"' style='height:300px;'></div></div>";
+                $('#charts').append(chartNodeCode);
+                if(i==num){
+                    $('#charts').append("<br clear='all' /><br />");
+                }
+                $(fs_name_space).highcharts({                                                
+                    chart: {                                                                
+                        plotBackgroundColor: null, 
+                        plotBorderWidth: null, 
+                        plotShadow: false
+                    },                                                                      
+                    title: {                                                                
+                        text: null
+                    },
+                    tooltip: {                                                              
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: { 
+                        pie: { 
+                            allowPointSelect: true, 
+                            size: 200,
+                            cursor: 'pointer', 
+                            dataLabels: { 
+                                distance:10,
+                                enabled: true, 
+                                color: '#000000', 
+                                connectorColor: '#000000', 
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %' 
+                            } 
+                        }
+                    },
+                    legend: {                                                               
+                        enabled: false                                                      
+                    },                                                               
+                    series: [{
+                        type: 'pie',
+                        name: '百分比',
+                        data:[
+                            ['未使用', 100],
+                            ['已使用', 0]
+                        ]                                                            
+                    }]                                                                      
+                });
+
+                $(fs_name_rate).highcharts({                                                
+                    chart: {                                                                
+                        type: 'spline',                                                     
+                    },                                                                      
+                    title: {                                                                
+                        text: null
+                    },                                                                      
+                    xAxis: {                                                                
+                        type: 'datetime',                                                   
+                        tickPixelInterval: 150
+                    },                                                                      
+                    yAxis: {                                                                
+                        title: {                                                            
+                            text: 'Value'                                                   
+                        },                                                                  
+                        plotLines: [{                                                       
+                            value: 0,                                                       
+                            width: 1,                                                       
+                            color: '#808080'                                                
+                        }]                                                                  
+                    },                                                                      
+                    tooltip: {                                                              
+                        formatter: function() {                                             
+                                return '<b>'+ this.series.name +'</b><br/>'+                
+                                Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+                                Highcharts.numberFormat(this.y, 2);                         
+                        }                                                                   
+                    },                                                                      
+                    legend: {                                                               
+                        enabled: true
+                    },                                                                      
+                    exporting: {                                                            
+                        enabled: false                                                      
+                    },                                                                      
+                    series: [{                                                              
+                        name: '每秒读请求次数',
+                        //data: [[(new Date()).getTime(),0]]
+                        data: (function() {                                                 
+                            // generate an array of random data                             
+                            var data = [],                                                  
+                                time = (new Date()).getTime(),                              
+                                i;                                                          
+                                                                                            
+                            for (i = -9; i <= 0; i++) {                                    
+                                data.push({                                                 
+                                    x: time + i * 1000,                                     
+                                    y: 0                                        
+                                });                                                         
+                            }                                                               
+                            return data;                                                    
+                        })()
+                    },{
+                        name: '每秒写请求次数',
+                        //data: [[(new Date()).getTime(),0]]
+                        data: (function() {                                                 
+                            // generate an array of random data                             
+                            var data = [],                                                  
+                                time = (new Date()).getTime(),                              
+                                i;                                                          
+                                                                                            
+                            for (i = -9; i <= 0; i++) {                                    
+                                data.push({                                                 
+                                    x: time + i * 1000,                                     
+                                    y: 0                                        
+                                });                                                         
+                            }                                                               
+                            return data;                                                    
+                        })()
+                    }]
+                });
+            }
+
+            chartFS_Space.push($(fs_name_space).highcharts());
+            chartFS_Rate.push($(fs_name_rate).highcharts());
+        }
+
+
+
+        var time = (new Date()).getTime();
+        result_list = [];
+        for(i=0;i<num;i++){
+            result_list.push([0,0]);
+        }
+        $.each(messageJSON, function(index, item){
+            for(i=0;i<num;i++){
+                var devID = 'FS'+i;
+                if(item['devID']==devID && item['tag']=='25'){
+                    console.log(item);
+                    chartFS_Rate[i].series[0].addPoint([time,item['metric']],true,true);
+                }
+                if(item['devID']==devID && item['tag']=='26'){
+                    console.log(item);
+                    chartFS_Rate[i].series[1].addPoint([time,item['metric']],true,true);
+                }
+                if(item['devID']==devID && item['tag']=='23'){
+                    console.log(item);
+                    result_list[i][0] = item['metric'];
+                    //chartFS_Space[i].series[0].addPoint([time,item['metric']],true,true);
+                }
+                if(item['devID']==devID && item['tag']=='22'){
+                    console.log(item);
+                    result_list[i][1] = item['metric'];
+                    //chartFS_Space[i].series[1].addPoint([time,item['metric']],true,true);
+                }
+            }
+        });
+        for(i=0;i<num;i++){
+            chartFS_Space[i].series[0].setData([result_list[0],result_list[1]]);
+        }
+
+
+        
+
+        /*
         var chartFS_1 = $('#chart_fs_space').highcharts();
         var chartFS_2 = $('#chart_fs_rate').highcharts();
         var time = (new Date()).getTime();
@@ -322,6 +499,7 @@
             }
         });
         chartFS_1.series[0].setData([result_list[0],result_list[1]]);
+        */
     }
     function analysisMessage(messageJSON){
         //console.log(typeof(messageJSON));
