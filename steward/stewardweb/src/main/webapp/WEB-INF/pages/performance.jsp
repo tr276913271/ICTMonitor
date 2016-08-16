@@ -175,7 +175,7 @@ $(function () {
         xAxis: {                                                                             
             title: {                                                                         
                 enabled: true,                                                               
-                text: 'Times Line'                                                          
+                text: null                                                          
             },                                                                               
             startOnTick: true,                                                               
             endOnTick: true,                                                                 
@@ -187,7 +187,7 @@ $(function () {
         },                                           
         yAxis: {                                                                             
             title: {                                                                         
-                text: 'Response Time (ms)'                                                          
+                text: '响应时间 (ms)'                                                          
             }                                                                                
         },                                                                                   
         legend: {                                                                            
@@ -231,13 +231,13 @@ $(function () {
             }                                                                                
         },                                                                                   
         series: [{                                                                           
-            name: 'Success',                                                                  
+            name: '成功',                                                                  
             color: 'rgba(10, 232, 10, .5)',                                                  
             //data: [[1459166930522, 52],[1459166930528, 48],[1459166930928, 48],[1459166931028, 68]]   
             data: getPerformanceData(data_performance)[0]
                                                                                              
         }, {                                                                                 
-            name: 'Failed',                                                                    
+            name: '超时',                                                                    
             color: 'rgba(223, 83, 83, .5)',                                                
             //data: [[1459166930926, 58],[1459166931121, 65],[1459166931322, 56]]                                                
             data: getPerformanceData(data_performance)[1]
@@ -249,7 +249,7 @@ $(function () {
 
     var colors = Highcharts.getOptions().colors,
         categories = ['1s', '2s', '3s', 'Slow', 'Error'],
-        name = 'Response Categories',
+        name = '响应时间',
         data = [{
                 y: getPerformanceData(data_performance)[2][0],
                 color: colors[0]
@@ -279,7 +279,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: 'Number Of Items'
+                text: '响应数'
             }
         },
         tooltip: {
@@ -313,7 +313,7 @@ $(function () {
         xAxis: {
             title: {                                                                         
                 enabled: true,                                                               
-                text: 'Times Line'                                                          
+                text: null                                                          
             }, 
             type: 'datetime',
             dateTimeLabelFormats: {
@@ -324,7 +324,7 @@ $(function () {
         yAxis: {
             min: 0,
             title: {
-                text: 'Number Of Items'
+                text: '响应数'
             },
             stackLabels: {
                 enabled: true,
@@ -393,6 +393,7 @@ function submitSearchForm(){
 
     var time_from = $('input[name=from]').val();
     var time_to = $('input[name=to]').val();
+	var appName = 'tomcat';
     stamp_from = new Date(time_from);
     stamp_to = new Date(time_to);
     sttime = stamp_from.getTime();
@@ -400,7 +401,7 @@ function submitSearchForm(){
     //$('input[name=from]').val(stamp_from.getTime());
     //$('input[name=to]').val(stamp_to.getTime());
     //$('#searchForm').submit();
-    var json_url = '/stewardweb/getScatterData.do?application=appName&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&v=2';
+    var json_url = '/stewardweb/getScatterData.do?application='+ appName+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&v=2';
     $.getJSON(json_url,function(data,status){
         data_performance = data;
     });
@@ -513,7 +514,7 @@ function submitSearchForm(){
     	<ul class="headermenu">
             <li><a onclick='navjump(0)'><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
             <li class="current"><a onclick='navjump(1)'><span class="icon icon-pencil"></span>业务流性能表现</a></li>
-            <li><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载均衡</a></li>
+            <li><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载</a></li>
             <li><a onclick='navjump(3)'><span class="icon icon-speech"></span>慢调用</a></li>
             <li><a onclick='navjump(4)'><span class="icon icon-message"></span>出错调用</a></li>
         </ul>
@@ -537,7 +538,7 @@ function submitSearchForm(){
     	
             <div class="one_half">
                 <div class="contenttitle2">
-                    <h3>Performance</h3>
+                    <h3>性能概览</h3>
                 </div><!--contenttitle-->
                 <br />
                 <div id="chart_sandian" style="height:300px;"></div>
@@ -545,7 +546,7 @@ function submitSearchForm(){
             
             <div class="one_half last">            
                 <div class="contenttitle2">
-                    <h3>Response Summary</h3>
+                    <h3>响应统计</h3>
                 </div><!--contenttitle-->
                 <br />
                 <div id="chart_response_summary" style="height:300px;"></div>
@@ -555,7 +556,7 @@ function submitSearchForm(){
             
             <div class="one_half">
                 <div class="contenttitle2">
-                    <h3>Load</h3>
+                    <h3>性能负载</h3>
                 </div><!--contenttitle-->
                 <br />
                 <div id="chart_load" style="height:300px;"></div>

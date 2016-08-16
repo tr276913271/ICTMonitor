@@ -327,7 +327,8 @@ var data_slow_call_detail = {
 function getSlowCallDetailData(traceID, timeStamp, data){
     var callstack = data["callStack"];
     //var callstack_length = callstack.length;
-    var code_item_detail = "<tr class='item_detail'><td colspan='8'><div class='poplayer'><table cellpadding='0' cellspacing='0' border='0' class='stdtable'><colgroup><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /></colgroup><thead><tr><th class='head0'>Method</th><th class='head1'>Arguments</th><th class='head0'>Exec Time</th><th class='head1'>Gap(ms)</th><th class='head0'>Time(ms)</th><th class='head1'>Time(%)</th><th class='head0'>Class</th><th class='head1'>Api Type</th><th class='head0'>Agent</th><th class='head1'>App Name</th></tr></thead><tbody>";
+    var code_item_detail = "<tr class='item_detail' style='display:none;'><td colspan='8'><div class='poplayer'><table cellpadding='0' cellspacing='0' border='0' class='stdtable'><colgroup><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /></colgroup><thead><tr><th class='head0'>Method</th><th class='head1'>Arguments</th><th class='head0'>Exec Time</th><th class='head1'>Gap(ms)</th><th class='head0'>Time(ms)</th><th class='head1'>Time(%)</th><th class='head0'>Class</th><th class='head1'>Api Type</th><th class='head0'>Agent</th><th class='head1'>App Name</th></tr></thead><tbody>";
+    var code_item_detail = "<tr class='item_detail'><td colspan='8'><div class='poplayer'><table cellpadding='0' cellspacing='0' border='0' class='stdtable'><colgroup><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /></colgroup><thead><tr><th class='head0'>调用方法</th><th class='head1'>参数</th><th class='head0'>调用时间</th><th class='head1'>间隔时间(ms)</th><th class='head0'>执行时间(ms)</th><th class='head1'>时间占比(%)</th><th class='head0'>组件类型</th><th class='head1'>应用名称</th><th class='head0'>探针Id</th><th class='head1'>应用名称</th></tr></thead><tbody>";
     $.each(callstack, function(index, item){
         var row = {"time_begin":item[1], "time_end":item[2], "appName":item[4], "tag":item[5], "id":item[6], "parentId":item[7], "title":item[10], "args":item[11], "formatTime":item[12], "gap":item[13], "execTime":item[14], "simpleClassName":item[16], "serviceType":item[17], "agent":item[18], "hasChild":item[19], "hasException":item[20]};
         //code_row = "<tr class='item_detail'><td colspan='8'><div class='poplayer'>"+row['time_begin']+"</div></td></tr>";
@@ -340,28 +341,53 @@ function getSlowCallDetailData(traceID, timeStamp, data){
 };
 
 function getSlowCallData(data){
+	$('#table_slow_call').html(' ');
     var list_items = [];
-    var code_items = "";
+    var code_item = "";
+	console.log(data);
     $.each(data, function(index, item){
         // var item = {'Time':item.agentStartTime, 'Application':item.rpc}
         // list_items.push(item);
         code_item = "<tr class='item'><td>"+(index+1)+"</td><td>"+Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', item.agentStartTime)+"</td><td>"+item.rpc+"</td><td>"+100+"</td><td> </td><td>"+item.agentId+"</td><td>"+item.remoteAddr+"</td><td>"+item.transactionId+"</td></tr>";
-        //code_item_detail = "<tr class='item_detail'><td colspan='8'><div class='poplayer'>阿斯蒂芬</div></td></tr>";
-        var json_url = "/stewardweb/transactionInfo.do?traceId=" +item.transactionId + "&focusTimestamp=" + item.agentStartTime;
-        $.getJSON(json_url,function(data){  
+        var json_url = "/stewardweb/transactionInfo.do?traceId=" +item.transactionId + "&focusTimestamp=" + item.agentStartTime+'&_='+ item.collectorAcceptTime;
+		
+		console.log(json_url);
+		$.getJSON(json_url,function(data){  
             data_slow_call_detail = data;
-            console.log(data);
+            console.log('slowCallDetailData:'+data_slow_call_detail);
         });
-        code_item_detail = getSlowCallDetailData(item.transactionId,item.agentStartTime,data_slow_call_detail);
-        code_item += code_item_detail;
+		if(data_slow_call_detail){
+			code_item_detail = getSlowCallDetailData(item.transactionId,item.agentStartTime,data_slow_call_detail);
+			code_item += code_item_detail;
+		}
         $('#table_slow_call').append(code_item);
         //alert(index);
     });
 };
 
+function getDataByTime(time_start, time_end){
+    var json_url = "/stewardweb/getScatterData.do?application=appName&from="+time_start+"&to="+time_end+"&limit=5000&v=2";
+    $.getJSON(json_url,function(data){  
+        $.each(data,function(i,item){  
+            alert(item);
+        });
+    }); 
+};
+
+// $(document).ready(function(){
+//     getSlowCallData(data_slow_call);
+    
 
 
 $(document).ready(function(){
+	
+	
+	var json_url = '/stewardweb/transactionSlowMetadata.do?application=tomcat&from=' + sttime.toString() + '&to=' +endtime.toString() + '&limit=5000&v=2';
+    $.getJSON(json_url,function(data,status){
+    	data_slow_call = data;
+        //console.log(data);
+    });
+    
     getSlowCallData(data_slow_call);
     $('#table_slow_call>.item').mouseover(function(){
         $(this).css({
@@ -379,6 +405,11 @@ $(document).ready(function(){
             'background':'transparent'
         });
     });
+    //$('#form_searchByTime>button').click(function(){
+    //    var time_start = $('input[name="time_start"]').val();
+    //    var time_end = $('input[name="time_end"]').val();
+    //    getDataByTime(time_start, time_end);
+    //});
 
     //getSlowCallDetailData(data_slow_call_detail);
     //var code_slow_call = getSlowCallData(data_slow_call);
@@ -393,22 +424,25 @@ $(document).ready(function(){
 });
 
 
-
 function submitSearchForm(){
-    var time_from = $('input[name=from]').val();
+	var time_from = $('input[name=from]').val();
     var time_to = $('input[name=to]').val();
+	var appName = 'tomcat';
     stamp_from = new Date(time_from);
     stamp_to = new Date(time_to);
+	sttime = stamp_from.getTime();
+    endtime = stamp_to.getTime();
     //$('input[name=from]').val(stamp_from.getTime());
     //$('input[name=to]').val(stamp_to.getTime());
     //$('#searchForm').submit();
 
-    var json_url = '/stewardweb/transactionSlowMetadata.do?application=appName&from=' + sttime.toString() + '&to=' +endtime.toString() + '&limit=5000';
+    //var json_url = '/stewardweb/transactionSlowMetadata.do?application='+appName+'&from=' + sttime.toString() + '&to=' +endtime.toString() + '&limit=5000';
+	var json_url = '/stewardweb/transactionErrorMetadata.do?application='+ appName+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&&threshold=7';
     $.getJSON(json_url,function(data,status){
         data_slow_call = data;
-        console.log(data);
+        //console.log('SlowCallData:'+data);
     });
-	console.log(data_slow_call);
+	console.log('slowCallData:'+data_slow_call);
     getSlowCallData(data_slow_call);
     $('#table_slow_call>.item').mouseover(function(){
         $(this).css({
@@ -428,6 +462,7 @@ function submitSearchForm(){
     });
 }
 </script>
+
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
 <!--[if IE 9]>
     <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
@@ -489,7 +524,7 @@ function submitSearchForm(){
     	<ul class="headermenu">
             <li><a onclick='navjump(0)'><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
             <li><a onclick='navjump(1)'><span class="icon icon-pencil"></span>业务流性能表现</a></li>
-            <li><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载均衡</a></li>
+            <li><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载</a></li>
             <li><a onclick='navjump(3)'><span class="icon icon-speech"></span>慢调用</a></li>
             <li class="current"><a onclick='navjump(4)'><span class="icon icon-message"></span>出错调用</a></li>
         </ul>
@@ -523,13 +558,13 @@ function submitSearchForm(){
             <thead>
                 <tr>
                     <th class="head0">#</th>
-                    <th class="head1">Time</th>
-                    <th class="head0">Application</th>
-                    <th class="head1">Res.(ms)</th>
-                    <th class="head0">Exception</th>
-                    <th class="head1">Agent ID</th>
-                    <th class="head0">Client IP</th>
-                    <th class="head1">Transaction ID</th>
+                    <th class="head1">时间</th>
+                    <th class="head0">调用组件</th>
+                    <th class="head1">响应时间(ms)</th>
+                    <th class="head0">异常</th>
+                    <th class="head1">探针ID</th>
+                    <th class="head0">客户端IP</th>
+                    <th class="head1">事务ID</th>
                 </tr>
             </thead>
             <tbody id="table_slow_call">

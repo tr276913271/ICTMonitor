@@ -80,20 +80,20 @@ $(document).ready(function(){
                 
                 <div class="username">
                     <div class="usernameinner">
-                        <input type="text" name="username" id="username" />
+                        <input type="text" name="username" placeholder="请输入用户名" id="username" />
                     </div>
                 </div>
                 
                 <div class="password">
                     <div class="passwordinner">
-                        <input type="password" name="password" id="password" />
+                        <input type="password" name="password" placeholder="请输入密码" id="password" />
                     </div>
                 </div>
                 
                 <button>登录</button>
                 
                 <div class="keep"><input type="checkbox" /> 记住密码</div>
-                <div class="register"><a href="register.do">注册账号</a></div>
+                <div class="register"><a href="signUp.do">注册账号</a></div>
             </form>
             
             

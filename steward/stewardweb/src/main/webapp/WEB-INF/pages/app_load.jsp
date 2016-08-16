@@ -20,15 +20,6 @@
 <script type="text/javascript" src="js/datetimepicker/jquery.simple-dtpicker.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
-function initFormPlugin(){
-    var d = new Date();
-    //alert(d.getTime());
-    $('input[name=to]').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds());
-    $('input[name=to]').appendDtpicker();
-    d.setDate(d.getDate() - 1);
-    $('input[name=from]').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + d.getHours() + ':' + d.getMinutes());
-    $('input[name=from]').appendDtpicker();
-}
 
 
 var data_performance = {"resultTo":1462699595000,"scatter":[[1462699593649,127499,"test1001^1462699069318^5",0],[1462699380083,256162,"test1001^1462699069318^4",1],[1462699115218,3010,"test1001^1462699069318^3",1],[1462699108229,10053,"test1001^1462699069318^2",1],[1462699087343,9,"test1001^1462699069318^1",1],[1462699086690,748,"test1001^1462699069318^0",1]],"resultFrom":1462699086690,"scatterIndex":{"x":0,"y":1,"transactionId":2,"type":3}}
@@ -69,7 +60,6 @@ function getPointStart(data){
 }
 
 $(document).ready(function() {
-    initFormPlugin();
 
     var json_url = "/stewardweb/getScatterData.do?application=appName&from=1459158066000&to=1459339969000&limit=5000&v=2";
     $.getJSON(json_url,function(data,status){
@@ -111,7 +101,7 @@ $(document).ready(function() {
         },
         yAxis: {
             title: {
-                text: 'TPS'
+                text: '事务数/秒'
             }
         },
         tooltip: {
@@ -190,27 +180,25 @@ $(document).ready(function() {
 
 
 
-function submitSearchForm(){
+function submitSearchForm(){	
+	
     var time_from = $('input[name=from]').val();
     var time_to = $('input[name=to]').val();
+	var appName = 'tomcat';
     stamp_from = new Date(time_from);
     stamp_to = new Date(time_to);
-    //$('input[name=from]').val(stamp_from.getTime());
-    //$('input[name=to]').val(stamp_to.getTime());
-    //$('#searchForm').submit();
-    console.log(typeof(stamp_from.getTime()));
-    var json_url = '/stewardweb/getScatterData.do?application=appName&from=' + (stamp_from.getTime()-2*60*60*1000).toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&v=2';
+	sttime = stamp_from.getTime();
+    endtime = stamp_to.getTime();
+    
+	var json_url = '/stewardweb/getScatterData.do?application='+ appName+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&v=2';
     $.getJSON(json_url,function(data,status){
         data_performance = data;
-        console.log(data);
     });
-    var data_performance = {"resultTo":1462699595000,"scatter":[[1462699593649,127499,"test1001^1462699069318^5",0],[1462699380083,256162,"test1001^1462699069318^4",1],[1462699115218,3010,"test1001^1462699069318^3",1],[1462699108229,10053,"test1001^1462699069318^2",1],[1462699087343,9,"test1001^1462699069318^1",1],[1462699086690,748,"test1001^1462699069318^0",1]],"resultFrom":1462699086690,"scatterIndex":{"x":0,"y":1,"transactionId":2,"type":3}}
-
+	console.log(data_performance);
     var chartAppLoad = $('#chart_app_load').highcharts();
-    console.log(chartAppLoad.series[0]);
+    //console.log(chartAppLoad.series[0]);
     chartAppLoad.series[0].setData(getAppLoadData(data_performance));
-    chartAppLoad.series[0].addPoint([1462699993649,20]);
-    console.log(chartAppLoad.series[0]);
+    //chartAppLoad.series[0].addPoint([1462699993649,20]);
 }
 </script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
@@ -274,14 +262,14 @@ function submitSearchForm(){
     	<ul class="headermenu">
             <li><a onclick='navjump(0)'><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
             <li><a onclick='navjump(1)'><span class="icon icon-pencil"></span>业务流性能表现</a></li>
-            <li class="current"><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载均衡</a></li>
+            <li class="current"><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载</a></li>
             <li><a onclick='navjump(3)'><span class="icon icon-speech"></span>慢调用</a></li>
             <li><a onclick='navjump(4)'><span class="icon icon-message"></span>出错调用</a></li>
         </ul>
     </div><!--header-->
     
     <div class="pageheader">
-    	<h1 class="pagetitle contenttitle2">应用级负载均衡</h1>
+    	<h1 class="pagetitle contenttitle2">应用级负载</h1>
         <!--
         <span class="pagedesc">An example of graphs &amp; charts. A page without left menu.</span>
         
@@ -298,7 +286,7 @@ function submitSearchForm(){
     	
             <div class="one_tatal last">
                 <div class="contenttitle2">
-                    <h3>Transactions Per Second</h3>
+                    <h3>每秒处理事务数</h3>
                 </div><!--contenttitle-->
                 <br />
                 <div id="chart_app_load" style="height:300px;"></div>

@@ -31,7 +31,7 @@
 
 <body>
 <div class="bodywrapper">
-    <div class="topheader">
+    <div class="topheader orangeborderbottom5">
         <div class="left">
             <h1 class="logo">APM <span>Admin</span></h1>
             <span class="slogan">后台管理系统</span>
@@ -84,23 +84,29 @@
     </div><!--header-->
     
     <div class="contentwrapper">
-        <div id="updates" class="subcontent" style="width:720px; margin:0 auto; position:relative;">
-        	<ul class="shortcuts" style="width:300px; float:left;">
-                <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:100px;"><h3>App 应用列表</h3></div>
+        <div id="updates" class="subcontent" style="width:800px; margin:0 auto; position:relative;">
+			<!--
+			<div id="agentRegister" style="width:100%; height:30px; clear:both;">
+				<input type="text" id="agentID" name="agentID" placeholder="填写欲注册的ID值" />
+				<input type="button" value="注册"/>
+			</div>
+			-->
+        	<ul class="shortcuts" style="width:350px; float:left;">
+                <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:50px;"><h3>App 应用列表</h3></div>
                 <c:forEach items="${agents}" var="agent">
 <!-- 				<c:if test="${agent.type==1}">
-					<li><a href="hostLoad.do?agentID=<c:out value="${agent.agentID}"/>" class="analytics"><span>主机</span></a>
+					<li><a href="hostLoad.do?agentID=<c:out value="${agent.agentID}"/>" class="tomcat"><span>主机</span></a>
 				</c:if> -->
-				<c:if test="${agent.type==0}">
-					<li><a href="topo.do?agentID=<c:out value="${agent.agentID}"/>"  class="analytics"><span>服务器</span></a>
+				<c:if test="${agent.type==2}">
+					<li><a href="topo.do?agentID=<c:out value="${agent.agentID}"/>"  class="tomcat"><span>服务器</span></a>
 				</c:if>
 				</c:forEach>
             </ul>
-            <ul class="shortcuts" style="width:300px; float:left; padding-left:60px;">
-                <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:100px;"><h3>主机列表</h3></div>
+            <ul class="shortcuts" style="width:350px; float:left; padding-left:60px;">
+                <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:50px;"><h3>主机列表</h3></div>
                 <c:forEach items="${agents}" var="agent">
                 <c:if test="${agent.type==1}">
-                    <li><a href="hostLoad.do?agentID=<c:out value="${agent.agentID}"/>" class="analytics"><span>主机</span></a>
+                    <li><a href="hostLoad.do?agentID=<c:out value="${agent.agentID}"/>" class="host"><span>主机</span></a>
                 </c:if>
                 </c:forEach>
             </ul>

@@ -30,13 +30,6 @@
 $(document).ready(function(){
 });
 </script>
-<body class="loginpage">
-    <div class="loginbox">
-        <div class="loginboxinner">
-            
-            <div class="logo">
-                <h1 class="logo">APM <span>Admin</span></h1>
-                <span class="slogan">后台管理系统</span>
 
 <body class="loginpage">
 	<div class="loginbox">
@@ -50,66 +43,36 @@ $(document).ready(function(){
             <br clear="all" /><br />
             
             <div class="nousername">
-                <div class="loginmsg">密码不正确.</div>
-            </div><!--nousername-->
-            
-            <div class="nopassword">
-                <div class="loginmsg">密码不正确.</div>
-                <div class="loginf">
-				<div class="loginmsg">账号不能为空.</div>
+                <div class="loginmsg">账号不能为空.</div>
             </div><!--nousername-->
             
             <div class="nopassword">
 				<div class="loginmsg">密码不能为空.</div>
-                <!-- <div class="loginf">
->>>>>>> 7358870ddc63cf3c6cf140bd9477a9e967879a47
-                    <div class="thumb"><img alt="" src="images/thumbs/avatar1.png" /></div>
-                    <div class="userlogged">
-                        <h4></h4>
-                        <a href="index.html">Not <span></span>?</a> 
-                    </div>
-<<<<<<< HEAD
-                </div><!--loginf-->
             </div><!--nopassword-->
             
-            <form id="login" action="login.do" method="post">
-                
-                <div class="username">
-                    <div class="usernameinner">
-                        <input type="text" name="username" id="username" />
-                    </div>
-                </div>
-                
-                <div class="password">
-                    <div class="passwordinner">
-                        <input type="password" name="password" id="password" />
-                </div> -->
-            </div><!--nopassword-->
             
             <form id="login" action="signUp.do" method="post">
             	
                 <div class="username">
                 	<div class="usernameinner">
-                    	<input type="text" name="username" id="username" />
+                    	<input type="text" name="username" placeholder="请输入用户名" id="username" />
                     </div>
                 </div>
                 
-                <div class="email">
-                    <div class="emailinner">
-                        <input type="text" name="email" id="email" />
-                    </div>
-                </div>
-
                 <div class="password">
                 	<div class="passwordinner">
-                    	<input type="password" name="password" id="password" />
+                    	<input type="password" name="password" placeholder="请输入密码" id="password" />
+                    </div>
+                </div>
+				
+				<div class="email">
+                    <div class="emailinner">
+                        <input type="text" name="email"  placeholder="请输入邮箱" id="email" />
                     </div>
                 </div>
                 
                 <button>注册</button>
                 
-                <div class="keep"><input type="checkbox" /> 记住密码</div>
-                <div class="register"><a href="signUp.do">注册账号</a></div>
             </form>
             
         </div><!--loginboxinner-->

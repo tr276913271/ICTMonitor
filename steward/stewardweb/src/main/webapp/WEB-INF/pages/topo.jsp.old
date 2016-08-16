@@ -18,7 +18,6 @@
 <script type="text/javascript" src="js/datetimepicker/jquery.simple-dtpicker.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/jcanvas/jcanvas.min.js"></script>
-<script type="text/javascript" src="js/d3/d3.v3.min.js" charset="utf-8"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
 <!--[if IE 9]>
     <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
@@ -29,19 +28,6 @@
 <!--[if lt IE 9]>
 	<script src="js/plugins/css3-mediaqueries.js"></script>
 <![endif]-->
-<style>
-.nodetext {
-    font-size: 12px ;
-    font-family: SimSun;
-    fill:#000000;
-}
-.linetext {
-    font-size: 12px ;
-    font-family: SimSun;
-    fill:#0000FF;
-    fill-opacity:0.0;
-}
-</style>
 <script type="text/javascript">
 var mapData = {
     "nodeDataArray": [{
@@ -308,144 +294,113 @@ var mapData = {
 };
 
 function getNodeEdgeInfo(data){
-    var node_list = [];
-    var node_name_list = [];
-    var edge_list = [];
-    var result_dict = {};
-    var num_node = data['nodeDataArray'].length;
-    var num_edge = data['linkDataArray'].length;
-    $.each(data['nodeDataArray'], function(index, item){
-        node_list.push({
-            'name': item['serviceType'],
-            'image': 'images/d3/'+ item['serviceType'] +'.png'
-        });
-        node_name_list.push(item['serviceType']);
-    });
-    $.each(data['linkDataArray'], function(index, item){
-        //alert(item['sourceInfo']['serviceType'].indexOf(node_name_list));
-        edge_list.push({
-            'source': node_name_list.indexOf(item['sourceInfo']['serviceType']), 
-            'target': node_name_list.indexOf(item['targetInfo']['serviceType']), 
-            'relation': '事务数 '+item['totalCount']
-        });
-    });
-    result_dict['nodes'] = node_list;
-    result_dict['edges'] = edge_list;
-    console.log(result_dict)
-    return result_dict;
+	var node_list = [];
+	var edge_list = [];
+	var result_dict = {};
+	num_node = data['nodeDataArray'].length;
+	num_edge = data['linkDataArray'].length;
+	$.each(data['nodeDataArray'], function(index, item){
+		node_list.push(item['key']);
+	});
+	$.each(data['linkDataArray'], function(index, item){
+		edge_list.push([item['from'],item['to']]);
+	})
+	console.log(node_list);
+	console.log(edge_list);
+	result_dict['node'] = node_list;
+	result_dict['edge'] = edge_list;
+	console.log(result_dict);
+	return result_dict;
 }
 
+// function drawMap(data){
+// 	var topo = $('#canvas_topo');
+// 	var w_1 = 160;
+// 	var h_1 = 160;
+// 	var canvasWidth = 800;
+// 	var canvasHeight = 600;
+
+
+// 	for(i=0;i<data['edge'].length;i++){
+// 		topo.drawImage({
+// 			layer:true,
+// 			name: 'mytoto'+i,
+// 			source: 'images/jcanvas/computer.png',
+// 			x: 200,
+// 			y: 250,
+// 			scale: 0.8
+// 		}).addLayerToGroup('mytopo'+i);
+// 	}
+// }
 
 $(document).ready(function() {
-    
-    var root = getNodeEdgeInfo(mapData);
+  mapInfo = getNodeEdgeInfo(mapData);
+  //drawMap(mapInfo);
+  var w_1 = 68;
+  var h_1 = 68;
+  var canvasWidth = 800;
+  var canvasHeight = 600;
+  var x_1 = canvasWidth/4*1;
+  var x_2 = canvasWidth/4*3;
+  var y_1 = canvasHeight/2 - h_1/2;
+  var y_2 = canvasHeight/2 - h_1/2;
+  $('#canvas_topo').drawImage({
+    layer: true,
+    name: 'mytopo',
+    source: 'images/jcanvas/USER.png',
+    x: x_1, y: y_1,
+    scale: 0.8,
+    // click:function(layer){
+    //   alert('Polly');
+    // }
+  }).drawText({
+    layer: true,
+    name: 'text_1',
+    fillStyle: '#9cf',
+    strokeStyle: '#25a',
+    strokeWidth: 2,
+    x: x_1, y: y_1+40,
+    fontSize: 16,
+    fontFamily: 'Verdana, sans-serif',
+    text: 'USER'
+  }).drawImage({
+    layer: true,
+    name: 'mytopo1',
+    source: 'images/jcanvas/TOMCAT.png',
+    x: x_2, y: y_2,
+    scale: 0.8
+  }).drawText({
+    layer: true,
+    name: 'text_2',
+    fillStyle: '#9cf',
+    strokeStyle: '#25a',
+    strokeWidth: 2,
+    x: x_2, y: y_2+40,
+    fontSize: 16,
+    fontFamily: 'Verdana, sans-serif',
+    text: 'TOMCAT'
+  }).drawLine({
+    layer: true,
+    name: 'mytopo2',
+    strokeStyle: '#000',
+    startArrow: true,
+    arrowRadius: 15,
+    strokeWidth: 5,
+    x1: x_2-w_1/2, y1: y_1,
+    x2: x_1+w_1/2, y2: y_2,
+  }).drawText({
+    layer: true,
+    name: 'mytopo3',
+    fillStyle: '#9cf',
+    strokeStyle: '#25a',
+    strokeWidth: 2,
+    x: (x_1+x_2)/2, y: y_2-20,
+    fontSize: 24,
+    fontFamily: 'Verdana, sans-serif',
+    text: '200'
+  }).addLayerToGroup('mytopo','text_1','text_2', 'mytopo1','mytopo2','mytopo3');
 
-    var width = 800;
-    var height = 600;
-    var img_w = 70;
-    var img_h = 70;
-
-    var svg = d3.select("#topo").append("svg")
-                            .attr("width",width)
-                            .attr("height",height);
-        
-    var force = d3.layout.force()
-                    .nodes(root.nodes)
-                    .links(root.edges)
-                    .size([width,height])
-                    .linkDistance(200)
-                    .charge(-1500)
-                    .start();
-                    
-    var edges_line = svg.selectAll("line")
-                        .data(root.edges)
-                        .enter()
-                        .append("line")
-                        .style("stroke","#CCC")
-                        .style("stroke-width",2);
-                        
-    var edges_text = svg.selectAll(".linetext")
-                        .data(root.edges)
-                        .enter()
-                        .append("text")
-                        .attr("class","linetext")
-                        .text(function(d){
-                            return d.relation;
-                        });
-
-                        
-    var nodes_img = svg.selectAll("image")
-                        .data(root.nodes)
-                        .enter()
-                        .append("image")
-                        .attr("width",img_w)
-                        .attr("height",img_h)
-                        .attr("xlink:href",function(d){
-                            return d.image;
-                        })
-                        .on("mouseover",function(d,i){
-                            //显示连接线上的文字
-                            edges_text.style("fill-opacity",function(edge){
-                                if( edge.source === d || edge.target === d ){
-                                    return 1.0;
-                                }
-                            });
-                        })
-                        .on("mouseout",function(d,i){
-                            //隐去连接线上的文字
-                            edges_text.style("fill-opacity",function(edge){
-                                if( edge.source === d || edge.target === d ){
-                                    return 0.0;
-                                }
-                            });
-                        })
-                        .call(force.drag);
-
-    var text_dx = -15;
-    var text_dy = 15;
-
-    var nodes_text = svg.selectAll(".nodetext")
-                        .data(root.nodes)
-                        .enter()
-                        .append("text")
-                        .attr("class","nodetext")
-                        .attr("dx",text_dx)
-                        .attr("dy",text_dy)
-                        .text(function(d){
-                            return d.name;
-                        });
-
-                        
-    force.on("tick", function(){
-        
-        //限制结点的边界
-        root.nodes.forEach(function(d,i){
-            d.x = d.x - img_w/2 < 0     ? img_w/2 : d.x ;
-            d.x = d.x + img_w/2 > width ? width - img_w/2 : d.x ;
-            d.y = d.y - img_h/2 < 0      ? img_h/2 : d.y ;
-            d.y = d.y + img_h/2 + text_dy > height ? height - img_h/2 - text_dy : d.y ;
-        });
-
-        //更新连接线的位置
-         edges_line.attr("x1",function(d){ return d.source.x; });
-         edges_line.attr("y1",function(d){ return d.source.y; });
-         edges_line.attr("x2",function(d){ return d.target.x; });
-         edges_line.attr("y2",function(d){ return d.target.y; });
-         
-         //更新连接线上文字的位置
-         edges_text.attr("x",function(d){ return (d.source.x + d.target.x) / 2 ; });
-         edges_text.attr("y",function(d){ return (d.source.y + d.target.y) / 2 ; });
-         
-         
-         //更新结点图片和文字
-         nodes_img.attr("x",function(d){ return d.x - img_w/2; });
-         nodes_img.attr("y",function(d){ return d.y - img_h/2; });
-         
-         nodes_text.attr("x",function(d){ return d.x });
-         nodes_text.attr("y",function(d){ return d.y + img_w/2; });
-    });
 });
-
 </script>
 </head>
 <body>
@@ -498,7 +453,7 @@ $(document).ready(function() {
     	<ul class="headermenu">
             <li class="current"><a onclick='navjump(0)'><span class="icon icon-flatscreen"></span>业务流拓扑</a></li>
             <li><a onclick='navjump(1)'><span class="icon icon-pencil"></span>业务流性能表现</a></li>
-            <li><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载</a></li>
+            <li><a onclick='navjump(2)'><span class="icon icon-chart"></span>应用级负载均衡</a></li>
             <li><a onclick='navjump(3)'><span class="icon icon-speech"></span>慢调用</a></li>
             <li><a onclick='navjump(4)'><span class="icon icon-message"></span>出错调用</a></li>
         </ul>
@@ -520,8 +475,8 @@ $(document).ready(function() {
     	<div id="charts" class="subcontent">
     	
 <!--             <iframe src="topo_canvas.html" width="100%" height="700px" seamless="seamless" scrolling="no"></iframe> -->
-        	  	<div id="topo" style="width:800px; height:auto; margin:0 auto;">
-			   		<!-- <canvas id="canvas_topo" width="800" height="500"></canvas> -->
+        	  	<div style="width:800px; height:auto; margin:0 auto;">
+			   		<canvas id="canvas_topo" width="800" height="500"></canvas>
 			  	</div>
         </div><!--#charts-->
 
