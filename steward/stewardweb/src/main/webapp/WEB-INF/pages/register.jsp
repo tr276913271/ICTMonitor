@@ -80,7 +80,7 @@ $(document).ready(function(){
                 </div>
                 
                 <button>注册</button>
-                
+                <div class="register"><a href="login.do">登录账号</a></div>
             </form>
             
         </div><!--loginboxinner-->

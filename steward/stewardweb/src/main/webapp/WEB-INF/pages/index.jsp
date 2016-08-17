@@ -27,6 +27,16 @@
 <!--[if lt IE 9]>
 	<script src="js/plugins/css3-mediaqueries.js"></script>
 <![endif]-->
+<style>
+.signuplink {
+	color: #FB9337;
+	font-weight: bold;
+	font-size: 12px;
+}
+.signuplink:hover {
+	color: red;
+}
+</style>
 </head>
 
 <body>
@@ -92,7 +102,7 @@
 			</div>
 			-->
         	<ul class="shortcuts" style="width:350px; float:left;">
-                <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:50px;"><h3>App 应用列表</h3></div>
+                <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:50px;"><h3>应用列表<span style="float:right;"><a class="signuplink" href="signUpApp.do">添加应用监控</a></span></h3></div>
                 <c:forEach items="${agents}" var="agent">
 <!-- 				<c:if test="${agent.type==1}">
 					<li><a href="hostLoad.do?agentID=<c:out value="${agent.agentID}"/>" class="tomcat"><span>主机</span></a>
@@ -103,7 +113,7 @@
 				</c:forEach>
             </ul>
             <ul class="shortcuts" style="width:350px; float:left; padding-left:60px;">
-                <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:50px;"><h3>主机列表</h3></div>
+                <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:50px;"><h3>主机列表<span style="float:right;"><a class="signuplink" href="signUpHost.do">添加主机监控</a></span></h3></div>
                 <c:forEach items="${agents}" var="agent">
                 <c:if test="${agent.type==1}">
                     <li><a href="hostLoad.do?agentID=<c:out value="${agent.agentID}"/>" class="host"><span>主机</span></a>
