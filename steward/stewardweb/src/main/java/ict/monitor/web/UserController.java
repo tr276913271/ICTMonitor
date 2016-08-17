@@ -57,15 +57,57 @@ public class UserController {
 		}
 	}
 	
-	@RequestMapping(value = "/signUpAgentID.do")
-	public ModelAndView signUpAgentID(HttpServletRequest request) {
+	@RequestMapping(value = "/signUpApp.do")
+	public String signUpApp(HttpServletRequest request, Model model) {
+		User userInfo = (User) request.getSession().getAttribute("userInfo");
+		if(userInfo==null){
+			return "redirect:login.do";
+		}
 		UUID uuid = UUID.randomUUID();
+		String uuidstr = uuid.toString();
+		uuidstr = uuidstr.substring(0, 18);
+		model.addAttribute("uuidstr", uuidstr);
+		return "signUpApp";
+	}
+	
+	@RequestMapping(value = "/signUpHost.do")
+	public String signUpHost(HttpServletRequest request, Model model) {
+		User userInfo = (User) request.getSession().getAttribute("userInfo");
+		if(userInfo==null){
+			return "redirect:login.do";
+		}
+		UUID uuid = UUID.randomUUID();
+		String uuidstr = uuid.toString();
+		uuidstr = uuidstr.substring(0, 18);
+		model.addAttribute("uuidstr", uuidstr);
+		return "signUpHost";
+	}
+	
+	@RequestMapping(value = "/signUpAgentID.do")
+	@ResponseBody
+	public String signUpAgentID(HttpServletRequest request, String agentid, int type) {
 		HttpSession session = request.getSession(true);
 		User user = (User) session.getAttribute("userInfo");
-		agentDao.insert(new Agent(user.getId(),uuid.toString(),1));
-		
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("agentID",uuid.toString());
-		return new ModelAndView("signUpAgentID", data);
+		if(user == null) {
+			return "请先登录！";
+		}
+		try {
+			agentDao.insert(new Agent(user.getId(), agentid, type));
+		} catch(Exception e) {
+			return "失败！";
+		}
+		return "success";
 	}
+	
+//	@RequestMapping(value = "/signUpAgentID.do")
+//	public ModelAndView signUpAgentID(HttpServletRequest request) {
+//		UUID uuid = UUID.randomUUID();
+//		HttpSession session = request.getSession(true);
+//		User user = (User) session.getAttribute("userInfo");
+//		agentDao.insert(new Agent(user.getId(),uuid.toString(),1));
+//		
+//		Map<String, Object> data = new HashMap<String, Object>();
+//		data.put("agentID",uuid.toString());
+//		return new ModelAndView("signUpAgentID", data);
+//	}
 }
