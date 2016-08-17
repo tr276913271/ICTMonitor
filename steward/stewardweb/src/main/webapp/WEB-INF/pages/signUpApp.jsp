@@ -177,7 +177,7 @@ function signupapp(uuid) {
 	$.ajax({
 	   type: "GET",
 	   url: '/stewardweb/signUpAgentID.do?',
-	   data: 'agentid=' + uuid + '&type=1',
+	   data: 'agentid=' + uuid + '&type=2',
 	   success: function(msg){
 		   if(msg == 'success') {
 	        	alert("注册成功！")
