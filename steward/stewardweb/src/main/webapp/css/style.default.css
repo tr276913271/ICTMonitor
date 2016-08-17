@@ -574,17 +574,17 @@ body.withmenucoll2 { background-position: 35px 0; } /* with menu style 2 in coll
 
 .shortcuts { list-style: none; }
 .shortcuts li { 
-	float: left; margin-right: 20px; margin-bottom: 20px; width: 100px; height: 100px; background: #eee; 
+	float: left; margin-right: 20px; margin-bottom: 20px; width: 130px; height: 130px; background: #eee; 
 	padding: 10px; -moz-border-radius: 2px; -webkit-border-radius: 2px;  border-radius: 2px; position: relative; 
 	-moz-box-shadow: inset 1px 1px 2px #ccc; -webkit-box-shadow: inset 1px 1px 2px #ccc; box-shadow: inset 1px 1px 2px #ccc;
 }
 .shortcuts li a { 
-	width: 98px; height: 98px; display: block; background-color: #fff; background-repeat: no-repeat; background-position: center 10px; 
+	width: 128px; height: 128px; display: block; background-color: #fff; background-repeat: no-repeat; background-position: center 10px; 
 	border: 1px solid #fff; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px;
 }
 .shortcuts li a:hover { border-color: #FB9337; }
 .shortcuts li a span { 
-	text-align: center; display: block; padding-top: 70px; font-family: 'RobotoBoldCondensed', Arial, Helvetica, sans-serif; 
+	text-align: center; display: block; padding-top: 100px; font-family: 'RobotoBoldCondensed', Arial, Helvetica, sans-serif; 
 	text-transform: uppercase;
 }
 .shortcuts li a.settings { background-image: url(../images/icons/64/settings.png); }
@@ -592,6 +592,8 @@ body.withmenucoll2 { background-position: 35px 0; } /* with menu style 2 in coll
 .shortcuts li a.gallery { background-image: url(../images/icons/64/images.png); }
 .shortcuts li a.events { background-image: url(../images/icons/64/events.png); }
 .shortcuts li a.analytics { background-image: url(../images/icons/64/analytics.png); }
+.shortcuts li a.tomcat { background-image:url(../images/icons/64/TOMCAT.png); }
+.shortcuts li a.host { background-image:url(../images/icons/64/computer.png); background-size:75%;}
 
 
 .toplist { list-style: none; }
