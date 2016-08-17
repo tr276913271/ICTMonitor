@@ -46,6 +46,12 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+.metadata
+.recommenders
+.settings
+.project
+RemoteSystemTempFiles
+Servers
 
 steward/agent/target
 steward/common/target
@@ -56,3 +62,5 @@ steward/agent/.classpath
 steward/common/.classpath
 steward/communication/.classpath
 steward/stewardweb/.classpath
+steward/stewardweb/src/main/resources/applicationContext.xml
+steward/stewardweb/src/main/resources/config.properties
