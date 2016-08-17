@@ -353,7 +353,7 @@ $(document).ready(function() {
                     .nodes(root.nodes)
                     .links(root.edges)
                     .size([width,height])
-                    .linkDistance(200)
+                    .linkDistance(250)
                     .charge(-1500)
                     .start();
                     
@@ -369,6 +369,7 @@ $(document).ready(function() {
                         .enter()
                         .append("text")
                         .attr("class","linetext")
+                        .style("fill-opacity", 1.0)
                         .text(function(d){
                             return d.relation;
                         });
@@ -395,7 +396,7 @@ $(document).ready(function() {
                             //隐去连接线上的文字
                             edges_text.style("fill-opacity",function(edge){
                                 if( edge.source === d || edge.target === d ){
-                                    return 0.0;
+                                    return 1.0;
                                 }
                             });
                         })
