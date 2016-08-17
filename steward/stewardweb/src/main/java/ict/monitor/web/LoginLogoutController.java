@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
 
 import ict.monitor.bean.User;
 import ict.monitor.dao.UserDao;
@@ -16,12 +17,14 @@ public class LoginLogoutController {
 	private UserDao userDao;
 	
 	@RequestMapping(value = "/login.do")
-	public String login (HttpServletRequest request,User user) {
-		if(user==null){
+	public String login (HttpServletRequest request, Model model, User user) {
+		if(user.getUsername()==null){
+			model.addAttribute("msg", "none");
 			return "login";
 		} else {
 			User findUser = userDao.findUserByUserNameAndPassword(user);
 			if(findUser==null){
+				model.addAttribute("msg", "用户名或密码错误！");
 				return "login";	
 			}
 			request.getSession().setAttribute("loged", true);

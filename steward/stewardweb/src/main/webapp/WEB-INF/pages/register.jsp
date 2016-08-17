@@ -42,14 +42,16 @@ $(document).ready(function(){
             
             <br clear="all" /><br />
             
-            <div class="nousername">
-                <div class="loginmsg">账号不能为空.</div>
-            </div><!--nousername-->
-            
-            <div class="nopassword">
-				<div class="loginmsg">密码不能为空.</div>
-            </div><!--nopassword-->
-            
+            <c:choose>
+	            <c:when test="${msg=='none'}">
+	            </c:when>
+	            
+	            <c:otherwise>
+	            <div class="nousername">
+	                <div class="loginmsg">${msg}</div>
+	            </div>
+	            </c:otherwise>
+            </c:choose>
             
             <form id="login" action="signUp.do" method="post">
             	
@@ -62,6 +64,12 @@ $(document).ready(function(){
                 <div class="password">
                 	<div class="passwordinner">
                     	<input type="password" name="password" placeholder="请输入密码" id="password" />
+                    </div>
+                </div>
+                
+                <div class="password">
+                	<div class="passwordinner">
+                    	<input type="password" name="password2" placeholder="请输入密码" id="password2" />
                     </div>
                 </div>
 				
@@ -81,25 +89,3 @@ $(document).ready(function(){
 
 </body>
 </html>
-
-
-
-
-<!--
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Login</title>
-</head>
-<body>
-	<form action="login.do" method="post">
-		账户：<input type="text" name="username"/>
-		密码：<input type="password" name="password"/>
-		<input type="submit" value="提交"> 
-	</form>
-	
-	<a href="signUp.do">注册</a>
-</body>
-</html>
---> 
