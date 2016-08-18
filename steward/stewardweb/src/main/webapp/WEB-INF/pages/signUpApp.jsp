@@ -15,6 +15,7 @@
 <title>APM 注册应用</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
 <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/custom/general.js"></script>
 <!--[if IE 9]>
     <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
 <![endif]-->
@@ -56,6 +57,20 @@ pre {
   -moz-border-radius: 4px;
   border-radius: 4px;
 }
+#input_appname {
+	padding:8px 5px;
+	border:1px solid #ccc;
+	border-radius:2px;
+	background:#fcfcfc;
+	vertical-align:middle; 
+	-moz-box-shadow: inset 0 1px 3px #ddd; 
+	-webkit-box-shadow: inset 0 1px 3px #ddd;
+	box-shadow: inset 0 1px 3px #ddd;
+	background: #fcfcfc; 
+	color: #c25;
+	margin-right: 10px;
+	width:200px;
+}
 </style>
 </head>
 
@@ -66,14 +81,14 @@ pre {
             <h1 class="logo">APM <span>Admin</span></h1>
             <span class="slogan">后台管理系统</span>
             
-            <div class="search">
+            <!-- <div class="search">
                 <form action="" method="post">
                     <input type="datetime-local" name="time_start" />
                     <input type="datetime-local" name="time_end" />
-                    <!-- <input type="text" name="keyword" id="keyword" value="请输入" /> -->
+                    <input type="text" name="keyword" id="keyword" value="请输入" />
                     <button class="submitbutton"></button>
                 </form>
-            </div><!--search-->
+            </div> --><!--search-->
             
             <br clear="all" />
             
@@ -153,12 +168,12 @@ pre {
                     <h3>4. 注册Agent</h3>
                 </div>
                 <div class="profile_about">
-                	<p>上述步骤确认完成后，点击“注册”按钮，向服务器注册新接入的应用</p>
-                    <p><code>${uuidstr}</code> <button id="btn_signup" onclick="signupapp('${uuidstr}')" class="stdbtn btn_orange">注册</button></p>
+                	<p>上述步骤确认完成后，将第三步使用的ApplicationName填入下方，然后点击“注册”按钮，向服务器注册新接入的应用</p>
+                    <p><input type="text" id="input_appname" value="${uuidstr}-tomcat" /><button id="btn_signup" onclick="signupapp()" class="stdbtn btn_orange">注册</button></p>
                 </div>
                 
                 <div class="contenttitle2">
-                    <h3>4. 浏览</h3>
+                    <h3>5. 浏览</h3>
                 </div>
                 <div class="profile_about">
                     <p>回到<a href="/stewardweb/index.do" class="orangeboldlink">主页</a>，即可看到新接入的应用已在列表中</p>
@@ -173,11 +188,12 @@ pre {
 
 </body>
 <script>
-function signupapp(uuid) {
+function signupapp() {
+	//TODO: input检查
 	$.ajax({
 	   type: "GET",
 	   url: '/stewardweb/signUpAgentID.do?',
-	   data: 'agentid=' + uuid + '&type=2',
+	   data: 'agentid=' + $("#input_appname").val() + '&type=2',
 	   success: function(msg){
 		   if(msg == 'success') {
 	        	alert("注册成功！")

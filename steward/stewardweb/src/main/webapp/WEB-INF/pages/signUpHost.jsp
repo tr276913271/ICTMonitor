@@ -15,6 +15,7 @@
 <title>APM 注册主机</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
 <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/custom/general.js"></script>
 <!--[if IE 9]>
     <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
 <![endif]-->
@@ -66,14 +67,14 @@ pre {
             <h1 class="logo">APM <span>Admin</span></h1>
             <span class="slogan">后台管理系统</span>
             
-            <div class="search">
+            <!-- <div class="search">
                 <form action="" method="post">
                     <input type="datetime-local" name="time_start" />
                     <input type="datetime-local" name="time_end" />
-                    <!-- <input type="text" name="keyword" id="keyword" value="请输入" /> -->
+                    <input type="text" name="keyword" id="keyword" value="请输入" />
                     <button class="submitbutton"></button>
                 </form>
-            </div><!--search-->
+            </div> --><!--search-->
             
             <br clear="all" />
             

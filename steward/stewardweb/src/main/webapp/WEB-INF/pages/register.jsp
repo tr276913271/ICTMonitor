@@ -12,10 +12,9 @@
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>APM 注册页面</title>
+<title>APM 注册</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
-   <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
-   <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
 <!--[if IE 9]>
     <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
 <![endif]-->
@@ -42,14 +41,16 @@ $(document).ready(function(){
             
             <br clear="all" /><br />
             
-            <div class="nousername">
-                <div class="loginmsg">账号不能为空.</div>
-            </div><!--nousername-->
-            
-            <div class="nopassword">
-				<div class="loginmsg">密码不能为空.</div>
-            </div><!--nopassword-->
-            
+            <c:choose>
+	            <c:when test="${msg=='none'}">
+	            </c:when>
+	            
+	            <c:otherwise>
+	            <div class="nousername">
+	                <div class="loginmsg">${msg}</div>
+	            </div>
+	            </c:otherwise>
+            </c:choose>
             
             <form id="login" action="signUp.do" method="post">
             	
@@ -64,6 +65,12 @@ $(document).ready(function(){
                     	<input type="password" name="password" placeholder="请输入密码" id="password" />
                     </div>
                 </div>
+                
+                <div class="password">
+                	<div class="passwordinner">
+                    	<input type="password" name="password2" placeholder="请再次输入密码" id="password2" />
+                    </div>
+                </div>
 				
 				<div class="email">
                     <div class="emailinner">
@@ -72,7 +79,7 @@ $(document).ready(function(){
                 </div>
                 
                 <button>注册</button>
-                
+                <div class="register"><a href="login.do">登录账号</a></div>
             </form>
             
         </div><!--loginboxinner-->
@@ -81,25 +88,3 @@ $(document).ready(function(){
 
 </body>
 </html>
-
-
-
-
-<!--
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Login</title>
-</head>
-<body>
-	<form action="login.do" method="post">
-		账户：<input type="text" name="username"/>
-		密码：<input type="password" name="password"/>
-		<input type="submit" value="提交"> 
-	</form>
-	
-	<a href="signUp.do">注册</a>
-</body>
-</html>
---> 

@@ -46,15 +46,50 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/signUp.do")
-	public String signUp(String username, String password) {
-		if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+	public String signUp(Model model, String username, String password, String password2, String email) {
+		if (username == null) {
+			model.addAttribute("msg", "none");
 			return "register";
 		} else {
-			User user = new User(username, password);
-			userDao.insert(user);
-
-			return "redirect:login.do";
+			if (StringUtils.isEmpty(username)) {
+				model.addAttribute("msg", "用户名不能为空！");
+				return "register";
+			}
+			if (StringUtils.isEmpty(password)) {
+				model.addAttribute("msg", "密码不能为空！");
+				return "register";
+			}
+//			if (StringUtils.isEmpty(email)) {
+//				model.addAttribute("msg", "邮箱不能为空！");
+//				return "register";
+//			}
+			if (StringUtils.length(username) < 3 || StringUtils.length(username) > 15) {
+				model.addAttribute("msg", "用户名长度在3~15之间！");
+				return "register";
+			}
+			if (StringUtils.length(password) < 6 || StringUtils.length(password) > 15) {
+				model.addAttribute("msg", "密码长度在6~15之间！");
+				return "register";
+			}
+			if (!StringUtils.equals(password, password2)) {
+				model.addAttribute("msg", "两次输入密码不一致！");
+				return "register";
+			}
+			else {
+				User ifuser = userDao.findUserByUserName(username);
+				if (ifuser == null) {
+					User user = new User(username, password);
+					userDao.insert(user);
+					return "redirect:login.do";
+				} else {
+					model.addAttribute("msg", "该用户名已存在！");
+					return "register";
+				}
+				
+				
+			}
 		}
+		
 	}
 	
 	@RequestMapping(value = "/signUpApp.do")

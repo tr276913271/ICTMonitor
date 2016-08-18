@@ -118,7 +118,7 @@ public class MonitorController {
 	@RequestMapping(value = "/getServerMapData.do")
 	@ResponseBody
 	public String serverMapData(String application, long from, long to, String serviceTypeName) {
-		String url = WebContext.PINPOINT + "/getServerMapData.pinpoint?application=" + application + "&from=" + from + "&to=" + to +  "&serviceTypeName=" + serviceTypeName;
+		String url = WebContext.PINPOINT + "/getServerMapData.pinpoint?applicationName=" + application + "&from=" + from + "&to=" + to +  "&serviceTypeName=" + serviceTypeName;
 		return getJsonFromPinpoint(url);
 	}
 	
