@@ -5,6 +5,10 @@
 			SELECT * FROM user
 	</select>
 	
+	<select id="findUserByUserName" resultType="ict.monitor.bean.User">
+			SELECT * FROM user WHERE username=#{username}
+	</select>
+	
 	<select id="findUserByUserNameAndPassword" resultType="ict.monitor.bean.User">
 			SELECT * FROM user WHERE username=#{username} AND password=#{password}
 	</select>

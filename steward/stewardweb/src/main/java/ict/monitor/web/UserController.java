@@ -76,9 +76,17 @@ public class UserController {
 				return "register";
 			}
 			else {
-				User user = new User(username, password);
-				userDao.insert(user);
-				return "redirect:login.do";
+				User ifuser = userDao.findUserByUserName(username);
+				if (ifuser == null) {
+					User user = new User(username, password);
+					userDao.insert(user);
+					return "redirect:login.do";
+				} else {
+					model.addAttribute("msg", "该用户名已存在！");
+					return "register";
+				}
+				
+				
 			}
 		}
 		
