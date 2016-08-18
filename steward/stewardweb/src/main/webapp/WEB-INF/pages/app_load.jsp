@@ -62,7 +62,7 @@ function getPointStart(data){
 
 $(document).ready(function() {
 
-    var json_url = "/stewardweb/getScatterData.do?application=appName&from=1459158066000&to=1459339969000&limit=5000&v=2";
+	var json_url = "/stewardweb/getScatterData.do?agentID=" + agentID + "&from=" + sttime + "&to=" + endtime + "&limit=5000&v=2";
     $.getJSON(json_url,function(data,status){
         data_performance = data;
     });
@@ -191,7 +191,7 @@ function submitSearchForm(){
 	sttime = stamp_from.getTime();
     endtime = stamp_to.getTime();
     
-	var json_url = '/stewardweb/getScatterData.do?application='+ appName+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&v=2';
+	var json_url = '/stewardweb/getScatterData.do?agentID='+ agentID+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&v=2';
     $.getJSON(json_url,function(data,status){
         data_performance = data;
     });

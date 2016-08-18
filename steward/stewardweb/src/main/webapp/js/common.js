@@ -1,6 +1,7 @@
 var agentID = '';
 var sttime = 0;
 var endtime = 0;
+var threshold = 10;
 
 // 获取url中参数的值
 function getUrlParam(name) {

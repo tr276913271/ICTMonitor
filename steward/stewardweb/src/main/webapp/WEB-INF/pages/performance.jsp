@@ -25,7 +25,7 @@ var data_performance = {"resultTo":1462699595000,"scatter":[[1462699593649,12749
 
 $(document).ready(function(){
 
-    var json_url = "/stewardweb/getScatterData.do?application=appName&from=1459158066000&to=1459339969000&limit=5000&v=2";
+    var json_url = "/stewardweb/getScatterData.do?agentID=" + agentID + "&from=" + sttime + "&to=" + endtime + "&limit=5000&v=2";
     $.getJSON(json_url,function(data,status){  
         data_performance = data;
     });
@@ -402,7 +402,7 @@ function submitSearchForm(){
     //$('input[name=from]').val(stamp_from.getTime());
     //$('input[name=to]').val(stamp_to.getTime());
     //$('#searchForm').submit();
-    var json_url = '/stewardweb/getScatterData.do?application='+ appName+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&v=2';
+    var json_url = '/stewardweb/getScatterData.do?agentID='+ agentID+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&v=2';
     $.getJSON(json_url,function(data,status){
         data_performance = data;
     });

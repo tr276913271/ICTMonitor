@@ -370,7 +370,7 @@ function getSlowCallData(data){
 };
 
 function getDataByTime(time_start, time_end){
-    var json_url = "/stewardweb/getScatterData.do?application=appName&from="+time_start+"&to="+time_end+"&limit=5000&v=2";
+    var json_url = "/stewardweb/getScatterData.do?agentID=" + agentID + "&from="+time_start+"&to="+time_end+"&limit=5000&v=2";
     $.getJSON(json_url,function(data){  
         $.each(data,function(i,item){  
             alert(item);
@@ -386,7 +386,7 @@ function getDataByTime(time_start, time_end){
 $(document).ready(function(){
 	
 	
-	var json_url = '/stewardweb/transactionSlowMetadata.do?application=tomcat&from=' + sttime.toString() + '&to=' +endtime.toString() + '&limit=5000&v=2';
+	var json_url = '/stewardweb/transactionSlowMetadata.do?agentID=' + agentID + '&from=' + sttime + '&to=' +endtime + '&limit=5000&v=2&threshold=' + threshold;
     $.getJSON(json_url,function(data,status){
     	data_slow_call = data;
         //console.log(data);
@@ -442,7 +442,7 @@ function submitSearchForm(){
     //$('#searchForm').submit();
 
     //var json_url = '/stewardweb/transactionSlowMetadata.do?application='+appName+'&from=' + sttime.toString() + '&to=' +endtime.toString() + '&limit=5000';
-	var json_url = '/stewardweb/transactionSlowMetadata.do?application='+ appName+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&&threshold=7';
+	var json_url = '/stewardweb/transactionSlowMetadata.do?agentID='+ agentID+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&&threshold=7';
     $.getJSON(json_url,function(data,status){
         data_slow_call = data;
         //console.log('SlowCallData:'+data);
