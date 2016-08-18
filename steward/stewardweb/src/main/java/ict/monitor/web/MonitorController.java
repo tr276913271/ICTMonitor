@@ -103,22 +103,22 @@ public class MonitorController {
 
 	@RequestMapping(value = "/transactionErrorMetadata.do")
 	@ResponseBody
-	public String transactionErrorMetadata(String application, long from, long to, int limit) {
-		String url = WebContext.PINPOINT + "/transactionErrorMetadata.pinpoint?application=" + application + "&from=" + from + "&to=" + to + "&limit=" + limit;
+	public String transactionErrorMetadata(String agentID, long from, long to, int limit) {
+		String url = WebContext.PINPOINT + "/transactionErrorMetadata.pinpoint?application=" + agentID + "&from=" + from + "&to=" + to + "&limit=" + limit;
 		return getJsonFromPinpoint(url);
 	}
 
 	@RequestMapping(value = "/transactionSlowMetadata.do")
 	@ResponseBody
-	public String transactionSlowMetadata(String application, long from, long to, int limit, int threshold) {
-		String url = WebContext.PINPOINT + "/transactionSlowMetadata.pinpoint?application=" + application + "&from=" + from + "&to=" + to + "&limit=" + limit + "&threshold=" + threshold;
+	public String transactionSlowMetadata(String agentID, long from, long to, int limit, int threshold) {
+		String url = WebContext.PINPOINT + "/transactionSlowMetadata.pinpoint?application=" + agentID + "&from=" + from + "&to=" + to + "&limit=" + limit + "&threshold=" + threshold;
 		return getJsonFromPinpoint(url);
 	}
 	
 	@RequestMapping(value = "/getServerMapData.do")
 	@ResponseBody
-	public String serverMapData(String application, long from, long to, String serviceTypeName) {
-		String url = WebContext.PINPOINT + "/getServerMapData.pinpoint?applicationName=" + application + "&from=" + from + "&to=" + to +  "&serviceTypeName=" + serviceTypeName;
+	public String serverMapData(String agentID, long from, long to, String serviceTypeName) {
+		String url = WebContext.PINPOINT + "/getServerMapData.pinpoint?applicationName=" + agentID + "&from=" + from + "&to=" + to +  "&serviceTypeName=" + serviceTypeName;
 		return getJsonFromPinpoint(url);
 	}
 	
@@ -188,8 +188,8 @@ public class MonitorController {
 	 */
 	@RequestMapping(value = "/getScatterData.do")
 	@ResponseBody
-	public String scatterData(String application, long from, long to, int limit) {
-		String url = WebContext.PINPOINT + "/getScatterData.pinpoint?application=" + application + "&from=" + from + "&to=" + to + "&limit=" + limit+"&v=2";
+	public String scatterData(String agentID, long from, long to, int limit) {
+		String url = WebContext.PINPOINT + "/getScatterData.pinpoint?application=" + agentID + "&from=" + from + "&to=" + to + "&limit=" + limit+"&v=2";
 		return getJsonFromPinpoint(url);
 	}
 	/**
