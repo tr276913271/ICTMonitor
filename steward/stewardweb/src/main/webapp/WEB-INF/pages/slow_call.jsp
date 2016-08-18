@@ -14,12 +14,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APM 慢调用</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
+<link rel="stylesheet" href="css/jquery.dataTables.min.css" type="text/css" />
 <link type="text/css" href="css/jquery.simple-dtpicker.css" rel="stylesheet" />
 <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
 <!-- <script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script> -->
 <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
 <script type="text/javascript" src="js/datetimepicker/jquery.simple-dtpicker.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/highcharts/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
 var data_slow_call = [{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":5,"spanId":-8244457100962795228,"parentSpanId":-1,"startTime":1462699466130,"elapsed":127499,"rpc":"/httpclient4/getTwitterUrlCount.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":1,"spanEventBoList":null,"collectorAcceptTime":1462699593649,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^5"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":4,"spanId":-167382249182572870,"parentSpanId":-1,"startTime":1462699123898,"elapsed":256162,"rpc":"/httpclient4/getGeoCode.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699380083,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^4"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":3,"spanId":1022438039493983549,"parentSpanId":-1,"startTime":1462699112204,"elapsed":3010,"rpc":"/sleep3.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699115218,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^3"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":2,"spanId":-5728347098437728309,"parentSpanId":-1,"startTime":1462699098174,"elapsed":10053,"rpc":"/consumeCpu.pinpoint","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699108229,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^2"},{"version":0,"agentId":"test1001","applicationId":"appName","agentStartTime":1462699069318,"traceAgentId":"test1001","traceAgentStartTime":1462699069318,"traceTransactionSequence":0,"spanId":1394612279845866822,"parentSpanId":-1,"startTime":1462699085667,"elapsed":748,"rpc":"/","serviceType":"TOMCAT","endPoint":"180.153.44.108:8090","apiId":-1,"annotationBoList":null,"flag":0,"errCode":0,"spanEventBoList":null,"collectorAcceptTime":1462699086690,"exceptionId":0,"exceptionMessage":null,"exceptionClass":null,"remoteAddr":"159.226.43.45","root":true,"transactionId":"test1001^1462699069318^0"}];
 
@@ -406,6 +408,7 @@ $(document).ready(function(){
             'background':'transparent'
         });
     });
+    $('#table_root').DataTable();
     //$('#form_searchByTime>button').click(function(){
     //    var time_start = $('input[name="time_start"]').val();
     //    var time_end = $('input[name="time_end"]').val();
@@ -554,8 +557,7 @@ function submitSearchForm(){
     </div><!--pageheader-->
     
     <div class="contentwrapper">
-    
-        <table cellpadding="0" cellspacing="0" border="0" class="stdtable">
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable" id="table_root">
             <colgroup>
                 <col class="con0" />
                 <col class="con1" />

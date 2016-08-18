@@ -337,7 +337,23 @@ function getNodeEdgeInfo(data){
 
 
 $(document).ready(function() {
-    
+    var serviceTypeName_url = "/stewardweb/serviceTypeName.do?agentID="+agentID;
+    $.get(serviceTypeName_url, function(data, status){
+        console.log('serviceTypeName:'+data);
+        var serviceTypeName = data;
+        var d = new Date();
+        var data_url = "/stewardweb/getServerMapData.do?agentID="+agentID+"&from="+sttime+"&to="+endtime+"&serviceTypeName="+serviceTypeName+"&_="+d.getTime();
+        console.log('data_url:'+data_url);
+        $.getJSON(data_url, function(data,status){
+            console.log('mapData:'+data);
+        });
+    });
+    /*
+    var json_url = "/stewardweb/getServerMapData.do?agentID="+agentID+"&from="+sttime+"&to="+endtime+"&serviceTypeName="+"";
+    $.getJSON(json_url,function(data,status){  
+        data_performance = data;
+    });
+    */
     var root = getNodeEdgeInfo(mapData);
 
     var width = 800;

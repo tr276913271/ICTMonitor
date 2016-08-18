@@ -27,11 +27,11 @@ function initFormPlugin(){
 	    //alert(d.getTime());
 	    $('input[name=to]').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds());
 	    $('input[name=to]').appendDtpicker();
-	    sttime = d.getTime();
+	    endtime = d.getTime();
 	    d.setDate(d.getDate() - 1);
 	    $('input[name=from]').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + d.getHours() + ':' + d.getMinutes());
 	    $('input[name=from]').appendDtpicker();
-	    endtime = d.getTime();
+	    sttime = d.getTime();
 	}
 }
 
