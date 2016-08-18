@@ -19,6 +19,7 @@
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/jcanvas/jcanvas.min.js"></script>
 <script type="text/javascript" src="js/d3/d3.v3.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/custom/general.js"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
 <!--[if IE 9]>
     <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
@@ -478,16 +479,16 @@ $(document).ready(function() {
         	</div>
 			-->
         	<div class="userinfo">
-                <img src="images/thumbs/avatar.png" alt="" />
-                <span>管理员</span>
+            	<img src="images/thumbs/avatar.png" alt="" />
+                <span>${sessionScope.userInfo.username}</span>
             </div><!--userinfo-->
             
             <div class="userinfodrop">
                 <div class="userdata">
-                    <h4>管理员</h4>
+                    <h4>${sessionScope.userInfo.username}</h4>
                     <span class="email">youremail@yourdomain.com</span>
                     <ul>
-                        <li><a href="index.html">退出</a></li>
+                        <li><a href="logout.do">退出</a></li>
                     </ul>
                 </div><!--userdata-->
             </div><!--userinfodrop-->

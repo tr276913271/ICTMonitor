@@ -12,16 +12,9 @@
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>APM 登录页面</title>
+<title>APM 登录</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
-<script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
-<script type="text/javascript" src="js/custom/general.js"></script>
-<script type="text/javascript" src="js/custom/index.js"></script>
-   <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
-   <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src=js/highcharts/jquery-1.8.3.min.js></script>
 <!--[if IE 9]>
     <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
 <![endif]-->
@@ -42,7 +35,7 @@ $(document).ready(function(){
             
             <div class="logo">
                 <h1 class="logo">APM <span>Admin</span></h1>
-                <span class="slogan">后台管理系统</span>
+                <span class="slogan">账号登录</span>
             </div><!--logo-->
             
             <br clear="all" /><br />
@@ -72,7 +65,7 @@ $(document).ready(function(){
                     </div>
                 </div>
                 
-                <button>登录</button>
+                <button id="login">登录</button>
                 
                 <div class="keep"><input type="checkbox" /> 记住密码</div>
                 <div class="register"><a href="signUp.do">注册账号</a></div>

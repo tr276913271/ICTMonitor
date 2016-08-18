@@ -19,6 +19,7 @@
 <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
 <script type="text/javascript" src="js/datetimepicker/jquery.simple-dtpicker.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/custom/general.js"></script>
 <script>
 var data_performance = {"resultTo":1462699595000,"scatter":[[1462699593649,127499,"test1001^1462699069318^5",0],[1462699380083,256162,"test1001^1462699069318^4",1],[1462699115218,3010,"test1001^1462699069318^3",1],[1462699108229,10053,"test1001^1462699069318^2",1],[1462699087343,9,"test1001^1462699069318^1",1],[1462699086690,748,"test1001^1462699069318^0",1]],"resultFrom":1462699086690,"scatterIndex":{"x":0,"y":1,"transactionId":2,"type":3}}
 
@@ -493,16 +494,16 @@ function submitSearchForm(){
         	</div>
 			-->
         	<div class="userinfo">
-                <img src="images/thumbs/avatar.png" alt="" />
-                <span>管理员</span>
+            	<img src="images/thumbs/avatar.png" alt="" />
+                <span>${sessionScope.userInfo.username}</span>
             </div><!--userinfo-->
             
             <div class="userinfodrop">
                 <div class="userdata">
-                    <h4>管理员</h4>
+                    <h4>${sessionScope.userInfo.username}</h4>
                     <span class="email">youremail@yourdomain.com</span>
                     <ul>
-                        <li><a href="index.html">退出</a></li>
+                        <li><a href="logout.do">退出</a></li>
                     </ul>
                 </div><!--userdata-->
             </div><!--userinfodrop-->

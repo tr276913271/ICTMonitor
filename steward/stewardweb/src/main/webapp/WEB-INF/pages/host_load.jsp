@@ -15,11 +15,12 @@
 <title>APM 主机负载监控</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
 <link type="text/css" href="css/jquery.simple-dtpicker.css" rel="stylesheet" />
-   <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
-   <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
-   <script type="text/javascript" src="js/sockjs-1.0.3.min.js"></script>
-   <script type="text/javascript" src="js/datetimepicker/jquery.simple-dtpicker.js"></script>
-   <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/sockjs-1.0.3.min.js"></script>
+<script type="text/javascript" src="js/datetimepicker/jquery.simple-dtpicker.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/custom/general.js"></script>
 
 
 <script type="text/javascript">
@@ -1327,16 +1328,16 @@ $(document).ready(function() {
         	</div>
 			-->
         	<div class="userinfo">
-                <img src="images/thumbs/avatar.png" alt="" />
-                <span>管理员</span>
+            	<img src="images/thumbs/avatar.png" alt="" />
+                <span>${sessionScope.userInfo.username}</span>
             </div><!--userinfo-->
             
             <div class="userinfodrop">
                 <div class="userdata">
-                    <h4>管理员</h4>
+                    <h4>${sessionScope.userInfo.username}</h4>
                     <span class="email">youremail@yourdomain.com</span>
                     <ul>
-                        <li><a href="index.html">退出</a></li>
+                        <li><a href="logout.do">退出</a></li>
                     </ul>
                 </div><!--userdata-->
             </div><!--userinfodrop-->
