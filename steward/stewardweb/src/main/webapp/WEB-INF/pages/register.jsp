@@ -12,10 +12,9 @@
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>APM 注册页面</title>
+<title>APM 注册</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
-   <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
-   <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
 <!--[if IE 9]>
     <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
 <![endif]-->
@@ -69,7 +68,7 @@ $(document).ready(function(){
                 
                 <div class="password">
                 	<div class="passwordinner">
-                    	<input type="password" name="password2" placeholder="请输入密码" id="password2" />
+                    	<input type="password" name="password2" placeholder="请再次输入密码" id="password2" />
                     </div>
                 </div>
 				
