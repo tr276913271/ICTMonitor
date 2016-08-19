@@ -9,12 +9,16 @@
 			SELECT * FROM user WHERE username=#{username}
 	</select>
 	
+	<select id="findUserByUserEmail" resultType="ict.monitor.bean.User">
+			SELECT * FROM user WHERE email=#{email}
+	</select>
+	
 	<select id="findUserByUserNameAndPassword" resultType="ict.monitor.bean.User">
 			SELECT * FROM user WHERE username=#{username} AND password=#{password}
 	</select>
 	
     <insert id="insert" parameterType="ict.monitor.bean.User">  
-        insert into user(username,password) values(#{username},#{password})  
+        insert into user(username,password,email) values(#{username},#{password},#{email})  
     </insert>  
       
 </mapper>
