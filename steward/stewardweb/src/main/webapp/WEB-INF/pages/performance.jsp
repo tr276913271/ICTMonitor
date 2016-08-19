@@ -23,14 +23,7 @@
 <script>
 var data_performance = {"resultTo":1462699595000,"scatter":[[1462699593649,127499,"test1001^1462699069318^5",0],[1462699380083,256162,"test1001^1462699069318^4",1],[1462699115218,3010,"test1001^1462699069318^3",1],[1462699108229,10053,"test1001^1462699069318^2",1],[1462699087343,9,"test1001^1462699069318^1",1],[1462699086690,748,"test1001^1462699069318^0",1]],"resultFrom":1462699086690,"scatterIndex":{"x":0,"y":1,"transactionId":2,"type":3}}
 
-$(document).ready(function(){
 
-    var json_url = "/stewardweb/getScatterData.do?agentID=" + agentID + "&from=" + sttime + "&to=" + endtime + "&limit=5000&v=2";
-    $.getJSON(json_url,function(data,status){  
-        data_performance = data;
-    });
-    
-});
 
 
 /*
@@ -235,13 +228,15 @@ $(function () {
             name: '成功',                                                                  
             color: 'rgba(10, 232, 10, .5)',                                                  
             //data: [[1459166930522, 52],[1459166930528, 48],[1459166930928, 48],[1459166931028, 68]]   
-            data: getPerformanceData(data_performance)[0]
+            //data: getPerformanceData(data_performance)[0]
+            data: []
                                                                                              
         }, {                                                                                 
             name: '超时',                                                                    
             color: 'rgba(223, 83, 83, .5)',                                                
             //data: [[1459166930926, 58],[1459166931121, 65],[1459166931322, 56]]                                                
-            data: getPerformanceData(data_performance)[1]
+            //data: getPerformanceData(data_performance)[1]
+            data: []
         }]                                                                                   
     });    
 
@@ -252,19 +247,24 @@ $(function () {
         categories = ['1s', '2s', '3s', 'Slow', 'Error'],
         name = '响应时间',
         data = [{
-                y: getPerformanceData(data_performance)[2][0],
+                //y: getPerformanceData(data_performance)[2][0],
+                y: 0,
                 color: colors[0]
             }, {
-                y: getPerformanceData(data_performance)[2][1],
+                //y: getPerformanceData(data_performance)[2][1],
+                y: 0,
                 color: colors[1]
             }, {
-                y: getPerformanceData(data_performance)[2][2],
+                //y: getPerformanceData(data_performance)[2][2],
+                y: 0,
                 color: colors[2]
             }, {
-                y: getPerformanceData(data_performance)[2][3],
+                //y: getPerformanceData(data_performance)[2][3],
+                y: 0,
                 color: colors[3]
             }, {
-                y: getPerformanceData(data_performance)[2][4],
+                //y: getPerformanceData(data_performance)[2][4],
+                y: 0,
                 color: colors[4]
             }];
 
@@ -364,37 +364,86 @@ $(function () {
         },
         series: [{
             name: '1s',
-            // data: [5, 3, 4, 7, 2]
-            data: getPerformanceData_LOAD(data_performance)[0]
+            data: [0, 0, 0, 0, 0]
+            //data: getPerformanceData_LOAD(data_performance)[0]
         }, {
             name: '2s',
-            //data: [2, 2, 3, 2, 1]
-            data: getPerformanceData_LOAD(data_performance)[1]
+            data: [0, 0, 0, 0, 0]
+            //data: getPerformanceData_LOAD(data_performance)[1]
         }, {
             name: '3s',
-            //data: [3, 4, 4, 2, 5]
-            data: getPerformanceData_LOAD(data_performance)[2]
+            data: [0, 0, 0, 0, 0]
+            //data: getPerformanceData_LOAD(data_performance)[2]
         }, {
             name: 'Slow',
-            //data: [3, 4, 4, 2, 5]
-            data: getPerformanceData_LOAD(data_performance)[3]
+            data: [0, 0, 0, 0, 0]
+            //data: getPerformanceData_LOAD(data_performance)[3]
         }, {
             name: 'Error',
-            //data: [3, 4, 4, 2, 5]
-            data: getPerformanceData_LOAD(data_performance)[4]
+            data: [0, 0, 0, 0, 0]
+            //data: getPerformanceData_LOAD(data_performance)[4]
         }]
     });
     /*----------- End Of Load Chart Section -----------*/
 });
 
+$(document).ready(function(){
 
+    var json_url = "/stewardweb/getScatterData.do?agentID=" + agentID + "&from=" + sttime + "&to=" + endtime + "&limit=5000&v=2";
+    $.getJSON(json_url,function(data,status){  
+        data_performance = data;
+        var chartSandian = $('#chart_sandian').highcharts();
+        var chartSummary = $('#chart_response_summary').highcharts();
+        var chartLoad = $('#chart_load').highcharts();
+
+        var colors = Highcharts.getOptions().colors,
+            data = [{
+                    y: getPerformanceData(data_performance)[2][0],
+                    color: colors[0]
+                }, {
+                    y: getPerformanceData(data_performance)[2][1],
+                    color: colors[1]
+                }, {
+                    y: getPerformanceData(data_performance)[2][2],
+                    color: colors[2]
+                }, {
+                    y: getPerformanceData(data_performance)[2][3],
+                    color: colors[3]
+                }, {
+                    y: getPerformanceData(data_performance)[2][4],
+                    color: colors[4]
+                }];
+
+        chartSandian.series[0].setData(getPerformanceData(data_performance)[0]);
+        chartSandian.series[1].setData(getPerformanceData(data_performance)[1]);
+
+        chartSummary.series[0].setData(data);
+        // console.log(getPerformanceData_LOAD(data_performance)[0]);
+        // console.log('-------------------------');
+        // console.log(chartLoad.series[0].data);
+        // console.log(chartLoad.series[1].data);
+        // console.log(chartLoad.series[2].data);
+        // console.log(chartLoad.series[3].data);
+        // console.log(chartLoad.series[4].data);
+        //console.log(getPerformanceData(data_performance)[0]);
+        // console.log(getPerformanceData_LOAD(data_performance)[0]);
+        // console.log(chartLoad.series[0]);
+        // console.log(chartLoad.series[1]);
+
+        chartLoad.series[0].setData(getPerformanceData_LOAD(data_performance)[0]);
+        chartLoad.series[1].setData(getPerformanceData_LOAD(data_performance)[1]);
+        chartLoad.series[2].setData(getPerformanceData_LOAD(data_performance)[2]);
+        chartLoad.series[3].setData(getPerformanceData_LOAD(data_performance)[3]);
+        chartLoad.series[4].setData(getPerformanceData_LOAD(data_performance)[4]);
+    });
+    
+});
 
 function submitSearchForm(){
     
 
     var time_from = $('input[name=from]').val();
     var time_to = $('input[name=to]').val();
-	var appName = 'tomcat';
     stamp_from = new Date(time_from);
     stamp_to = new Date(time_to);
     sttime = stamp_from.getTime();

@@ -45,234 +45,27 @@
 </style>
 <script type="text/javascript">
 var mapData = {
-    "nodeDataArray": [{
-        "key": "agent^USER",
-        "applicationName": "USER",
-        "category": "USER",
-        "serviceType": "USER",
-        "serviceTypeCode": "2",
-        "isWas": false,
-        "histogram": {
-            "1s": 0,
-            "3s": 0,
-            "5s": 1,
-            "Slow": 0,
-            "Error": 0
-        },
-        "totalCount": 1,
-        "errorCount": 0,
-        "slowCount": 1,
-        "hasAlert": false,
-        "agentHistogram": {},
-        "timeSeriesHistogram": [{
-            "key": "1s",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }, {
-            "key": "3s",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }, {
-            "key": "5s",
-            "values": [
-                [0, 0],
-                [1463212860000, 1]
-            ]
-        }, {
-            "key": "Slow",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }, {
-            "key": "Error",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }],
-        "agentTimeSeriesHistogram": {},
-        "serverList": {},
-        "instanceCount": 0
-    }, {
-        "key": "agent^TOMCAT",
-        "applicationName": "agent",
-        "category": "TOMCAT",
-        "serviceType": "TOMCAT",
-        "serviceTypeCode": "1010",
-        "isWas": true,
-        "histogram": {
-            "1s": 0,
-            "3s": 0,
-            "5s": 1,
-            "Slow": 0,
-            "Error": 0
-        },
-        "totalCount": 1,
-        "errorCount": 0,
-        "slowCount": 1,
-        "hasAlert": false,
-        "agentHistogram": {
-            "agent1001": {
-                "1s": 0,
-                "3s": 0,
-                "5s": 1,
-                "Slow": 0,
-                "Error": 0
-            }
-        },
-        "timeSeriesHistogram": [{
-            "key": "1s",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }, {
-            "key": "3s",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }, {
-            "key": "5s",
-            "values": [
-                [0, 0],
-                [1463212860000, 1]
-            ]
-        }, {
-            "key": "Slow",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }, {
-            "key": "Error",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }],
-        "agentTimeSeriesHistogram": {
-            "agent1001": [{
-                "key": "1s",
-                "values": [
-                    [0, 0],
-                    [1463212860000, 0]
-                ]
-            }, {
-                "key": "3s",
-                "values": [
-                    [0, 0],
-                    [1463212860000, 0]
-                ]
-            }, {
-                "key": "5s",
-                "values": [
-                    [0, 0],
-                    [1463212860000, 1]
-                ]
-            }, {
-                "key": "Slow",
-                "values": [
-                    [0, 0],
-                    [1463212860000, 0]
-                ]
-            }, {
-                "key": "Error",
-                "values": [
-                    [0, 0],
-                    [1463212860000, 0]
-                ]
-            }]
-        },
-        "serverList": {},
-        "instanceCount": 0
-    }],
-    "linkDataArray": [{
-        "key": "agent^USER~agent^TOMCAT",
-        "from": "agent^USER",
-        "to": "agent^TOMCAT",
-        "toAgent": [],
-        "sourceInfo": {
-            "applicationName": "agent",
+    "applicationMapData":{
+        "nodeDataArray": [{
+            "key": "agent^USER",
+            "applicationName": "USER",
+            "category": "USER",
             "serviceType": "USER",
-            "serviceTypeCode": 2,
-            "isWas": false
-        },
-        "targetInfo": {
-            "applicationName": "agent",
-            "serviceType": "TOMCAT",
-            "serviceTypeCode": 1010,
-            "isWas": true
-        },
-        "filterApplicationName": "agent",
-        "filterApplicationServiceTypeCode": 1010,
-        "filterApplicationServiceTypeName": "TOMCAT",
-        "totalCount": 1,
-        "errorCount": 0,
-        "slowCount": 1,
-        "histogram": {
-            "1s": 0,
-            "3s": 0,
-            "5s": 1,
-            "Slow": 0,
-            "Error": 0
-        },
-        "sourceHistogram": {
-            "agent1001": {
+            "serviceTypeCode": "2",
+            "isWas": false,
+            "histogram": {
                 "1s": 0,
                 "3s": 0,
                 "5s": 1,
                 "Slow": 0,
                 "Error": 0
-            }
-        },
-        "targetHistogram": {
-            "agent1001": {
-                "1s": 0,
-                "3s": 0,
-                "5s": 1,
-                "Slow": 0,
-                "Error": 0
-            }
-        },
-        "timeSeriesHistogram": [{
-            "key": "1s",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }, {
-            "key": "3s",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }, {
-            "key": "5s",
-            "values": [
-                [0, 0],
-                [1463212860000, 1]
-            ]
-        }, {
-            "key": "Slow",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }, {
-            "key": "Error",
-            "values": [
-                [0, 0],
-                [1463212860000, 0]
-            ]
-        }],
-        "sourceTimeSeriesHistogram": {
-            "agent1001": [{
+            },
+            "totalCount": 1,
+            "errorCount": 0,
+            "slowCount": 1,
+            "hasAlert": false,
+            "agentHistogram": {},
+            "timeSeriesHistogram": [{
                 "key": "1s",
                 "values": [
                     [0, 0],
@@ -302,10 +95,219 @@ var mapData = {
                     [0, 0],
                     [1463212860000, 0]
                 ]
-            }]
-        },
-        "hasAlert": false
-    }]
+            }],
+            "agentTimeSeriesHistogram": {},
+            "serverList": {},
+            "instanceCount": 0
+        }, {
+            "key": "agent^TOMCAT",
+            "applicationName": "agent",
+            "category": "TOMCAT",
+            "serviceType": "TOMCAT",
+            "serviceTypeCode": "1010",
+            "isWas": true,
+            "histogram": {
+                "1s": 0,
+                "3s": 0,
+                "5s": 1,
+                "Slow": 0,
+                "Error": 0
+            },
+            "totalCount": 1,
+            "errorCount": 0,
+            "slowCount": 1,
+            "hasAlert": false,
+            "agentHistogram": {
+                "agent1001": {
+                    "1s": 0,
+                    "3s": 0,
+                    "5s": 1,
+                    "Slow": 0,
+                    "Error": 0
+                }
+            },
+            "timeSeriesHistogram": [{
+                "key": "1s",
+                "values": [
+                    [0, 0],
+                    [1463212860000, 0]
+                ]
+            }, {
+                "key": "3s",
+                "values": [
+                    [0, 0],
+                    [1463212860000, 0]
+                ]
+            }, {
+                "key": "5s",
+                "values": [
+                    [0, 0],
+                    [1463212860000, 1]
+                ]
+            }, {
+                "key": "Slow",
+                "values": [
+                    [0, 0],
+                    [1463212860000, 0]
+                ]
+            }, {
+                "key": "Error",
+                "values": [
+                    [0, 0],
+                    [1463212860000, 0]
+                ]
+            }],
+            "agentTimeSeriesHistogram": {
+                "agent1001": [{
+                    "key": "1s",
+                    "values": [
+                        [0, 0],
+                        [1463212860000, 0]
+                    ]
+                }, {
+                    "key": "3s",
+                    "values": [
+                        [0, 0],
+                        [1463212860000, 0]
+                    ]
+                }, {
+                    "key": "5s",
+                    "values": [
+                        [0, 0],
+                        [1463212860000, 1]
+                    ]
+                }, {
+                    "key": "Slow",
+                    "values": [
+                        [0, 0],
+                        [1463212860000, 0]
+                    ]
+                }, {
+                    "key": "Error",
+                    "values": [
+                        [0, 0],
+                        [1463212860000, 0]
+                    ]
+                }]
+            },
+            "serverList": {},
+            "instanceCount": 0
+        }],
+        "linkDataArray": [{
+            "key": "agent^USER~agent^TOMCAT",
+            "from": "agent^USER",
+            "to": "agent^TOMCAT",
+            "toAgent": [],
+            "sourceInfo": {
+                "applicationName": "agent",
+                "serviceType": "USER",
+                "serviceTypeCode": 2,
+                "isWas": false
+            },
+            "targetInfo": {
+                "applicationName": "agent",
+                "serviceType": "TOMCAT",
+                "serviceTypeCode": 1010,
+                "isWas": true
+            },
+            "filterApplicationName": "agent",
+            "filterApplicationServiceTypeCode": 1010,
+            "filterApplicationServiceTypeName": "TOMCAT",
+            "totalCount": 1,
+            "errorCount": 0,
+            "slowCount": 1,
+            "histogram": {
+                "1s": 0,
+                "3s": 0,
+                "5s": 1,
+                "Slow": 0,
+                "Error": 0
+            },
+            "sourceHistogram": {
+                "agent1001": {
+                    "1s": 0,
+                    "3s": 0,
+                    "5s": 1,
+                    "Slow": 0,
+                    "Error": 0
+                }
+            },
+            "targetHistogram": {
+                "agent1001": {
+                    "1s": 0,
+                    "3s": 0,
+                    "5s": 1,
+                    "Slow": 0,
+                    "Error": 0
+                }
+            },
+            "timeSeriesHistogram": [{
+                "key": "1s",
+                "values": [
+                    [0, 0],
+                    [1463212860000, 0]
+                ]
+            }, {
+                "key": "3s",
+                "values": [
+                    [0, 0],
+                    [1463212860000, 0]
+                ]
+            }, {
+                "key": "5s",
+                "values": [
+                    [0, 0],
+                    [1463212860000, 1]
+                ]
+            }, {
+                "key": "Slow",
+                "values": [
+                    [0, 0],
+                    [1463212860000, 0]
+                ]
+            }, {
+                "key": "Error",
+                "values": [
+                    [0, 0],
+                    [1463212860000, 0]
+                ]
+            }],
+            "sourceTimeSeriesHistogram": {
+                "agent1001": [{
+                    "key": "1s",
+                    "values": [
+                        [0, 0],
+                        [1463212860000, 0]
+                    ]
+                }, {
+                    "key": "3s",
+                    "values": [
+                        [0, 0],
+                        [1463212860000, 0]
+                    ]
+                }, {
+                    "key": "5s",
+                    "values": [
+                        [0, 0],
+                        [1463212860000, 1]
+                    ]
+                }, {
+                    "key": "Slow",
+                    "values": [
+                        [0, 0],
+                        [1463212860000, 0]
+                    ]
+                }, {
+                    "key": "Error",
+                    "values": [
+                        [0, 0],
+                        [1463212860000, 0]
+                    ]
+                }]
+            },
+            "hasAlert": false
+        }]
+    }
 };
 
 function getNodeEdgeInfo(data){
@@ -316,47 +318,65 @@ function getNodeEdgeInfo(data){
     var num_node = data['nodeDataArray'].length;
     var num_edge = data['linkDataArray'].length;
     $.each(data['nodeDataArray'], function(index, item){
+        var name = item['applicationName'];
+        var image = item['serviceType']=='UNKNOWN'?'UNKNOWN':item['serviceType'];
         node_list.push({
-            'name': item['serviceType'],
+            'name': name,
+            'image': 'images/d3/'+ image +'.png'
+        });
+        node_name_list.push(item['key']);
+        /*
+        node_list.push({
+            'name': item['serviceType']=='UNKNOWN'?item['applicationName']:item['serviceType'],
             'image': 'images/d3/'+ item['serviceType'] +'.png'
         });
-        node_name_list.push(item['serviceType']);
+        node_name_list.push(item['serviceType']=='UNKNOWN'?item['applicationName']:item['serviceType']);
+        */
     });
     $.each(data['linkDataArray'], function(index, item){
-        //alert(item['sourceInfo']['serviceType'].indexOf(node_name_list));
+        var source = node_name_list.indexOf(item['from']);
+        var target = node_name_list.indexOf(item['to']);
+        if(source!=target){
+            edge_list.push({
+                'source': source, 
+                'target': target, 
+                'relation': '事务数 '+item['totalCount']
+            });
+        }
+        /*
+        var source = item['sourceInfo']['serviceType']=='UNKNOWN'?node_name_list.indexOf(item['sourceInfo']['applicationName']):node_name_list.indexOf(item['sourceInfo']['serviceType']);
+        var target = item['targetInfo']['serviceType']=='UNKNOWN'?node_name_list.indexOf(item['targetInfo']['applicationName']):node_name_list.indexOf(item['targetInfo']['serviceType']);
+        if(source!=target){
+            edge_list.push({
+                'source': source, 
+                'target': target, 
+                'relation': '事务数 '+item['totalCount']
+            });
+        }
+        */
+        /*
         edge_list.push({
-            'source': node_name_list.indexOf(item['sourceInfo']['serviceType']), 
-            'target': node_name_list.indexOf(item['targetInfo']['serviceType']), 
+            'source': node_name_list.indexOf(item['sourceInfo']['serviceType'])=='UNKNOWN'?node_name_list.indexOf(item['sourceInfo']['applicationName']):node_name_list.indexOf(item['sourceInfo']['serviceType']), 
+            'target': node_name_list.indexOf(item['targetInfo']['serviceType'])=='UNKNOWN'?node_name_list.indexOf(item['targetInfo']['applicationName']):node_name_list.indexOf(item['targetInfo']['serviceType']), 
             'relation': '事务数 '+item['totalCount']
         });
+        */
     });
     result_dict['nodes'] = node_list;
     result_dict['edges'] = edge_list;
-    console.log(result_dict)
+    //console.log(result_dict);
+    // $.each(node_list, function(index, item){
+    //     console.log(index+' : '+item['name']);
+    // });
+    // $.each(edge_list, function(index, item){
+    //     console.log(item['source']+'***'+item['target']+' : '+item['relation']);
+    // });
     return result_dict;
 }
 
-
-$(document).ready(function() {
-    var serviceTypeName_url = "/stewardweb/serviceTypeName.do?agentID="+agentID;
-    $.get(serviceTypeName_url, function(data, status){
-        console.log('serviceTypeName:'+data);
-        var serviceTypeName = data;
-        var d = new Date();
-        var data_url = "/stewardweb/getServerMapData.do?agentID="+agentID+"&from="+sttime+"&to="+endtime+"&serviceTypeName="+serviceTypeName+"&_="+d.getTime();
-        console.log('data_url:'+data_url);
-        $.getJSON(data_url, function(data,status){
-            console.log('mapData:'+data);
-        });
-    });
-    /*
-    var json_url = "/stewardweb/getServerMapData.do?agentID="+agentID+"&from="+sttime+"&to="+endtime+"&serviceTypeName="+"";
-    $.getJSON(json_url,function(data,status){  
-        data_performance = data;
-    });
-    */
-    var root = getNodeEdgeInfo(mapData);
-
+function drawTopo(mapData){
+    var root = getNodeEdgeInfo(mapData["applicationMapData"]);
+    // console.log('root:'+root);
     var width = 800;
     var height = 600;
     var img_w = 70;
@@ -401,22 +421,22 @@ $(document).ready(function() {
                         .attr("xlink:href",function(d){
                             return d.image;
                         })
-                        .on("mouseover",function(d,i){
-                            //显示连接线上的文字
-                            edges_text.style("fill-opacity",function(edge){
-                                if( edge.source === d || edge.target === d ){
-                                    return 1.0;
-                                }
-                            });
-                        })
-                        .on("mouseout",function(d,i){
-                            //隐去连接线上的文字
-                            edges_text.style("fill-opacity",function(edge){
-                                if( edge.source === d || edge.target === d ){
-                                    return 1.0;
-                                }
-                            });
-                        })
+                        // .on("mouseover",function(d,i){
+                        //     //显示连接线上的文字
+                        //     edges_text.style("fill-opacity",function(edge){
+                        //         if( edge.source === d || edge.target === d ){
+                        //             return 1.0;
+                        //         }
+                        //     });
+                        // })
+                        // .on("mouseout",function(d,i){
+                        //     //隐去连接线上的文字
+                        //     edges_text.style("fill-opacity",function(edge){
+                        //         if( edge.source === d || edge.target === d ){
+                        //             return 1.0;
+                        //         }
+                        //     });
+                        // })
                         .call(force.drag);
 
     var text_dx = -15;
@@ -462,6 +482,271 @@ $(document).ready(function() {
          nodes_text.attr("x",function(d){ return d.x });
          nodes_text.attr("y",function(d){ return d.y + img_w/2; });
     });
+}
+
+function updateTopo(mapData){
+    var root = getNodeEdgeInfo(mapData["applicationMapData"]);
+    // console.log('root:'+root);
+    var width = 800;
+    var height = 600;
+    var img_w = 70;
+    var img_h = 70;
+    d3.select("svg").remove();
+    var svg = d3.select("#topo").append("svg")
+                            .attr("width",width)
+                            .attr("height",height);
+        
+    var force = d3.layout.force()
+                    .nodes(root.nodes)
+                    .links(root.edges)
+                    .size([width,height])
+                    .linkDistance(250)
+                    .charge(-1500)
+                    .start();
+                    
+    var edges_line = svg.selectAll("line")
+                        .data(root.edges)
+                        .enter()
+                        .append("line")
+                        .style("stroke","#CCC")
+                        .style("stroke-width",2);
+                        
+    var edges_text = svg.selectAll(".linetext")
+                        .data(root.edges)
+                        .enter()
+                        .append("text")
+                        .attr("class","linetext")
+                        .style("fill-opacity", 1.0)
+                        .text(function(d){
+                            return d.relation;
+                        });
+
+                        
+    var nodes_img = svg.selectAll("image")
+                        .data(root.nodes)
+                        .enter()
+                        .append("image")
+                        .attr("width",img_w)
+                        .attr("height",img_h)
+                        .attr("xlink:href",function(d){
+                            return d.image;
+                        })
+                        // .on("mouseover",function(d,i){
+                        //     //显示连接线上的文字
+                        //     edges_text.style("fill-opacity",function(edge){
+                        //         if( edge.source === d || edge.target === d ){
+                        //             return 1.0;
+                        //         }
+                        //     });
+                        // })
+                        // .on("mouseout",function(d,i){
+                        //     //隐去连接线上的文字
+                        //     edges_text.style("fill-opacity",function(edge){
+                        //         if( edge.source === d || edge.target === d ){
+                        //             return 1.0;
+                        //         }
+                        //     });
+                        // })
+                        .call(force.drag);
+
+    var text_dx = -15;
+    var text_dy = 15;
+
+    var nodes_text = svg.selectAll(".nodetext")
+                        .data(root.nodes)
+                        .enter()
+                        .append("text")
+                        .attr("class","nodetext")
+                        .attr("dx",text_dx)
+                        .attr("dy",text_dy)
+                        .text(function(d){
+                            return d.name;
+                        });
+
+                        
+    force.on("tick", function(){
+        
+        //限制结点的边界
+        root.nodes.forEach(function(d,i){
+            d.x = d.x - img_w/2 < 0     ? img_w/2 : d.x ;
+            d.x = d.x + img_w/2 > width ? width - img_w/2 : d.x ;
+            d.y = d.y - img_h/2 < 0      ? img_h/2 : d.y ;
+            d.y = d.y + img_h/2 + text_dy > height ? height - img_h/2 - text_dy : d.y ;
+        });
+
+        //更新连接线的位置
+         edges_line.attr("x1",function(d){ return d.source.x; });
+         edges_line.attr("y1",function(d){ return d.source.y; });
+         edges_line.attr("x2",function(d){ return d.target.x; });
+         edges_line.attr("y2",function(d){ return d.target.y; });
+         
+         //更新连接线上文字的位置
+         edges_text.attr("x",function(d){ return (d.source.x + d.target.x) / 2 ; });
+         edges_text.attr("y",function(d){ return (d.source.y + d.target.y) / 2 ; });
+         
+         
+         //更新结点图片和文字
+         nodes_img.attr("x",function(d){ return d.x - img_w/2; });
+         nodes_img.attr("y",function(d){ return d.y - img_h/2; });
+         
+         nodes_text.attr("x",function(d){ return d.x });
+         nodes_text.attr("y",function(d){ return d.y + img_w/2; });
+    });
+}
+
+function submitSearchForm(){
+    var serviceTypeName_url = "/stewardweb/serviceTypeName.do?agentID="+agentID;
+    $.get(serviceTypeName_url, function(data, status){
+        //console.log('updateServiceTypeName:'+data);
+        var serviceTypeName = data;
+        var d = new Date();
+        stamp_from = new Date($('input[name=from]').val());
+        stamp_to = new Date($('input[name=to]').val());
+        sttime = stamp_from.getTime();
+        endtime = stamp_to.getTime();
+        var data_url = "/stewardweb/getServerMapData.do?agentID="+agentID+"&from="+sttime+"&to="+endtime+"&serviceTypeName="+serviceTypeName+"&_="+d.getTime();
+        //console.log('updateData_url:'+data_url);
+        $.getJSON(data_url, function(data,status){
+            mapData = data;
+            // console.log('nodeData:'+mapData["nodeDataArray"]);
+            // console.log('linkData:'+mapData["linkDataArray"]);
+            updateTopo(mapData);
+        });
+    });
+}
+
+$(document).ready(function() {
+    var serviceTypeName_url = "/stewardweb/serviceTypeName.do?agentID="+agentID;
+    $.get(serviceTypeName_url, function(data, status){
+        //console.log('serviceTypeName:'+data);
+        var serviceTypeName = data;
+        var d = new Date();
+        var data_url = "/stewardweb/getServerMapData.do?agentID="+agentID+"&from="+sttime+"&to="+endtime+"&serviceTypeName="+serviceTypeName+"&_="+d.getTime();
+        //console.log('data_url:'+data_url);
+        $.getJSON(data_url, function(data,status){
+            mapData = data;
+            // console.log('nodeData:'+mapData["nodeDataArray"]);
+            // console.log('linkData:'+mapData["linkDataArray"]);
+            $('#topo').html(' ');
+            drawTopo(mapData);
+        });
+    });
+    /*
+    var json_url = "/stewardweb/getServerMapData.do?agentID="+agentID+"&from="+sttime+"&to="+endtime+"&serviceTypeName="+"";
+    $.getJSON(json_url,function(data,status){  
+        data_performance = data;
+    });
+    */
+
+
+
+    // var root = getNodeEdgeInfo(mapData["applicationMapData"]);
+    // console.log('root:'+root);
+    // var width = 800;
+    // var height = 600;
+    // var img_w = 70;
+    // var img_h = 70;
+
+    // var svg = d3.select("#topo").append("svg")
+    //                         .attr("width",width)
+    //                         .attr("height",height);
+        
+    // var force = d3.layout.force()
+    //                 .nodes(root.nodes)
+    //                 .links(root.edges)
+    //                 .size([width,height])
+    //                 .linkDistance(250)
+    //                 .charge(-1500)
+    //                 .start();
+                    
+    // var edges_line = svg.selectAll("line")
+    //                     .data(root.edges)
+    //                     .enter()
+    //                     .append("line")
+    //                     .style("stroke","#CCC")
+    //                     .style("stroke-width",2);
+                        
+    // var edges_text = svg.selectAll(".linetext")
+    //                     .data(root.edges)
+    //                     .enter()
+    //                     .append("text")
+    //                     .attr("class","linetext")
+    //                     .style("fill-opacity", 1.0)
+    //                     .text(function(d){
+    //                         return d.relation;
+    //                     });
+
+                        
+    // var nodes_img = svg.selectAll("image")
+    //                     .data(root.nodes)
+    //                     .enter()
+    //                     .append("image")
+    //                     .attr("width",img_w)
+    //                     .attr("height",img_h)
+    //                     .attr("xlink:href",function(d){
+    //                         return d.image;
+    //                     })
+    //                     .on("mouseover",function(d,i){
+    //                         //显示连接线上的文字
+    //                         edges_text.style("fill-opacity",function(edge){
+    //                             if( edge.source === d || edge.target === d ){
+    //                                 return 1.0;
+    //                             }
+    //                         });
+    //                     })
+    //                     .on("mouseout",function(d,i){
+    //                         //隐去连接线上的文字
+    //                         edges_text.style("fill-opacity",function(edge){
+    //                             if( edge.source === d || edge.target === d ){
+    //                                 return 1.0;
+    //                             }
+    //                         });
+    //                     })
+    //                     .call(force.drag);
+
+    // var text_dx = -15;
+    // var text_dy = 15;
+
+    // var nodes_text = svg.selectAll(".nodetext")
+    //                     .data(root.nodes)
+    //                     .enter()
+    //                     .append("text")
+    //                     .attr("class","nodetext")
+    //                     .attr("dx",text_dx)
+    //                     .attr("dy",text_dy)
+    //                     .text(function(d){
+    //                         return d.name;
+    //                     });
+
+                        
+    // force.on("tick", function(){
+        
+    //     //限制结点的边界
+    //     root.nodes.forEach(function(d,i){
+    //         d.x = d.x - img_w/2 < 0     ? img_w/2 : d.x ;
+    //         d.x = d.x + img_w/2 > width ? width - img_w/2 : d.x ;
+    //         d.y = d.y - img_h/2 < 0      ? img_h/2 : d.y ;
+    //         d.y = d.y + img_h/2 + text_dy > height ? height - img_h/2 - text_dy : d.y ;
+    //     });
+
+    //     //更新连接线的位置
+    //      edges_line.attr("x1",function(d){ return d.source.x; });
+    //      edges_line.attr("y1",function(d){ return d.source.y; });
+    //      edges_line.attr("x2",function(d){ return d.target.x; });
+    //      edges_line.attr("y2",function(d){ return d.target.y; });
+         
+    //      //更新连接线上文字的位置
+    //      edges_text.attr("x",function(d){ return (d.source.x + d.target.x) / 2 ; });
+    //      edges_text.attr("y",function(d){ return (d.source.y + d.target.y) / 2 ; });
+         
+         
+    //      //更新结点图片和文字
+    //      nodes_img.attr("x",function(d){ return d.x - img_w/2; });
+    //      nodes_img.attr("y",function(d){ return d.y - img_h/2; });
+         
+    //      nodes_text.attr("x",function(d){ return d.x });
+    //      nodes_text.attr("y",function(d){ return d.y + img_w/2; });
+    // });
 });
 
 </script>

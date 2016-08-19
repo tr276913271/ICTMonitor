@@ -60,13 +60,7 @@ function getPointStart(data){
     }
 }
 
-$(document).ready(function() {
-
-	var json_url = "/stewardweb/getScatterData.do?agentID=" + agentID + "&from=" + sttime + "&to=" + endtime + "&limit=5000&v=2";
-    $.getJSON(json_url,function(data,status){
-        data_performance = data;
-    });
-
+$(function () {
     Highcharts.setOptions({
         global: {
             useUTC: false
@@ -138,10 +132,10 @@ $(document).ready(function() {
             type: 'area',
             name: 'Transactions',
             //data: [[1459166930522, 52],[1459166930528, 48],[1459166930928, 48],[1459166931028, 68]]   
-            //data: getPerformanceData(data_performance)[0]
             pointStart: getPointStart(data_performance),
             pointInterval: 1000,
-            data: getAppLoadData(data_performance)
+            //data: getAppLoadData(data_performance)
+            data: []
                                                                                              
         }]   
         // series: [{
@@ -157,29 +151,19 @@ $(document).ready(function() {
         //     ]
         // }]
     });
-
-
-
-
-
-
-
-
 });
 
 
+$(document).ready(function() {
 
+	var json_url = "/stewardweb/getScatterData.do?agentID=" + agentID + "&from=" + sttime + "&to=" + endtime + "&limit=5000&v=2";
+    $.getJSON(json_url,function(data,status){
+        data_performance = data;
+        var chartAppLoad = $('#chart_app_load').highcharts();
+        chartAppLoad.series[0].setData(getAppLoadData(data_performance));
+    });
 
-
-
-
-
-
-
-
-
-
-
+});
 
 function submitSearchForm(){	
 	
@@ -191,14 +175,15 @@ function submitSearchForm(){
 	sttime = stamp_from.getTime();
     endtime = stamp_to.getTime();
     
-	var json_url = '/stewardweb/getScatterData.do?agentID='+ agentID+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&v=2';
+	var json_url = '/stewardweb/getScatterData.do?agentID='+ agentID+'&from=' + sttime + '&to=' + endtime + '&limit=5000&v=2';
     $.getJSON(json_url,function(data,status){
         data_performance = data;
+        console.log(data_performance);
+        var chartAppLoad = $('#chart_app_load').highcharts();
+        //console.log(chartAppLoad.series[0]);
+        chartAppLoad.series[0].setData(getAppLoadData(data_performance));
     });
-	console.log(data_performance);
-    var chartAppLoad = $('#chart_app_load').highcharts();
-    //console.log(chartAppLoad.series[0]);
-    chartAppLoad.series[0].setData(getAppLoadData(data_performance));
+	
     //chartAppLoad.series[0].addPoint([1462699993649,20]);
 }
 </script>
