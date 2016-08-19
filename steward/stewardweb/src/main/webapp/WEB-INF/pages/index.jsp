@@ -71,7 +71,7 @@
             <div class="userinfodrop">
                 <div class="userdata">
                     <h4>${sessionScope.userInfo.username}</h4>
-                    <span class="email">youremail@yourdomain.com</span>
+                    <span class="email">${sessionScope.userInfo.email}</span>
                     <ul>
                         <li><a href="logout.do">退出</a></li>
                     </ul>
