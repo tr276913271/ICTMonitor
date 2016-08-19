@@ -11,34 +11,26 @@ function getUrlParam(name) {
 // 初始化赋值
 function getParams() {
 	agentID = getUrlParam('agentID')?getUrlParam('agentID'):'';
-	sttime = getUrlParam('sttime')?getUrlParam('sttime'):0;
-	endtime = getUrlParam('endtime')?getUrlParam('endtime'):0;
+	var d = new Date();
+	var now = d.getTime();
+	var now_b = now - 30 * 60 * 1000;
+	sttime = getUrlParam('sttime')?getUrlParam('sttime'):now_b;
+	endtime = getUrlParam('endtime')?getUrlParam('endtime'):now;
 }
-function initFormPlugin(){
-	if (sttime != 0 && endtime != 0) {
-		var d = new Date();
-		d.setTime(sttime);
-		$('input[name=from]').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + d.getHours() + ':' + d.getMinutes());
-	    $('input[name=from]').appendDtpicker();
-		d.setTime(endtime);
-		$('input[name=to]').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds());
-	    $('input[name=to]').appendDtpicker();
-	} else {
-		var d = new Date();
-	    //alert(d.getTime());
-	    $('input[name=to]').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds());
-	    $('input[name=to]').appendDtpicker();
-	    endtime = d.getTime();
-	    d.setDate(d.getDate() - 1);
-	    $('input[name=from]').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + d.getHours() + ':' + d.getMinutes());
-	    $('input[name=from]').appendDtpicker();
-	    sttime = d.getTime();
-	}
+
+function initFormPlugin(st, ed){
+	var d1 = new Date(parseInt(st));
+	$('input[name=from]').val(d1.getFullYear() + '-' + (d1.getMonth()+1) + '-' + d1.getDate() + ' ' + d1.getHours() + ':' + d1.getMinutes());
+    $('input[name=from]').appendDtpicker();
+    
+	var d2 = new Date(parseInt(ed));
+	$('input[name=to]').val(d2.getFullYear() + '-' + (d2.getMonth()+1) + '-' + d2.getDate() + ' ' + d2.getHours() + ':' + d2.getMinutes());
+    $('input[name=to]').appendDtpicker();
 }
 
 $(document).ready(function(){
 	getParams();
-	initFormPlugin();
+	initFormPlugin(sttime, endtime);
 });
 
 function navjump(ind) {
