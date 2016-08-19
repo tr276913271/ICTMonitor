@@ -59,10 +59,10 @@ public class UserController {
 				model.addAttribute("msg", "密码不能为空！");
 				return "register";
 			}
-//			if (StringUtils.isEmpty(email)) {
-//				model.addAttribute("msg", "邮箱不能为空！");
-//				return "register";
-//			}
+			if (StringUtils.isEmpty(email)) {
+				model.addAttribute("msg", "邮箱不能为空！");
+				return "register";
+			}
 			if (StringUtils.length(username) < 3 || StringUtils.length(username) > 15) {
 				model.addAttribute("msg", "用户名长度在3~15之间！");
 				return "register";
@@ -75,15 +75,25 @@ public class UserController {
 				model.addAttribute("msg", "两次输入密码不一致！");
 				return "register";
 			}
+			if (StringUtils.length(username) < 5 || StringUtils.length(username) > 64) {
+				model.addAttribute("msg", "邮箱长度在5~64之间！");
+				return "register";
+			}
 			else {
 				User ifuser = userDao.findUserByUserName(username);
-				if (ifuser == null) {
-					User user = new User(username, password);
-					userDao.insert(user);
-					return "redirect:login.do";
-				} else {
+				if (ifuser != null) {
 					model.addAttribute("msg", "该用户名已存在！");
 					return "register";
+				}
+				User ifuser2 = userDao.findUserByUserEmail(email);
+				if (ifuser2 != null) {
+					model.addAttribute("msg", "该邮箱已注册！");
+					return "register";
+				}
+				else {
+					User user = new User(username, password, email);
+					userDao.insert(user);
+					return "redirect:login.do";
 				}
 				
 				
