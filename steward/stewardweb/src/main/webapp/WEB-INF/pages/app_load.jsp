@@ -22,16 +22,15 @@
 <script type="text/javascript" src="js/custom/general.js"></script>
 <script type="text/javascript">
 
+var data_performance = {"resultTo":endtime,"scatter":[],"resultFrom":sttime,"scatterIndex":{"x":0,"y":1,"transactionId":2,"type":3}}
 
-var data_performance = {"resultTo":1462699595000,"scatter":[[1462699593649,127499,"test1001^1462699069318^5",0],[1462699380083,256162,"test1001^1462699069318^4",1],[1462699115218,3010,"test1001^1462699069318^3",1],[1462699108229,10053,"test1001^1462699069318^2",1],[1462699087343,9,"test1001^1462699069318^1",1],[1462699086690,748,"test1001^1462699069318^0",1]],"resultFrom":1462699086690,"scatterIndex":{"x":0,"y":1,"transactionId":2,"type":3}}
 
 function getAppLoadData(data){
     var scatters = data['scatter'];
-    var tag = 1000;
+    var tag = 1000 * 60; // 每分钟事务数
     if(scatters.length>0){
-        var tag_end = parseInt(scatters.length-1);
-        var time_end = parseInt(scatters[0][0]);
-        var time_start = parseInt(scatters[tag_end][0]);
+        var time_end = data.resultTo;
+        var time_start = data.resultFrom;
         var n = parseInt(Math.abs(time_end-time_start)/tag);
         var data_list = [];
         for(i=0;i<=n;i++){
@@ -41,7 +40,6 @@ function getAppLoadData(data){
             tmp = parseInt(Math.abs(item[0]-time_start)/tag);
             data_list[tmp]++;
         });
-
         return data_list;
     }else{
         var data_list = [];
@@ -60,14 +58,12 @@ function getPointStart(data){
     }
 }
 
-$(function () {
+function initChart() {
     Highcharts.setOptions({
         global: {
             useUTC: false
         }
     }); 
-
-
 
     $('#chart_app_load').highcharts({
         chart: {
@@ -96,11 +92,15 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: '事务数/秒'
+                text: '事务数/分钟'
             }
         },
         tooltip: {
-            shared: true
+            shared: true,
+            formatter: function () {
+                return Highcharts.dateFormat('%Y-%m-%d %H:%M:%S',this.x) +
+                    '<br/>' + '事务数：' + this.y;
+            }
         },
         legend: {
             enabled: false
@@ -132,8 +132,8 @@ $(function () {
             type: 'area',
             name: 'Transactions',
             //data: [[1459166930522, 52],[1459166930528, 48],[1459166930928, 48],[1459166931028, 68]]   
-            pointStart: getPointStart(data_performance),
-            pointInterval: 1000,
+            //pointStart: getPointStart(data_performance),
+            pointInterval: 1000 * 60, //每分钟事务数
             //data: getAppLoadData(data_performance)
             data: []
                                                                                              
@@ -151,16 +151,21 @@ $(function () {
         //     ]
         // }]
     });
-});
+}
+
+function updateChart() {
+	var chartAppLoad = $('#chart_app_load').highcharts();
+    chartAppLoad.series[0].setData(getAppLoadData(data_performance));
+    chartAppLoad.series[0].update({pointStart: data_performance.resultFrom});
+}
 
 
 $(document).ready(function() {
-
+	initChart();
 	var json_url = "/stewardweb/getScatterData.do?agentID=" + agentID + "&from=" + sttime + "&to=" + endtime + "&limit=5000&v=2";
     $.getJSON(json_url,function(data,status){
         data_performance = data;
-        var chartAppLoad = $('#chart_app_load').highcharts();
-        chartAppLoad.series[0].setData(getAppLoadData(data_performance));
+        updateChart();
     });
 
 });
@@ -178,10 +183,7 @@ function submitSearchForm(){
 	var json_url = '/stewardweb/getScatterData.do?agentID='+ agentID+'&from=' + sttime + '&to=' + endtime + '&limit=5000&v=2';
     $.getJSON(json_url,function(data,status){
         data_performance = data;
-        console.log(data_performance);
-        var chartAppLoad = $('#chart_app_load').highcharts();
-        //console.log(chartAppLoad.series[0]);
-        chartAppLoad.series[0].setData(getAppLoadData(data_performance));
+        updateChart();
     });
 	
     //chartAppLoad.series[0].addPoint([1462699993649,20]);
@@ -272,7 +274,7 @@ function submitSearchForm(){
     	
             <div class="one_tatal last">
                 <div class="contenttitle2">
-                    <h3>每秒处理事务数</h3>
+                    <h3>每分钟处理事务数</h3>
                 </div><!--contenttitle-->
                 <br />
                 <div id="chart_app_load" style="height:300px;"></div>

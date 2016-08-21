@@ -21,9 +21,8 @@
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/custom/general.js"></script>
 <script>
-var data_performance = {"resultTo":1462699595000,"scatter":[[1462699593649,127499,"test1001^1462699069318^5",0],[1462699380083,256162,"test1001^1462699069318^4",1],[1462699115218,3010,"test1001^1462699069318^3",1],[1462699108229,10053,"test1001^1462699069318^2",1],[1462699087343,9,"test1001^1462699069318^1",1],[1462699086690,748,"test1001^1462699069318^0",1]],"resultFrom":1462699086690,"scatterIndex":{"x":0,"y":1,"transactionId":2,"type":3}}
 
-
+var data_performance = {"resultTo":endtime,"scatter":[],"resultFrom":sttime,"scatterIndex":{"x":0,"y":1,"transactionId":2,"type":3}}
 
 
 /*
@@ -36,18 +35,15 @@ function getPerformanceData(data){
 function getxAxis(data){
     var scatters = data['scatter'];
     if(scatters.length>=1){
-        var tag_start = 0;
-        var tag_end = parseInt(scatters.length-1);
-        var time_start = parseInt(scatters[0][0]);
-        var time_end = parseInt(scatters[tag_end][0]);
+        var time_start = data.resultFrom;
+        var time_end = data.resultTo;
         var tag = parseInt(Math.abs(time_end-time_start)/5);
         var time_list = [
-            Highcharts.dateFormat('%Y-%m-%d<br>%H:%M:%S', time_end),
-            Highcharts.dateFormat('%Y-%m-%d<br>%H:%M:%S', time_end+tag),
-            Highcharts.dateFormat('%Y-%m-%d<br>%H:%M:%S', time_end+2*tag),
-            Highcharts.dateFormat('%Y-%m-%d<br>%H:%M:%S', time_end+3*tag),
-            Highcharts.dateFormat('%Y-%m-%d<br>%H:%M:%S', time_end+4*tag),
-            Highcharts.dateFormat('%Y-%m-%d<br>%H:%M:%S', time_end+5*tag)
+            Highcharts.dateFormat('%Y-%m-%d<br>%H:%M:%S', time_start),
+            Highcharts.dateFormat('%Y-%m-%d<br>%H:%M:%S', time_start+tag),
+            Highcharts.dateFormat('%Y-%m-%d<br>%H:%M:%S', time_start+2*tag),
+            Highcharts.dateFormat('%Y-%m-%d<br>%H:%M:%S', time_start+3*tag),
+            Highcharts.dateFormat('%Y-%m-%d<br>%H:%M:%S', time_start+4*tag)
         ];
     }else{
         var time_list = [];
@@ -58,12 +54,10 @@ function getxAxis(data){
 function getSplitedTime(data){
     var scatters = data['scatter'];
     if(scatters.length>=1){
-        var tag_start = 0;
-        var tag_end = parseInt(scatters.length-1);
-        var time_start = parseInt(scatters[0][0]);
-        var time_end = parseInt(scatters[tag_end][0]);
+        var time_start = data.resultFrom;
+        var time_end = data.resultTo;
         var tag = parseInt(Math.abs(time_end-time_start)/5);
-        var xAxis_list = [time_end, time_end+tag, time_end+2*tag, time_end+3*tag, time_end+4*tag, time_start];
+        var xAxis_list = [time_start, time_start+tag, time_start+2*tag, time_start+3*tag, time_start+4*tag];
     }else{
         var xAxis_list = [];
     }
@@ -79,13 +73,12 @@ function getPerformanceData(data){
     var list_success = [];
     var list_failed = [];
     var list_summary = [0, 0, 0, 0, 0];
-    var list_load_1s = [0, 0, 0, 0, 0];
     $.each(scatters, function(index, item){
         if(item[3]==1){
             list_success.push([item[0], item[1]]);
             /* Start of Summary */
-            if(item[1]<3001){
-                if(item[1]<2001){
+            if(item[1]<5001){
+                if(item[1]<3001){
                     if(item[1]<1001){
                         list_summary[0]++;
                     }else{
@@ -141,18 +134,30 @@ function getPerformanceData_LOAD(data){
             data_0.push(item);
         }
     });
-    s_0 = {"scatter":data_0};
-    s_1 = {"scatter":data_1};
-    s_2 = {"scatter":data_2};
-    s_3 = {"scatter":data_3};
-    s_4 = {"scatter":data_4};
-    return [getPerformanceData(s_0)[2], getPerformanceData(s_1)[2], getPerformanceData(s_2)[2], getPerformanceData(s_3)[2], getPerformanceData(s_4)[2]];
-    // t = [getPerformanceData(s_0)[2], getPerformanceData(s_1)[2], getPerformanceData(s_2)[2], getPerformanceData(s_3)[2], getPerformanceData(s_4)[2]];
-    // alert(t);
+    var s_0 = {"scatter":data_0};
+    var s_1 = {"scatter":data_1};
+    var s_2 = {"scatter":data_2};
+    var s_3 = {"scatter":data_3};
+    var s_4 = {"scatter":data_4};
+    // !!需要转置数组
+    var interval_summary =  [getPerformanceData(s_0)[2], getPerformanceData(s_1)[2], getPerformanceData(s_2)[2], getPerformanceData(s_3)[2], getPerformanceData(s_4)[2]];
+    var ret = new Array();
+    for (var i = 0; i < 5; i ++) {
+    	var ret_i = new Array();
+    	for (var j = 0; j < 5; j++) {
+    		ret_i[j] = 0;
+    	}
+    	ret[i] = ret_i;
+    }
+    for (var i = 0; i < 5; i ++) {
+    	for (var j = 0; j < 5; j++) {
+    		ret[i][j] = interval_summary[j][i];
+    	}
+    }
+    return ret;
 };
 
-
-$(function () {                           
+function initChart() {                           
     Highcharts.setOptions({                                                     
         global: {
             useUTC: false
@@ -214,13 +219,13 @@ $(function () {
                 },                                                                           
                 tooltip: {                                                                   
                     headerFormat: '<b>{series.name}</b><br>',
-                    //pointFormat: '{point.x} , {point.y} ms',
-                    pointFormat: '{point.x} , {point.y} ms', 
-                    // formatter: function() {                                             
-                    //     return '<b>'+ this.series.name +'</b><br/>'+                
-                    //     Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
-                    //     Highcharts.numberFormat(this.y, 2);                         
-                    // }  
+                    pointFormat: '{point.x} , {point.y} ms',
+                    //pointFormat: '{point.x} , {point.y} ms', 
+                    //formatter: function() {                                             
+                    //	return '<b>'+ 'name</b><br/>'+                
+                    //	Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+                   	//	Highcharts.numberFormat(this.y, 2);                         
+                    //}  
                 }                                                                            
             }                                                                                
         },                                                                                   
@@ -244,20 +249,20 @@ $(function () {
 
 
     var colors = Highcharts.getOptions().colors,
-        categories = ['1s', '2s', '3s', 'Slow', 'Error'],
+        categories = ['1s', '3s', '5s', 'Slow', 'Error'],
         name = '响应时间',
         data = [{
                 //y: getPerformanceData(data_performance)[2][0],
                 y: 0,
-                color: colors[0]
+                color: colors[2]
             }, {
                 //y: getPerformanceData(data_performance)[2][1],
                 y: 0,
-                color: colors[1]
+                color: colors[0]
             }, {
                 //y: getPerformanceData(data_performance)[2][2],
                 y: 0,
-                color: colors[2]
+                color: colors[4]
             }, {
                 //y: getPerformanceData(data_performance)[2][3],
                 y: 0,
@@ -265,7 +270,7 @@ $(function () {
             }, {
                 //y: getPerformanceData(data_performance)[2][4],
                 y: 0,
-                color: colors[4]
+                color: colors[1]
             }];
 
     var chart_response_summary = $('#chart_response_summary').highcharts({
@@ -286,7 +291,7 @@ $(function () {
         tooltip: {
             formatter: function() {
                 var point = this.point,
-                    s = this.x +':include <b>'+ this.y +'</b> items.<br/>';
+                    s = '<b>' + this.x +':</b> <b>'+ this.y +'</b> 请求.<br/>';
                 return s;
             }
         },
@@ -319,8 +324,8 @@ $(function () {
             type: 'datetime',
             dateTimeLabelFormats: {
                 millisecond: '%H:%M:%S<br>%Y-%m'
-            },
-            categories: getxAxis(data_performance)
+            }
+            //categories: getxAxis(data_performance)
         },
         yAxis: {
             min: 0,
@@ -364,143 +369,89 @@ $(function () {
         },
         series: [{
             name: '1s',
-            data: [0, 0, 0, 0, 0]
+            data: [0, 0, 0, 0, 0],
+        	color: colors[2] 
             //data: getPerformanceData_LOAD(data_performance)[0]
         }, {
-            name: '2s',
-            data: [0, 0, 0, 0, 0]
+            name: '3s',
+            data: [0, 0, 0, 0, 0],
+            color: colors[0]
             //data: getPerformanceData_LOAD(data_performance)[1]
         }, {
-            name: '3s',
-            data: [0, 0, 0, 0, 0]
+            name: '5s',
+            data: [0, 0, 0, 0, 0],
+        	color: colors[4]
             //data: getPerformanceData_LOAD(data_performance)[2]
         }, {
             name: 'Slow',
-            data: [0, 0, 0, 0, 0]
+            data: [0, 0, 0, 0, 0],
+            color: colors[3]
             //data: getPerformanceData_LOAD(data_performance)[3]
         }, {
             name: 'Error',
-            data: [0, 0, 0, 0, 0]
+            data: [0, 0, 0, 0, 0],
+            color: colors[1]
             //data: getPerformanceData_LOAD(data_performance)[4]
         }]
     });
     /*----------- End Of Load Chart Section -----------*/
-});
+}
 
-$(document).ready(function(){
-
-    var json_url = "/stewardweb/getScatterData.do?agentID=" + agentID + "&from=" + sttime + "&to=" + endtime + "&limit=5000&v=2";
-    $.getJSON(json_url,function(data,status){  
-        data_performance = data;
-        var chartSandian = $('#chart_sandian').highcharts();
-        var chartSummary = $('#chart_response_summary').highcharts();
-        var chartLoad = $('#chart_load').highcharts();
-
-        var colors = Highcharts.getOptions().colors,
-            data = [{
-                    y: getPerformanceData(data_performance)[2][0],
-                    color: colors[0]
-                }, {
-                    y: getPerformanceData(data_performance)[2][1],
-                    color: colors[1]
-                }, {
-                    y: getPerformanceData(data_performance)[2][2],
-                    color: colors[2]
-                }, {
-                    y: getPerformanceData(data_performance)[2][3],
-                    color: colors[3]
-                }, {
-                    y: getPerformanceData(data_performance)[2][4],
-                    color: colors[4]
-                }];
-
-        chartSandian.series[0].setData(getPerformanceData(data_performance)[0]);
-        chartSandian.series[1].setData(getPerformanceData(data_performance)[1]);
-
-        chartSummary.series[0].setData(data);
-        // console.log(getPerformanceData_LOAD(data_performance)[0]);
-        // console.log('-------------------------');
-        // console.log(chartLoad.series[0].data);
-        // console.log(chartLoad.series[1].data);
-        // console.log(chartLoad.series[2].data);
-        // console.log(chartLoad.series[3].data);
-        // console.log(chartLoad.series[4].data);
-        //console.log(getPerformanceData(data_performance)[0]);
-        // console.log(getPerformanceData_LOAD(data_performance)[0]);
-        // console.log(chartLoad.series[0]);
-        // console.log(chartLoad.series[1]);
-
-        chartLoad.series[0].setData(getPerformanceData_LOAD(data_performance)[0]);
-        chartLoad.series[1].setData(getPerformanceData_LOAD(data_performance)[1]);
-        chartLoad.series[2].setData(getPerformanceData_LOAD(data_performance)[2]);
-        chartLoad.series[3].setData(getPerformanceData_LOAD(data_performance)[3]);
-        chartLoad.series[4].setData(getPerformanceData_LOAD(data_performance)[4]);
-    });
-    
-});
-
-function submitSearchForm(){
-    
-
-    var time_from = $('input[name=from]').val();
-    var time_to = $('input[name=to]').val();
-    stamp_from = new Date(time_from);
-    stamp_to = new Date(time_to);
-    sttime = stamp_from.getTime();
-    endtime = stamp_to.getTime();
-    //$('input[name=from]').val(stamp_from.getTime());
-    //$('input[name=to]').val(stamp_to.getTime());
-    //$('#searchForm').submit();
-    var json_url = '/stewardweb/getScatterData.do?agentID='+ agentID+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&v=2';
-    $.getJSON(json_url,function(data,status){
-        data_performance = data;
-    });
-
-    var chartSandian = $('#chart_sandian').highcharts();
+function updateChart() {
+	var chartSandian = $('#chart_sandian').highcharts();
     var chartSummary = $('#chart_response_summary').highcharts();
     var chartLoad = $('#chart_load').highcharts();
 
     var colors = Highcharts.getOptions().colors,
         data = [{
                 y: getPerformanceData(data_performance)[2][0],
-                color: colors[0]
+                color: colors[2]
             }, {
                 y: getPerformanceData(data_performance)[2][1],
-                color: colors[1]
+                color: colors[0]
             }, {
                 y: getPerformanceData(data_performance)[2][2],
-                color: colors[2]
+                color: colors[4]
             }, {
                 y: getPerformanceData(data_performance)[2][3],
                 color: colors[3]
             }, {
                 y: getPerformanceData(data_performance)[2][4],
-                color: colors[4]
+                color: colors[1]
             }];
 
     chartSandian.series[0].setData(getPerformanceData(data_performance)[0]);
     chartSandian.series[1].setData(getPerformanceData(data_performance)[1]);
-
     chartSummary.series[0].setData(data);
-    // console.log(getPerformanceData_LOAD(data_performance)[0]);
-    // console.log('-------------------------');
-    // console.log(chartLoad.series[0].data);
-    // console.log(chartLoad.series[1].data);
-    // console.log(chartLoad.series[2].data);
-    // console.log(chartLoad.series[3].data);
-    // console.log(chartLoad.series[4].data);
-    //console.log(getPerformanceData(data_performance)[0]);
-    // console.log(getPerformanceData_LOAD(data_performance)[0]);
-    // console.log(chartLoad.series[0]);
-    // console.log(chartLoad.series[1]);
-
+    chartLoad.xAxis[0].update({categories: getxAxis(data_performance)});
     chartLoad.series[0].setData(getPerformanceData_LOAD(data_performance)[0]);
     chartLoad.series[1].setData(getPerformanceData_LOAD(data_performance)[1]);
     chartLoad.series[2].setData(getPerformanceData_LOAD(data_performance)[2]);
     chartLoad.series[3].setData(getPerformanceData_LOAD(data_performance)[3]);
     chartLoad.series[4].setData(getPerformanceData_LOAD(data_performance)[4]);
+}
 
-    
+$(document).ready(function(){
+	initChart();
+    var json_url = "/stewardweb/getScatterData.do?agentID=" + agentID + "&from=" + sttime + "&to=" + endtime + "&limit=5000&v=2";
+    $.getJSON(json_url,function(data,status){  
+        data_performance = data;
+        updateChart();
+    });    
+});
+
+function submitSearchForm(){  
+    var time_from = $('input[name=from]').val();
+    var time_to = $('input[name=to]').val();
+    stamp_from = new Date(time_from);
+    stamp_to = new Date(time_to);
+    sttime = stamp_from.getTime();
+    endtime = stamp_to.getTime();
+    var json_url = '/stewardweb/getScatterData.do?agentID='+ agentID+'&from=' + sttime + '&to=' + endtime + '&limit=5000&v=2';
+    $.getJSON(json_url,function(data,status){
+        data_performance = data;
+        updateChart();
+    });  
 };
 </script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
