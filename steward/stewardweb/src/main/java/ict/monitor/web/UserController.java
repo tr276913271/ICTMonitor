@@ -75,7 +75,7 @@ public class UserController {
 				model.addAttribute("msg", "两次输入密码不一致！");
 				return "register";
 			}
-			if (StringUtils.length(username) < 5 || StringUtils.length(username) > 64) {
+			if (StringUtils.length(email) < 5 || StringUtils.length(email) > 64) {
 				model.addAttribute("msg", "邮箱长度在5~64之间！");
 				return "register";
 			}
