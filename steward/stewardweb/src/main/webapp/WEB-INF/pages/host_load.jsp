@@ -35,7 +35,7 @@
     function connect() {
         if ('WebSocket' in window) {
             console.log('Websocket supported');
-            socket = new WebSocket('ws://59.56.69.124/stewardweb/websocket.do?agentid=' + agentID);
+            socket = new WebSocket('ws://' + window.location.host + '/stewardweb/websocket.do?agentid=' + agentID);
             console.log('Connection attempted');
             socket.onopen = function() {
                 console.log('Connection open!');
