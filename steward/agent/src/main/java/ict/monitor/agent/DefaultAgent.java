@@ -18,7 +18,7 @@ public class DefaultAgent {
 			ExceptionUtil.printStackTrace(e);
 			System.exit(-1);
 		}
-		client = new TCPClient("127.0.0.1",context.getServerPort());
+		client = new TCPClient(context.getServerIP(),context.getServerPort());
 	}
 	public void start() {
 		timer.schedule(new MonitorTask(client,context),5000,10 * 1000);
