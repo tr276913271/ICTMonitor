@@ -111,7 +111,9 @@ public class UserController {
 		UUID uuid = UUID.randomUUID();
 		String uuidstr = uuid.toString();
 		uuidstr = uuidstr.substring(0, 18);
+		String uuidstr_short = uuidstr.substring(0, 8);
 		model.addAttribute("uuidstr", uuidstr);
+		model.addAttribute("uuidstr_short", uuidstr_short);
 		return "signUpApp";
 	}
 	

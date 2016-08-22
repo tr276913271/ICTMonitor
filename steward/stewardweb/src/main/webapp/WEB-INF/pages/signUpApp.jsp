@@ -153,7 +153,7 @@ pre {
                         <li>-Dpinpoint.applicationName：用户自定义应用名称</li>
                     </ul></p>
                     <div class="notibar msgalert" >
-                        <p style="margin:15px 10px 0 55px;">为保证ApplicationName不重复，请使用$AgentId + $YourAppName，如 "${uuidstr}-tomcat"</p>
+                        <p style="margin:15px 10px 0 55px;">为保证ApplicationName不重复，请使用$AgentId前8位 + $YourAppName，如 "${uuidstr_short}-tomcat"，且总长度不超过24位</p>
                     </div>
                     <p>以Tomcat为例，可以将上面三个参数加入到Tomcat的启动脚本<code>catalina.sh</code>中：</p>
                     <p><pre><code>CATALINA_OPTS="$CATALINA_OPTS -javaagent:$YOUR_PATH/pinpoint-bootstrap-1.1.2.jar"</code></br><code>CATALINA_OPTS="$CATALINA_OPTS -Dpinpoint.agentId=$AgentId"</code></br><code>CATALINA_OPTS="$CATALINA_OPTS -Dpinpoint.applicationName=$ApplicationName</code></pre></p>
@@ -169,7 +169,7 @@ pre {
                 </div>
                 <div class="profile_about">
                 	<p>上述步骤确认完成后，将第三步使用的ApplicationName填入下方，然后点击“注册”按钮，向服务器注册新接入的应用</p>
-                    <p><input type="text" id="input_appname" value="${uuidstr}-tomcat" /><button id="btn_signup" onclick="signupapp()" class="stdbtn btn_orange">注册</button></p>
+                    <p><input type="text" id="input_appname" value="${uuidstr_short}-tomcat" /><button id="btn_signup" onclick="signupapp()" class="stdbtn btn_orange">注册</button></p>
                 </div>
                 
                 <div class="contenttitle2">
@@ -190,19 +190,27 @@ pre {
 <script>
 function signupapp() {
 	//TODO: input检查
-	$.ajax({
-	   type: "GET",
-	   url: '/stewardweb/signUpAgentID.do?',
-	   data: 'agentid=' + $("#input_appname").val() + '&type=2',
-	   success: function(msg){
-		   if(msg == 'success') {
-	        	alert("注册成功！")
-	        	$("#btn_signup").html("注册成功").attr("disabled", true).removeClass("btn_orange").addClass("reset");
-	        } else {
-	        	alert(msg);
-	        }  
-	   }
-	});
+	var appname = $("#input_appname").val();
+	if (appname.length<8 || appname.length>24) {
+		alert("ApplicationName长度在8~24之间！");
+		return false;
+	} else {
+		$.ajax({
+		   type: "GET",
+		   url: '/stewardweb/signUpAgentID.do?',
+		   data: 'agentid=' + $("#input_appname").val() + '&type=2',
+		   success: function(msg){
+			   if(msg == 'success') {
+		        	alert("注册成功！")
+		        	$("#btn_signup").html("注册成功").attr("disabled", true).removeClass("btn_orange").addClass("reset");
+		        } else {
+		        	alert(msg);
+		        }  
+		   }
+		});
+		return false;
+	}
+	
 }
 </script>
 </html>
