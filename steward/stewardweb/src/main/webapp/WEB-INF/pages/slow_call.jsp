@@ -498,7 +498,11 @@ function getDataByTime(time_start, time_end){
 
 
 $(document).ready(function(){
-	
+	Highcharts.setOptions({
+        global: {                                                               
+            useUTC: false                                                       
+        }                                                                       
+    });
 	var json_url = '/stewardweb/transactionSlowMetadata.do?agentID=' + agentID + '&from=' + sttime + '&to=' + endtime + '&limit=5000&v=2&threshold=' + threshold;
     $.getJSON(json_url,function(data,status){
     	var data_slow_call = data;
