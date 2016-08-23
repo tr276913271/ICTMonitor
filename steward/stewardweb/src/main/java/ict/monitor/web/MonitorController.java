@@ -1,9 +1,7 @@
 package ict.monitor.web;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +33,6 @@ import ict.monitor.bean.Agent;
 import ict.monitor.bean.PinpointTarget;
 import ict.monitor.bean.User;
 import ict.monitor.collection.entity.DevInfoEntity;
-import ict.monitor.collection.entity.MetricEntity;
 import ict.monitor.context.WebContext;
 import ict.monitor.dao.AgentDao;
 import ict.monitor.dao.DevInfoDao;
@@ -48,16 +45,6 @@ public class MonitorController {
 	private AgentDao agentDao;
 	@Autowired
 	private DevInfoDao devInfoDao;
-	@Autowired
-	private MetricDao metricDao;
-	//返回监控列表 ，暂时没用到这个URL
-	@RequestMapping(value = "/monitorList.do")
-	public String monitorList(HttpServletRequest request, Model model) {
-		User userInfo = (User) request.getSession().getAttribute("userInfo");
-		ArrayList<Agent> list = agentDao.findAgentIDsByUserID(userInfo.getId());
-		model.addAttribute("agents", list);
-		return "monitorList";
-	}
 
 	@RequestMapping(value = "/monitorMachineList.do")
 	public String monitorMachineList(HttpServletRequest request, Model model, String agentID) {
@@ -67,24 +54,6 @@ public class MonitorController {
 		model.addAttribute("agents", list);
 		model.addAttribute("devs", devs);
 		return "monitorMachineList";
-	}
-
-	//点击index中的服务器后会进入服务器性能监控界面
-	@RequestMapping(value = "/monitorServerPerformance.do")
-	public String monitorServerPerformance(HttpServletRequest request, Model model, String agentID) {
-		
-		return "performance";
-	}
-	@RequestMapping(value = "/monitorServerError.do")
-	public String monitorServerError(HttpServletRequest request, Model model, String agentID) {
-		
-		return "wrong_call";
-	}
-
-	@RequestMapping(value = "/monitorServerSlow.do")
-	public String monitorServerSlow(HttpServletRequest request, Model model, String agentID) {
-		
-		return "slow_call";
 	}
 	
 	
