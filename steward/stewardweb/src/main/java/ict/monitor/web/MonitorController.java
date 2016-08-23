@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -201,8 +202,14 @@ public class MonitorController {
 	@RequestMapping(value = "/transactionInfo.do")
 	@ResponseBody
 	public String transactionInfo(String traceId, long focusTimestamp) {
-		String url = WebContext.PINPOINT + "/transactionInfo.pinpoint?traceId=" + traceId + "&focusTimestamp=" + focusTimestamp;
-		return getJsonFromPinpoint(url);
+//		String url = WebContext.PINPOINT + "/transactionInfo.pinpoint?traceId=" + traceId + "&focusTimestamp=" + focusTimestamp;
+		try{
+			String url = WebContext.PINPOINT + "/transactionInfo.pinpoint?traceId=" + URLEncoder.encode(traceId, "UTF-8") + "&focusTimestamp=" + focusTimestamp;
+			return getJsonFromPinpoint(url);
+		} catch (Exception e) {
+			logger.warn("不合法参数" + traceId);
+		}
+		return "";
 	}
 	
 	private String getJsonFromPinpoint(String url) {
@@ -215,6 +222,7 @@ public class MonitorController {
 				return EntityUtils.toString(entity);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.warn("读取pinpoint数据异常：" + url);
 		}
 		return "";
