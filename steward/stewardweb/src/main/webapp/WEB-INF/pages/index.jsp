@@ -12,7 +12,7 @@
 <base href="<%=basePath%>"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>APM 控制台页面</title>
+<title>APM 控制台</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
 <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="js/custom/general.js"></script>
@@ -42,7 +42,7 @@
 <div class="bodywrapper">
     <div class="topheader orangeborderbottom5">
         <div class="left">
-            <h1 class="logo">APM <span>Admin</span></h1>
+            <h1 class="logo"><a href="/stewardweb/index.do">APM <span>Admin</span></a></h1>
             <span class="slogan">后台管理系统</span>
             
             <!-- <div class="search">
@@ -98,7 +98,7 @@
                 <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:50px;"><h3>应用列表<span style="float:right;"><a class="signuplink" href="signUpApp.do">添加应用监控</a></span></h3></div>
                 <c:forEach items="${agents}" var="agent">
 				<c:if test="${agent.type==2}">
-					<li><a href="topo.do?agentID=<c:out value="${agent.agentID}"/>"  class="tomcat"><span>服务器</span></a>
+					<li><a href="topo.do?agentID=<c:out value="${agent.agentID}"/>"  class="tomcat"><span>${agent.agentID}</span></a>
 				</c:if>
 				</c:forEach>
             </ul>
@@ -106,7 +106,7 @@
                 <div class="title" style="border-bottom:2px solid #FB9337;padding-bottom:5px; margin-bottom:20px;margin-top:50px;"><h3>主机列表<span style="float:right;"><a class="signuplink" href="signUpHost.do">添加主机监控</a></span></h3></div>
                 <c:forEach items="${agents}" var="agent">
                 <c:if test="${agent.type==1}">
-                    <li><a href="hostLoad.do?agentID=<c:out value="${agent.agentID}"/>" class="host"><span>主机</span></a>
+                    <li><a href="hostLoad.do?agentID=<c:out value="${agent.agentID}"/>" class="host"><span>${agent.agentID}</span></a>
                 </c:if>
                 </c:forEach>
             </ul>

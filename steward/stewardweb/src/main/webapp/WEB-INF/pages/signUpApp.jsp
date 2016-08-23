@@ -78,7 +78,7 @@ pre {
 <div class="bodywrapper">
     <div class="topheader orangeborderbottom5">
         <div class="left">
-            <h1 class="logo">APM <span>Admin</span></h1>
+            <h1 class="logo"><a href="/stewardweb/index.do">APM <span>Admin</span></a></h1>
             <span class="slogan">后台管理系统</span>
             
             <!-- <div class="search">
