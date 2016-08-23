@@ -913,8 +913,8 @@ input.hasDatepicker {
 }
 
 .dataTables_wrapper { position: relative; }
-.dataTables_length { background: #fcfcfc; border: 1px solid #ddd; border-bottom: 0; padding: 8px; }
-.dataTables_paginate { background: #fcfcfc; border: 1px solid #ddd; border-top: 0; padding: 8px; }
+.dataTables_length { background: #fcfcfc; border-bottom: 0; padding: 8px; }
+.dataTables_paginate { background: #fcfcfc; border-top: 0; padding: 8px; }
 .dataTables_length, .dataTables_paginate { -moz-box-shadow: inset 0 1px 0 #fff; -webkit-box-shadow: inset 0 1px 0 #fff; box-shadow: inset 0 1px 0 #fff; }
 .dataTables_wrapper select { 
 	background: #fff; padding: 5px; border: 1px solid #bbb; margin: 0; outline: none; font-size: 11px; color: #666;
@@ -2525,3 +2525,11 @@ blockquote.bq2 {
 
 .item_detail{display: none;}
 .poplayer{float:left; width:100%; height:auto; padding:3px; background:red;}
+
+td.details-control {
+    background: url('../images/icons/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('../images/icons/details_close.png') no-repeat center center;
+}

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String path = request.getContextPath();
@@ -9,7 +9,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<base href="<%=basePath%>" />
+<base href="<%=basePath%>"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APM 慢调用</title>
@@ -345,65 +345,29 @@ function getSlowCallDetailData(traceID, timeStamp, data){
 };
 
 function getSlowCallData(data){
+	$('#table_slow_call').html(' ');
     var list_items = [];
+    var code_item = "";
+	console.log(data);
     $.each(data, function(index, item){
-        var code_item = {
-            "index": (index+1),
-            "time": Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', item.agentStartTime),
-            "rpc": item.rpc,
-            "timeResponse": item.elapsed,
-            "exception": item.exceptionMessage,
-            "agentId": item.agentId,
-            "remoteAddr": item.remoteAddr,
-            "transactionId": item.transactionId
-        }
-        list_items.push(code_item);
+        // var item = {'Time':item.agentStartTime, 'Application':item.rpc}
+        // list_items.push(item);
+        code_item = "<tr class='item'><td>"+(index+1)+"</td><td>"+Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', item.agentStartTime)+"</td><td>"+item.rpc+"</td><td>"+100+"</td><td> </td><td>"+item.agentId+"</td><td>"+item.remoteAddr+"</td><td>"+item.transactionId+"</td></tr>";
+        var json_url = "/stewardweb/transactionInfo.do?traceId=" +item.transactionId + "&focusTimestamp=" + item.agentStartTime+'&_='+ item.collectorAcceptTime;
+		
+		console.log(json_url);
+		$.getJSON(json_url,function(data){  
+            data_slow_call_detail = data;
+            console.log('slowCallDetailData:'+data_slow_call_detail);
+        });
+		if(data_slow_call_detail){
+			code_item_detail = getSlowCallDetailData(item.transactionId,item.agentStartTime,data_slow_call_detail);
+			code_item += code_item_detail;
+		}
+        $('#table_slow_call').append(code_item);
+        //alert(index);
     });
-    return list_items;
 };
-
-function format(d){
-    // `d` is the original data object for the row
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-        '<tr>'+
-            '<td>Test name:</td>'+
-            '<td>'+d.name+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Test number:</td>'+
-            '<td>'+d.time+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Test info:</td>'+
-            '<td>And any further details here (images etc)...</td>'+
-        '</tr>'+
-    '</table>';
-};
-
-// function getSlowCallData(data){
-//     $('#table_slow_call').html(' ');
-//     var list_items = [];
-//     var code_item = "";
-//     //console.log(data);
-//     $.each(data, function(index, item){
-//         // var item = {'Time':item.agentStartTime, 'Application':item.rpc}
-//         // list_items.push(item);
-//         code_item = "<tr class='item'><td>"+(index+1)+"</td><td>"+Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', item.agentStartTime)+"</td><td>"+item.rpc+"</td><td>"+100+"</td><td> </td><td>"+item.agentId+"</td><td>"+item.remoteAddr+"</td><td>"+item.transactionId+"</td></tr>";
-//         var json_url = "/stewardweb/transactionInfo.do?traceId=" +item.transactionId + "&focusTimestamp=" + item.agentStartTime+'&_='+ item.collectorAcceptTime;
-        
-//         //console.log(json_url);
-//         $.getJSON(json_url,function(data){  
-//             data_slow_call_detail = data;
-//             console.log('slowCallDetailData:'+data_slow_call_detail);
-//         });
-//         if(data_slow_call_detail){
-//             code_item_detail = getSlowCallDetailData(item.transactionId,item.agentStartTime,data_slow_call_detail);
-//             code_item += code_item_detail;
-//         }
-//         $('#table_slow_call').append(code_item);
-//         //alert(index);
-//     });
-// };
 
 function getDataByTime(time_start, time_end){
     var json_url = "/stewardweb/getScatterData.do?agentID=" + agentID + "&from="+time_start+"&to="+time_end+"&limit=5000&v=2";
@@ -421,51 +385,31 @@ function getDataByTime(time_start, time_end){
 
 $(document).ready(function(){
 	
-	var json_url = '/stewardweb/transactionSlowMetadata.do?agentID=' + agentID + '&from=' + sttime + '&to=' + endtime + '&limit=5000&v=2&threshold=' + threshold;
+	
+	var json_url = '/stewardweb/transactionSlowMetadata.do?agentID=' + agentID + '&from=' + sttime + '&to=' +endtime + '&limit=5000&v=2&threshold=' + threshold;
     $.getJSON(json_url,function(data,status){
-    	var data_slow_call = data;
-        var list_items = getSlowCallData(data_slow_call);
-        console.log(list_items);
-        var table = $('#table_root').DataTable({
-            "data": list_items,
-            "columns":[
-                {
-                    "className":      'details-control',
-                    "orderable":      false,
-                    "data":           null,
-                    "defaultContent": ''
-                },
-                {"data": "index"},
-                {"data": "time"},
-                {"data": "rpc"},
-                {"data": "timeResponse"},
-                {"data": "exception"},
-                {"data": "agentId"},
-                {"data": "remoteAddr"},
-                {"data": "transactionId"}
-            ],
-            "order": [[1, 'asc']]
-        });
-        // Add event listener for opening and closing details
-        $('#table_root tbody').on('click', 'td.details-control', function(){
-            var tr = $(this).closest('tr');
-            var row = table.row( tr );
-     
-            if (row.child.isShown()){
-                // This row is already open - close it
-                row.child.hide();
-                tr.removeClass('shown');
-            }
-            else {
-                // Open this row
-                row.child( format(row.data()) ).show();
-                tr.addClass('shown');
-            }
-        });
+    	data_slow_call = data;
         //console.log(data);
     });
     
-    
+    getSlowCallData(data_slow_call);
+    $('#table_slow_call>.item').mouseover(function(){
+        $(this).css({
+            'background':'#ccc',
+            'cursor':'pointer'
+        });
+    }).click(function(){
+        $('.item_detail').css({
+            'display':'none'
+        });
+        $(this).next().fadeIn();
+    });
+    $('#table_slow_call>.item').mouseout(function(){
+        $(this).css({
+            'background':'transparent'
+        });
+    });
+    $('#table_root').DataTable();
     //$('#form_searchByTime>button').click(function(){
     //    var time_start = $('input[name="time_start"]').val();
     //    var time_end = $('input[name="time_end"]').val();
@@ -503,7 +447,7 @@ function submitSearchForm(){
         data_slow_call = data;
         //console.log('SlowCallData:'+data);
     });
-	//console.log('slowCallData:'+data_slow_call);
+	console.log('slowCallData:'+data_slow_call);
     getSlowCallData(data_slow_call);
     $('#table_slow_call>.item').mouseover(function(){
         $(this).css({
@@ -603,10 +547,32 @@ function submitSearchForm(){
     </div><!--pageheader-->
     
     <div class="contentwrapper">
-        <table cellpadding="0" cellspacing="0" border="0" class="display" id="table_root">
+        <!-- <table cellpadding="0" cellspacing="0" border="0" class="stdtable" id="table_root">
+            <colgroup>
+                <col class="con0" />
+                <col class="con1" />
+                <col class="con0" />
+                <col class="con1" />
+                <col class="con0" />
+                <col class="con1" />
+                <col class="con0" />
+                <col class="con1" />
+            </colgroup> -->
+            <!-- <thead>
+                <tr>
+                    <th class="head0">#</th>
+                    <th class="head1">时间</th>
+                    <th class="head0">调用组件</th>
+                    <th class="head1">响应时间(ms)</th>
+                    <th class="head0">异常</th>
+                    <th class="head1">探针ID</th>
+                    <th class="head0">客户端IP</th>
+                    <th class="head1">事务ID</th>
+                </tr>
+            </thead> -->
+        <table class="display" id="table_root">
             <thead>
                 <tr>
-                    <th></th>
                     <th>#</th>
                     <th>时间</th>
                     <th>调用组件</th>
@@ -617,7 +583,61 @@ function submitSearchForm(){
                     <th>事务ID</th>
                 </tr>
             </thead>
-        </table>   
+            <tbody id="table_slow_call">
+<!--                 <tr class="item">
+                    <td>1</td>
+                    <td>2016-03-28 10:00:00</td>
+                    <td>/host/manager/</td>
+                    <td>625</td>
+                    <td> </td>
+                    <td>test1001</td>
+                    <td>127.0.0.1</td>
+                    <td class="center">test1001^1234567890^0</td>
+                </tr>
+                <tr class="item_detail">
+                    <td colspan="8">
+                        <div class="poplayer">
+                            adfdf
+                        </div>
+                    </td>
+                </tr>
+                <tr class="item">
+                    <td>2</td>
+                    <td>2016-03-28 10:00:00</td>
+                    <td>/host/manager/</td>
+                    <td>625</td>
+                    <td> </td>
+                    <td>test1001</td>
+                    <td>127.0.0.1</td>
+                    <td class="center">test1001^1234567890^0</td>
+                </tr>
+                <tr class="item">
+                    <td>3</td>
+                    <td>2016-03-28 10:00:00</td>
+                    <td>/host/manager/</td>
+                    <td>625</td>
+                    <td> </td>
+                    <td>test1001</td>
+                    <td>127.0.0.1</td>
+                    <td class="center">test1001^1234567890^0</td>
+                </tr>
+                <tr class="item">
+                    <td>4</td>
+                    <td>2016-03-28 10:00:00</td>
+                    <td>/host/manager/</td>
+                    <td>625</td>
+                    <td> </td>
+                    <td>test1001</td>
+                    <td>127.0.0.1</td>
+                    <td class="center">test1001^1234567890^0</td>
+                </tr> -->
+            </tbody>
+        </table>
+
+        <br /><br />
+
+
+        
     </div><!--contentwrapper-->
     
     
