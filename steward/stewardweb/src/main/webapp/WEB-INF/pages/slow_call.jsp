@@ -328,20 +328,43 @@ var data_slow_call_detail = {
     }
 };
 
+// function getSlowCallDetailData(traceID, timeStamp, data){
+//     var callstack = data["callStack"];
+//     //var callstack_length = callstack.length;
+//     var code_item_detail = "<tr class='item_detail' style='display:none;'><td colspan='8'><div class='poplayer'><table cellpadding='0' cellspacing='0' border='0' class='stdtable'><colgroup><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /></colgroup><thead><tr><th class='head0'>Method</th><th class='head1'>Arguments</th><th class='head0'>Exec Time</th><th class='head1'>Gap(ms)</th><th class='head0'>Time(ms)</th><th class='head1'>Time(%)</th><th class='head0'>Class</th><th class='head1'>Api Type</th><th class='head0'>Agent</th><th class='head1'>App Name</th></tr></thead><tbody>";
+//     var code_item_detail = "<tr class='item_detail'><td colspan='8'><div class='poplayer'><table cellpadding='0' cellspacing='0' border='0' class='stdtable'><colgroup><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /></colgroup><thead><tr><th class='head0'>调用方法</th><th class='head1'>参数</th><th class='head0'>调用时间</th><th class='head1'>间隔时间(ms)</th><th class='head0'>执行时间(ms)</th><th class='head1'>时间占比(%)</th><th class='head0'>组件类型</th><th class='head1'>应用名称</th><th class='head0'>探针Id</th><th class='head1'>应用名称</th></tr></thead><tbody>";
+//     $.each(callstack, function(index, item){
+//         var row = {"time_begin":item[1], "time_end":item[2], "appName":item[4], "tag":item[5], "id":item[6], "parentId":item[7], "title":item[10], "args":item[11], "formatTime":item[12], "gap":item[13], "execTime":item[14], "simpleClassName":item[16], "serviceType":item[17], "agent":item[18], "hasChild":item[19], "hasException":item[20]};
+//         //code_row = "<tr class='item_detail'><td colspan='8'><div class='poplayer'>"+row['time_begin']+"</div></td></tr>";
+//         var code_row = "<tr><td>"+row['title']+"</td><td>"+row['args']+"</td><td>"+row['formatTime']+"</td><td>"+row['gap']+"</td><td>"+row['execTime']+"</td><td>100%</td><td>"+row['simpleClassName']+"</td><td>"+row['serviceType']+"</td><td>"+row['agent']+"</td><td>"+row['appName']+"</td></tr>"
+//         code_item_detail += code_row;
+//     });
+//     code_item_detail += "</tbody></table></div></td></tr>";
+//     return code_item_detail;
+//     //alert(callstack);
+// };
+
+function getPercent(numA, numB){
+    if(numA=="" || numB==""){
+        return "-";
+    }else{
+        numA = parseFloat(numA.replace(",",""));
+        numB = parseFloat(numB.replace(",",""));
+        var total = numA+numB;
+        return total <= 0 ? "0%" : (Math.round(numB / total * 10000)/100);
+    }
+}
+
 function getSlowCallDetailData(traceID, timeStamp, data){
     var callstack = data["callStack"];
-    //var callstack_length = callstack.length;
-    var code_item_detail = "<tr class='item_detail' style='display:none;'><td colspan='8'><div class='poplayer'><table cellpadding='0' cellspacing='0' border='0' class='stdtable'><colgroup><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /></colgroup><thead><tr><th class='head0'>Method</th><th class='head1'>Arguments</th><th class='head0'>Exec Time</th><th class='head1'>Gap(ms)</th><th class='head0'>Time(ms)</th><th class='head1'>Time(%)</th><th class='head0'>Class</th><th class='head1'>Api Type</th><th class='head0'>Agent</th><th class='head1'>App Name</th></tr></thead><tbody>";
-    var code_item_detail = "<tr class='item_detail'><td colspan='8'><div class='poplayer'><table cellpadding='0' cellspacing='0' border='0' class='stdtable'><colgroup><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /><col class='con0' /><col class='con1' /></colgroup><thead><tr><th class='head0'>调用方法</th><th class='head1'>参数</th><th class='head0'>调用时间</th><th class='head1'>间隔时间(ms)</th><th class='head0'>执行时间(ms)</th><th class='head1'>时间占比(%)</th><th class='head0'>组件类型</th><th class='head1'>应用名称</th><th class='head0'>探针Id</th><th class='head1'>应用名称</th></tr></thead><tbody>";
+    var list_detail_items = [];
     $.each(callstack, function(index, item){
         var row = {"time_begin":item[1], "time_end":item[2], "appName":item[4], "tag":item[5], "id":item[6], "parentId":item[7], "title":item[10], "args":item[11], "formatTime":item[12], "gap":item[13], "execTime":item[14], "simpleClassName":item[16], "serviceType":item[17], "agent":item[18], "hasChild":item[19], "hasException":item[20]};
         //code_row = "<tr class='item_detail'><td colspan='8'><div class='poplayer'>"+row['time_begin']+"</div></td></tr>";
-        var code_row = "<tr><td>"+row['title']+"</td><td>"+row['args']+"</td><td>"+row['formatTime']+"</td><td>"+row['gap']+"</td><td>"+row['execTime']+"</td><td>100%</td><td>"+row['simpleClassName']+"</td><td>"+row['serviceType']+"</td><td>"+row['agent']+"</td><td>"+row['appName']+"</td></tr>"
-        code_item_detail += code_row;
+        //var code_row = "<tr><td>"+row['title']+"</td><td>"+row['args']+"</td><td>"+row['formatTime']+"</td><td>"+row['gap']+"</td><td>"+row['execTime']+"</td><td>100%</td><td>"+row['simpleClassName']+"</td><td>"+row['serviceType']+"</td><td>"+row['agent']+"</td><td>"+row['appName']+"</td></tr>"
+        list_detail_items.push(row);
     });
-    code_item_detail += "</tbody></table></div></td></tr>";
-    return code_item_detail;
-    //alert(callstack);
+    return list_detail_items;
 };
 
 function getSlowCallData(data){
@@ -349,7 +372,10 @@ function getSlowCallData(data){
     $.each(data, function(index, item){
         var code_item = {
             "index": (index+1),
-            "time": Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', item.agentStartTime),
+            "time": {
+                "timeFormat": Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', item.startTime),
+                "timeStamp": item.startTime
+            },
             "rpc": item.rpc,
             "timeResponse": item.elapsed,
             "exception": item.exceptionMessage,
@@ -363,21 +389,73 @@ function getSlowCallData(data){
 };
 
 function format(d){
-    // `d` is the original data object for the row
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-        '<tr>'+
-            '<td>Test name:</td>'+
-            '<td>'+d.name+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Test number:</td>'+
-            '<td>'+d.time+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Test info:</td>'+
-            '<td>And any further details here (images etc)...</td>'+
-        '</tr>'+
-    '</table>';
+    console.log("/stewardweb/transactionInfo.do?traceId="+d.transactionId+"&focusTimestamp="+d.time.timeStamp);
+    var json_url = "/stewardweb/transactionInfo.do?traceId="+d.transactionId+"&focusTimestamp="+d.time.timeStamp;
+    var result = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px; width:100%; border:1px red solid;">'+
+            '<tr>'+
+                '<td>调用方法</td>'+
+                '<td>参数</td>'+
+                '<td>调用时间</td>'+
+                '<td>间隔时间(ms)</td>'+
+                '<td>执行时间(ms)</td>'+
+                '<td>时间占比(%)</td>'+
+                '<td>组件类型</td>'+
+                '<td>应用名称</td>'+
+                '<td>探针Id</td>'+
+                '<td>应用名称</td>'+
+            '</tr>';
+    $.ajax({
+        type:"GET",
+        dataType:"JSON",
+        async:false,
+        url:json_url,
+        success:function(data) {
+            var data_slow_call_detail = data;
+            //console.log('slowCallDetailData:'+data_slow_call_detail);
+            var list_detail_items = getSlowCallDetailData(d.transactionId, d.time.timeStamp, data_slow_call_detail);
+            $.each(list_detail_items, function(index, item){
+                result = result +
+                    '<tr>'+
+                        '<td>'+item['title']+'</td>'+
+                        '<td>'+item['args']+'</td>'+
+                        '<td>'+item['formatTime']+'</td>'+
+                        '<td>'+item['gap']+'</td>'+
+                        '<td>'+item['execTime']+'</td>'+
+                        '<td>'+getPercent(item['gap'], item['execTime'])+'</td>'+
+                        '<td>'+item['simpleClassName']+'</td>'+
+                        '<td>'+item['serviceType']+'</td>'+
+                        '<td>'+item['agent']+'</td>'+
+                        '<td>'+item['appName']+'</td>'+
+                    '</tr>';
+            });
+            result += '</table>';
+        }
+
+    });
+    return result;
+    // $.getJSON(json_url,function(data){  
+    //     var data_slow_call_detail = data;
+    //     //console.log('slowCallDetailData:'+data_slow_call_detail);
+    //     var list_detail_items = getSlowCallDetailData(d.transactionId, d.time.timeStamp, data_slow_call_detail);
+    //     $.each(list_detail_items, function(index, item){
+    //         result = result +
+    //             '<tr>'+
+    //                 '<td>'+item['title']+'</td>'+
+    //                 '<td>'+item['args']+'</td>'+
+    //                 '<td>'+item['formatTime']+'</td>'+
+    //                 '<td>'+item['gap']+'</td>'+
+    //                 '<td>'+item['execTime']+'</td>'+
+    //                 '<td>'+'100%'+'</td>'+
+    //                 '<td>'+item['simpleClassName']+'</td>'+
+    //                 '<td>'+item['serviceType']+'</td>'+
+    //                 '<td>'+item['agent']+'</td>'+
+    //                 '<td>'+item['appName']+'</td>'+
+    //             '</tr>';
+    //     });
+    //     result += '</table>';
+    // });
+    // console.log(result);
+    // return result;
 };
 
 // function getSlowCallData(data){
@@ -425,7 +503,6 @@ $(document).ready(function(){
     $.getJSON(json_url,function(data,status){
     	var data_slow_call = data;
         var list_items = getSlowCallData(data_slow_call);
-        console.log(list_items);
         var table = $('#table_root').DataTable({
             "data": list_items,
             "columns":[
@@ -436,7 +513,7 @@ $(document).ready(function(){
                     "defaultContent": ''
                 },
                 {"data": "index"},
-                {"data": "time"},
+                {"data": "time.timeFormat"},
                 {"data": "rpc"},
                 {"data": "timeResponse"},
                 {"data": "exception"},
@@ -458,11 +535,10 @@ $(document).ready(function(){
             }
             else {
                 // Open this row
-                row.child( format(row.data()) ).show();
+                row.child(format(row.data())).show();
                 tr.addClass('shown');
             }
         });
-        //console.log(data);
     });
     
     
@@ -486,41 +562,15 @@ $(document).ready(function(){
 
 
 function submitSearchForm(){
-	var time_from = $('input[name=from]').val();
+    var time_from = $('input[name=from]').val();
     var time_to = $('input[name=to]').val();
-	var appName = 'tomcat';
     stamp_from = new Date(time_from);
     stamp_to = new Date(time_to);
-	sttime = stamp_from.getTime();
+    sttime = stamp_from.getTime();
     endtime = stamp_to.getTime();
-    //$('input[name=from]').val(stamp_from.getTime());
-    //$('input[name=to]').val(stamp_to.getTime());
-    //$('#searchForm').submit();
+    var new_url = '/stewardweb/slowCall.do?agentID='+ agentID+'&sttime=' + sttime + '&endtime=' + endtime + '&limit=5000&v=2&threshold=' + threshold;
+    window.location.href = new_url;
 
-    //var json_url = '/stewardweb/transactionSlowMetadata.do?application='+appName+'&from=' + sttime.toString() + '&to=' +endtime.toString() + '&limit=5000';
-	var json_url = '/stewardweb/transactionSlowMetadata.do?agentID='+ agentID+'&from=' + stamp_from.getTime().toString() + '&to=' + stamp_to.getTime().toString() + '&limit=5000&&threshold=7';
-    $.getJSON(json_url,function(data,status){
-        data_slow_call = data;
-        //console.log('SlowCallData:'+data);
-    });
-	//console.log('slowCallData:'+data_slow_call);
-    getSlowCallData(data_slow_call);
-    $('#table_slow_call>.item').mouseover(function(){
-        $(this).css({
-            'background':'#ccc',
-            'cursor':'pointer'
-        });
-    }).click(function(){
-        $('.item_detail').css({
-            'display':'none'
-        });
-        $(this).next().fadeIn();
-    });
-    $('#table_slow_call>.item').mouseout(function(){
-        $(this).css({
-            'background':'transparent'
-        });
-    });
 }
 </script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
