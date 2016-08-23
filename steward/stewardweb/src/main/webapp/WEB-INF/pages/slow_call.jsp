@@ -344,6 +344,17 @@ var data_slow_call_detail = {
 //     //alert(callstack);
 // };
 
+function getPercent(numA, numB){
+    if(numA=="" || numB==""){
+        return "-";
+    }else{
+        numA = parseFloat(numA.replace(",",""));
+        numB = parseFloat(numB.replace(",",""));
+        var total = numA+numB;
+        return total <= 0 ? "0%" : (Math.round(numB / total * 10000)/100);
+    }
+}
+
 function getSlowCallDetailData(traceID, timeStamp, data){
     var callstack = data["callStack"];
     var list_detail_items = [];
@@ -410,7 +421,7 @@ function format(d){
                         '<td>'+item['formatTime']+'</td>'+
                         '<td>'+item['gap']+'</td>'+
                         '<td>'+item['execTime']+'</td>'+
-                        '<td>'+'100%'+'</td>'+
+                        '<td>'+getPercent(item['gap'], item['execTime'])+'</td>'+
                         '<td>'+item['simpleClassName']+'</td>'+
                         '<td>'+item['serviceType']+'</td>'+
                         '<td>'+item['agent']+'</td>'+
