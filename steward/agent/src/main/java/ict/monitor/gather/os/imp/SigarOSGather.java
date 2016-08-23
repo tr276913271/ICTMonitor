@@ -51,7 +51,15 @@ public class SigarOSGather implements OSGather {
 
 	@Override
 	public String getHostName() {
-		return map.get("USERDOMAIN");
+//		return map.get("USERDOMAIN");
+		InetAddress addr;
+		try {
+			addr = InetAddress.getLocalHost();
+			return addr.getHostName();
+		} catch (UnknownHostException e) {
+			ExceptionUtil.printStackTrace(e);
+		}
+		return "";
 	}
 
 }
