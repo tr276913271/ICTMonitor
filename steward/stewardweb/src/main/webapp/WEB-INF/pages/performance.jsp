@@ -175,13 +175,19 @@ function initChart() {
             title: {                                                                         
                 enabled: true,                                                               
                 text: null                                                          
-            },                                                                               
-            startOnTick: true,                                                               
-            endOnTick: true,                                                                 
-            showLastLabel: true,
+            },
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: false,
             type: 'datetime',
-            dateTimeLabelFormats: {
-                 millisecond: '%H:%M:%S<br>%Y-%m'
+            // dateTimeLabelFormats: {
+            //      millisecond: '%Y-%m-%d<br>%H:%M:%S'
+            // }
+            labels: {
+                enable: true,
+                formatter: function () {
+                    return Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.value);
+                }
             }
         },                                           
         yAxis: {                                                                             
@@ -214,21 +220,25 @@ function initChart() {
                     hover: {                                                                 
                         marker: {                                                            
                             enabled: false                                                   
-                        }                                                                    
-                    }                                                                        
-                },                                                                           
-                tooltip: {                                                                   
-                    headerFormat: '<b>{series.name}</b><br>',
-                    pointFormat: '{point.x} , {point.y} ms',
-                    //pointFormat: '{point.x} , {point.y} ms', 
-                    //formatter: function() {                                             
-                    //	return '<b>'+ 'name</b><br/>'+                
-                    //	Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
-                   	//	Highcharts.numberFormat(this.y, 2);                         
-                    //}  
-                }                                                                            
+                        }
+                    }
+                }
             }                                                                                
-        },                                                                                   
+        },
+        tooltip: {
+            enable: true,
+            formatter: function () {
+                return '<b>'+ this.series.name +'</b><br/>'+Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +Highcharts.numberFormat(this.y, 2) + ' ms';
+            }
+            //headerFormat: '<b>{series.name}</b><br>',
+            //pointFormat: '{point.x} , {point.y} ms', 
+            //pointFormat: '{point.x} , {point.y} ms', 
+            // formatter: function(){
+            //  return '<b>'+ this.name +'</b><br/>'+                
+            //  Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.data.x) +'<br/>'+
+            //  Highcharts.numberFormat(this.y, 2);                         
+            // }  
+        },
         series: [{                                                                           
             name: '成功',                                                                  
             color: 'rgba(10, 232, 10, .5)',                                                  
@@ -470,7 +480,7 @@ function submitSearchForm(){
 <div class="bodywrapper">
     <div class="topheader">
         <div class="left">
-            <h1 class="logo">APM <span>Admin</span></h1>
+            <h1 class="logo"><a href="/stewardweb/index.do">APM <span>Admin</span></a></h1>
             <span class="slogan">后台管理系统</span>
             
             <div class="search">
