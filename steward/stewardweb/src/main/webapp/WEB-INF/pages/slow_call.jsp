@@ -498,7 +498,11 @@ function getDataByTime(time_start, time_end){
 
 
 $(document).ready(function(){
-	
+	Highcharts.setOptions({
+        global: {                                                               
+            useUTC: false                                                       
+        }                                                                       
+    });
 	var json_url = '/stewardweb/transactionSlowMetadata.do?agentID=' + agentID + '&from=' + sttime + '&to=' + endtime + '&limit=5000&v=2&threshold=' + threshold;
     $.getJSON(json_url,function(data,status){
     	var data_slow_call = data;
@@ -589,7 +593,7 @@ function submitSearchForm(){
 <div class="bodywrapper">
     <div class="topheader">
         <div class="left">
-            <h1 class="logo">APM <span>Admin</span></h1>
+            <h1 class="logo"><a href="/stewardweb/index.do">APM <span>Admin</span></a></h1>
             <span class="slogan">后台管理系统</span>
             
             <div class="search">

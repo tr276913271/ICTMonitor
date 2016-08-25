@@ -11,7 +11,7 @@
 <head>
 <base href="<%=basePath%>"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>APM 控制台页面</title>
+<title>APM 应用拓扑</title>
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
 <link type="text/css" href="css/jquery.simple-dtpicker.css" rel="stylesheet" />
 <script type="text/javascript" src="js/highcharts/jquery-1.8.3.min.js"></script>
@@ -755,7 +755,7 @@ $(document).ready(function() {
 <div class="bodywrapper">
     <div class="topheader">
         <div class="left">
-            <h1 class="logo">APM <span>Admin</span></h1>
+            <h1 class="logo"><a href="/stewardweb/index.do">APM <span>Admin</span></a></h1>
             <span class="slogan">后台管理系统</span>
             
             <div class="search">

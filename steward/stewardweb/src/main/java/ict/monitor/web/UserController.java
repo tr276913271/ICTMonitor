@@ -146,15 +146,4 @@ public class UserController {
 		return "success";
 	}
 	
-//	@RequestMapping(value = "/signUpAgentID.do")
-//	public ModelAndView signUpAgentID(HttpServletRequest request) {
-//		UUID uuid = UUID.randomUUID();
-//		HttpSession session = request.getSession(true);
-//		User user = (User) session.getAttribute("userInfo");
-//		agentDao.insert(new Agent(user.getId(),uuid.toString(),1));
-//		
-//		Map<String, Object> data = new HashMap<String, Object>();
-//		data.put("agentID",uuid.toString());
-//		return new ModelAndView("signUpAgentID", data);
-//	}
 }
